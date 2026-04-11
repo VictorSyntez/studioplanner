@@ -1,6 +1,6 @@
 // ─── DANCE COLORS ────────────────────────────────────
 export const DANCE_COLORS = {
-  'Waltz': { bg: '#5a3d7a', lt: '#ede5f8' },
+  'Waltz': { bg: '#1D69A2', lt: '#c4ddf0' },
 }
 
 // ─── WALTZ FIGURES ───────────────────────────────────
