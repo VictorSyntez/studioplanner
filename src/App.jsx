@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
-import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY } from './data.js'
+import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY, FIGURE_RICH_DATA } from './data.js'
 import { SEED_SESSIONS } from './seedData.js'
 
 // ─── HELPERS ──────────────────────────────────────────
@@ -10,7 +10,7 @@ const WALTZ_FIGURES = FIGURES['Waltz'] || []
 const WALTZ_COLOR = DANCE_COLORS['Waltz']
 
 function totalSectionMinutes(section) {
-  if (section.type === 'warmup') return section.minutes || 0
+  if (section.type === 'warmup') return (section.dances || []).reduce((s, d) => s + (Number(d.minutes) || 0), 0)
   if (section.type === 'conclusion') return section.minutes || 0
   return (section.items || []).reduce((s, item) => s + (Number(item.minutes) || 0), 0)
 }
@@ -70,47 +70,137 @@ function RoleGate({ onSelect }) {
 }
 
 // ─── FIGURE DETAIL PANEL ─────────────────────────────
-function FigureDetailPanel({ figureName, mtNotes, onClose }) {
+function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, barsUsed, onAlignmentChange, isEditable }) {
+  const rich = FIGURE_RICH_DATA[figureName]
   const fig = getFigure(figureName)
-  if (!fig) return <div className="detail-panel"><div style={{color:'var(--ink-faint)'}}>Figure not found in database.</div></div>
-  const steps = fig.c.split(',')
-  const fwArr = fig.fw.split(',')
-  const swArr = (fig.sw || '').split(',')
-  const alArr = (fig.al || '').split(',')
-  return (
+  const [activeBar, setActiveBar] = useState(1)
+
+  if (!rich && !fig) return (
     <div className="detail-panel">
-      {onClose && (
-        <div className="detail-panel-header">
-          <div>
-            <div className="detail-panel-type">FIGURE · Waltz</div>
-            <div className="detail-panel-name">{fig.n}</div>
-          </div>
-          <button className="icon-btn" onClick={onClose}>✕</button>
-        </div>
-      )}
-      {!onClose && (
-        <div className="detail-panel-header">
-          <div className="detail-panel-type">FIGURE · Waltz</div>
-          <div className="detail-panel-name">{fig.n}</div>
-        </div>
-      )}
-      <div className="detail-rise">{fig.rise}</div>
+      <div style={{color:'var(--ink-faint)', padding: 16}}>Figure not found in database.</div>
+    </div>
+  )
+
+  // If we have rich data, use it; otherwise fall back to old simple display
+  const bars = rich ? rich.bars : 1
+  const barNums = rich ? [...new Set(rich.leader.map(s => s.bar))] : [1]
+
+  // Filter steps to active bar
+  const leaderSteps = rich ? rich.leader.filter(s => s.bar === activeBar) : []
+  const followerSteps = rich ? rich.follower.filter(s => s.bar === activeBar) : []
+
+  const getAlignment = (role, stepIdx) => {
+    const key = `${role}-${activeBar}-${stepIdx}`
+    return (alignmentOverrides && alignmentOverrides[key]) || (role === 'leader' ? leaderSteps[stepIdx]?.alignment : followerSteps[stepIdx]?.alignment) || '—'
+  }
+
+  const handleAlignmentChange = (role, stepIdx, val) => {
+    if (!onAlignmentChange) return
+    const key = `${role}-${activeBar}-${stepIdx}`
+    onAlignmentChange(key, val)
+  }
+
+  const renderStepsTable = (steps, role) => (
+    <div className="rich-role-section">
+      <div className="rich-role-label">{role === 'leader' ? 'Leader' : 'Follower'}</div>
       <table className="detail-table">
         <thead>
-          <tr><th>Beat</th><th>Footwork</th><th>Sway</th><th>Alignment</th></tr>
+          <tr><th>Count</th><th>Foot</th><th>Alignment</th><th>Footwork</th><th>Sway</th><th>Rise</th></tr>
         </thead>
         <tbody>
-          {steps.map((beat, i) => (
+          {steps.map((s, i) => (
             <tr key={i}>
-              <td>{beat}</td>
-              <td>{fwArr[i] || '—'}</td>
-              <td>{swArr[i] || '—'}</td>
-              <td>{alArr[i] || '—'}</td>
+              <td style={{fontFamily:'var(--font-mono)', color:'var(--gold)', whiteSpace:'nowrap'}}>{s.count}</td>
+              <td>{s.foot}</td>
+              <td>
+                {isEditable ? (
+                  <input
+                    className="alignment-edit-input"
+                    value={getAlignment(role, i)}
+                    onChange={e => handleAlignmentChange(role, i, e.target.value)}
+                    title="Edit alignment for this session"
+                  />
+                ) : (
+                  <span style={alignmentOverrides && alignmentOverrides[`${role}-${activeBar}-${i}`] ? {color:'var(--gold-lt)', fontStyle:'italic'} : {}}>
+                    {getAlignment(role, i)}
+                  </span>
+                )}
+              </td>
+              <td style={{fontFamily:'var(--font-mono)', fontSize:11}}>{s.footwork}</td>
+              <td style={{fontFamily:'var(--font-mono)', fontSize:11}}>{s.sway}</td>
+              <td style={{fontSize:11, color:'var(--ink-faint)'}}>{s.rise}</td>
             </tr>
           ))}
         </tbody>
       </table>
-      {fig.notes && <div className="detail-notes">{fig.notes}</div>}
+      {steps.filter(s => s.notes).map((s, i) => s.notes ? (
+        <div key={i} className="rich-step-note">
+          <span className="rich-step-note-count">{s.count}</span>
+          <span>{s.notes}</span>
+        </div>
+      ) : null)}
+    </div>
+  )
+
+  return (
+    <div className="detail-panel">
+      <div className="detail-panel-header">
+        <div>
+          <div className="detail-panel-type">FIGURE · Waltz</div>
+          <div className="detail-panel-name">{figureName}</div>
+        </div>
+        {onClose && <button className="icon-btn" onClick={onClose}>✕</button>}
+      </div>
+
+      {/* Bar selector — only shown if figure has multiple bars */}
+      {barNums.length > 1 && (
+        <div className="bar-tabs">
+          {barNums.map(b => (
+            <button
+              key={b}
+              className={`bar-tab${activeBar === b ? ' active' : ''}${barsUsed && !barsUsed.includes(b) ? ' unused' : ''}`}
+              onClick={() => setActiveBar(b)}
+            >
+              Bar {b}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {rich ? (
+        <div className="rich-detail-body">
+          {renderStepsTable(leaderSteps, 'leader')}
+          {renderStepsTable(followerSteps, 'follower')}
+          {rich.techniqueNotes && (
+            <div className="detail-notes" style={{marginTop: 8}}>
+              <span style={{fontFamily:'var(--font-mono)', fontSize:10, textTransform:'uppercase', letterSpacing:'0.06em', color:'var(--ink-faint)'}}>Technique · </span>
+              {rich.techniqueNotes}
+            </div>
+          )}
+        </div>
+      ) : (
+        // Fallback for figures without rich data
+        <div>
+          {fig && <div className="detail-rise">{fig.rise}</div>}
+          {fig && (
+            <table className="detail-table">
+              <thead><tr><th>Beat</th><th>Footwork</th><th>Sway</th><th>Alignment</th></tr></thead>
+              <tbody>
+                {fig.c.split(',').map((beat, i) => (
+                  <tr key={i}>
+                    <td>{beat}</td>
+                    <td>{(fig.fw.split(',')[i]) || '—'}</td>
+                    <td>{(fig.sw||'').split(',')[i] || '—'}</td>
+                    <td>{(fig.al||'').split(',')[i] || '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          {fig?.notes && <div className="detail-notes">{fig.notes}</div>}
+        </div>
+      )}
+
       {mtNotes && (
         <div className="detail-mt-notes">
           <span className="detail-mt-notes-label">MT Notes</span>
@@ -323,12 +413,17 @@ function PSView({ session }) {
         </div>
       )}
 
-      {/* ── LEVEL 3 — Full detail ── */}
       {level === 3 && activeItem && (
         <div className="ps-level3">
           <button className="ps-back-btn" onClick={goBack}>← Back</button>
           {activeItem.kind === 'figure' && (
-            <FigureDetailPanel figureName={activeItem.name} mtNotes={activeItem.mtNotes} />
+            <FigureDetailPanel
+              figureName={activeItem.name}
+              mtNotes={activeItem.mtNotes}
+              alignmentOverrides={activeItem.alignmentOverrides}
+              barsUsed={activeItem.barsUsed}
+              isEditable={false}
+            />
           )}
           {activeItem.kind === 'tec' && (
             <TecDetailPanel tecId={activeItem.tecId} mtNotes={activeItem.mtNotes} />
@@ -413,14 +508,18 @@ function LibraryPanel() {
 function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectItem }) {
   const [rootDragOver, setRootDragOver] = useState(false)
   const [childDragOver, setChildDragOver] = useState(null)
+  const [reorderDragId, setReorderDragId] = useState(null)
+  const [reorderOverId, setReorderOverId] = useState(null)
 
   const update = (changes) => onUpdate({ ...section, ...changes })
 
   const handleDropRoot = (e) => {
     e.preventDefault(); setRootDragOver(false)
     if (section.type !== 'main') return
+    // Ignore reorder drops — handled by item drop handlers
     try {
       const data = JSON.parse(e.dataTransfer.getData('application/json'))
+      if (data._reorder) return
       const newItem = { id: uid(), kind: data.kind, name: data.name, tecId: data.tecId || null, minutes: 5, mtNotes: '', children: [] }
       update({ items: [...(section.items || []), newItem] })
     } catch {}
@@ -430,9 +529,24 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
     e.preventDefault(); e.stopPropagation(); setChildDragOver(null)
     try {
       const data = JSON.parse(e.dataTransfer.getData('application/json'))
+      if (data._reorder) return
       const newChild = { id: uid(), kind: data.kind, name: data.name, tecId: data.tecId || null }
       update({ items: (section.items || []).map(it => it.id === parentId ? { ...it, children: [...(it.children || []), newChild] } : it) })
     } catch {}
+  }
+
+  const handleReorderDrop = (e, targetId) => {
+    e.preventDefault(); e.stopPropagation()
+    setReorderOverId(null); setReorderDragId(null)
+    if (!reorderDragId || reorderDragId === targetId) return
+    const items = section.items || []
+    const fromIdx = items.findIndex(i => i.id === reorderDragId)
+    const toIdx = items.findIndex(i => i.id === targetId)
+    if (fromIdx === -1 || toIdx === -1) return
+    const next = [...items]
+    const [moved] = next.splice(fromIdx, 1)
+    next.splice(toIdx, 0, moved)
+    update({ items: next })
   }
 
   const deleteItem = (id) => update({ items: (section.items || []).filter(it => it.id !== id) })
@@ -505,13 +619,22 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
             )}
             {(section.items || []).map((item) => {
               const isPrimary = section.mode === 'figures' ? item.kind === 'figure' : item.kind === 'tec'
+              const isDragging = reorderDragId === item.id
+              const isOver = reorderOverId === item.id
               return (
                 <div
                   key={item.id}
-                  className={`tree-item${selectedItemId === item.id ? ' selected' : ''}`}
+                  className={`tree-item${selectedItemId === item.id ? ' selected' : ''}${isDragging ? ' reorder-dragging' : ''}${isOver ? ' reorder-over' : ''}`}
+                  draggable
+                  onDragStart={e => { setReorderDragId(item.id); e.dataTransfer.setData('application/json', JSON.stringify({ _reorder: true })) }}
+                  onDragEnd={() => { setReorderDragId(null); setReorderOverId(null) }}
+                  onDragOver={e => { e.preventDefault(); e.stopPropagation(); setReorderOverId(item.id) }}
+                  onDragLeave={e => { e.stopPropagation(); setReorderOverId(null) }}
+                  onDrop={e => handleReorderDrop(e, item.id)}
                   onClick={() => onSelectItem(section.id, item, section.mode)}
                 >
                   <div className="tree-item-row">
+                    <span className="tree-drag-handle" title="Drag to reorder">⠿</span>
                     <span className={`tree-kind kind-${item.kind}`}>{item.kind === 'figure' ? '▶' : '◆'}</span>
                     <span className="tree-item-name">{item.name}</span>
                     {isPrimary && <span className="tree-primary-badge">MAIN</span>}
@@ -573,6 +696,29 @@ function ItemEditor({ item, onUpdate }) {
   const update = (c) => onUpdate({ ...item, ...c })
   const tec = item.kind === 'tec' ? getTec(item.tecId) : null
   const fig = item.kind === 'figure' ? getFigure(item.name) : null
+  const rich = item.kind === 'figure' ? FIGURE_RICH_DATA[item.name] : null
+  const barNums = rich ? [...new Set(rich.leader.map(s => s.bar))] : []
+  const barsUsed = item.barsUsed || barNums
+
+  const handleBarToggle = (bar) => {
+    const current = item.barsUsed || barNums
+    const next = current.includes(bar)
+      ? current.filter(b => b !== bar)
+      : [...current, bar].sort()
+    // Must keep at least one bar
+    if (next.length === 0) return
+    update({ barsUsed: next })
+  }
+
+  const handleAlignmentChange = (key, val) => {
+    const overrides = { ...(item.alignmentOverrides || {}) }
+    if (val === '') {
+      delete overrides[key]
+    } else {
+      overrides[key] = val
+    }
+    update({ alignmentOverrides: overrides })
+  }
 
   return (
     <div className="item-editor">
@@ -580,7 +726,7 @@ function ItemEditor({ item, onUpdate }) {
         <span className={`editor-kind-badge kind-${item.kind}`}>{item.kind === 'figure' ? '▶ Figure' : '◆ TEC'}</span>
         <div className="editor-item-name">{item.name}</div>
         {tec && <div className="editor-item-sub">{tec.category} · {tec.summary}</div>}
-        {fig && <div className="editor-item-sub">Waltz · {fig.c} · {fig.rise}</div>}
+        {fig && rich && <div className="editor-item-sub">Waltz · {rich.bars} bar{rich.bars > 1 ? 's' : ''}</div>}
       </div>
 
       <div className="form-group">
@@ -588,6 +734,25 @@ function ItemEditor({ item, onUpdate }) {
         <input type="number" min={1} max={120} className="form-input minutes-input"
           value={item.minutes || ''} onChange={e => update({ minutes: +e.target.value })} />
       </div>
+
+      {/* Bar selector — only for multi-bar figures */}
+      {barNums.length > 1 && (
+        <div className="form-group">
+          <label className="form-label">Bars to use</label>
+          <div className="bar-selector">
+            {barNums.map(b => (
+              <button
+                key={b}
+                className={`bar-select-btn${barsUsed.includes(b) ? ' active' : ''}`}
+                onClick={() => handleBarToggle(b)}
+              >
+                Bar {b}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <div className="form-group">
         <label className="form-label">MT Notes</label>
         <textarea className="form-textarea" value={item.mtNotes || ''}
@@ -596,7 +761,15 @@ function ItemEditor({ item, onUpdate }) {
       </div>
 
       <div className="editor-detail-section">
-        {fig && <FigureDetailPanel figureName={item.name} />}
+        {fig && (
+          <FigureDetailPanel
+            figureName={item.name}
+            alignmentOverrides={item.alignmentOverrides}
+            barsUsed={barsUsed}
+            onAlignmentChange={handleAlignmentChange}
+            isEditable={true}
+          />
+        )}
         {tec && <TecDetailPanel tecId={item.tecId} />}
       </div>
     </div>
