@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
 import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY, FIGURE_RICH_DATA } from './data.js'
 import { SEED_SESSIONS } from './seedData.js'
 import AuthGate from './components/AuthGate.jsx'
@@ -91,49 +91,88 @@ function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, b
     onAlignmentChange(key, val)
   }
 
-  const renderStepsTable = (steps, role) => (
-    <div className="rich-role-section">
-      <div className="rich-role-label">{role === 'leader' ? 'Leader' : 'Follower'}</div>
-      <div className="detail-table-wrap">
-        <table className="detail-table">
-          <thead>
-            <tr><th>Count</th><th>Foot</th><th>Alignment</th><th>Footwork</th><th>Sway</th><th>Rise</th></tr>
-          </thead>
-          <tbody>
-            {steps.map((s, i) => (
-              <tr key={i}>
-                <td style={{fontFamily:'var(--font-mono)', color:'var(--brand)', whiteSpace:'nowrap'}}>{s.count}</td>
-                <td>{s.foot}</td>
-                <td>
-                  {isEditable ? (
-                    <input
-                      className="alignment-edit-input"
-                      value={getAlignment(role, i)}
-                      onChange={e => handleAlignmentChange(role, i, e.target.value)}
-                      title="Edit alignment for this session"
-                    />
-                  ) : (
-                    <span style={alignmentOverrides && alignmentOverrides[`${role}-${activeBar}-${i}`] ? {color:'var(--brand-lt)', fontStyle:'italic'} : {}}>
-                      {getAlignment(role, i)}
-                    </span>
-                  )}
-                </td>
-                <td style={{fontFamily:'var(--font-mono)', fontSize:11}}>{s.footwork}</td>
-                <td style={{fontFamily:'var(--font-mono)', fontSize:11}}>{s.sway}</td>
-                <td style={{fontSize:11, color:'var(--ink-faint)'}}>{s.rise}</td>
+  const isEmpty = v => !v || v === '--' || v === '---'
+  // Optional columns: shown only if at least one step has non-empty content.
+  // Count and Foot are always shown.
+  const OPTIONAL_COLS = [
+    { key: 'alignment', label: 'Alignment' },
+    { key: 'footwork',  label: 'Footwork'  },
+    { key: 'turn',      label: 'Turn'      },
+    { key: 'sway',      label: 'Sway'      },
+    { key: 'cbm',       label: 'CBM'       },
+    { key: 'rise',      label: 'Rise'      },
+  ]
+
+  const renderStepsTable = (steps, role) => {
+    const visibleOptional = OPTIONAL_COLS.filter(col =>
+      steps.some(s => !isEmpty(s[col.key]))
+    )
+    const colCount = 2 + visibleOptional.length // Count + Foot + optionals
+    const noteColSpan = colCount - 1 // notes row spans from Foot column onward
+
+    const renderCell = (s, i, key) => {
+      const v = s[key]
+      if (key === 'alignment') {
+        if (isEditable) {
+          return (
+            <input
+              className="alignment-edit-input"
+              value={getAlignment(role, i)}
+              onChange={e => handleAlignmentChange(role, i, e.target.value)}
+              title="Edit alignment for this session"
+            />
+          )
+        }
+        const overridden = alignmentOverrides && alignmentOverrides[`${role}-${activeBar}-${i}`]
+        return (
+          <span style={overridden ? {color:'var(--brand-lt)', fontStyle:'italic'} : {}}>
+            {getAlignment(role, i)}
+          </span>
+        )
+      }
+      return isEmpty(v) ? '--' : v
+    }
+
+    return (
+      <div className="rich-role-section">
+        <div className="rich-role-label">{role === 'leader' ? 'Leader' : 'Follower'}</div>
+        <div className="detail-table-wrap">
+          <table className="detail-table">
+            <thead>
+              <tr>
+                <th>Count</th>
+                <th>Foot</th>
+                {visibleOptional.map(col => <th key={col.key}>{col.label}</th>)}
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      {steps.filter(s => s.notes).map((s, i) => s.notes ? (
-        <div key={i} className="rich-step-note">
-          <span className="rich-step-note-count">{s.count}</span>
-          <span>{s.notes}</span>
+            </thead>
+            <tbody>
+              {steps.map((s, i) => (
+                <Fragment key={i}>
+                  <tr className="step-row">
+                    <td className="col-count">{s.count}</td>
+                    <td className="col-foot">{isEmpty(s.foot) ? '--' : s.foot}</td>
+                    {visibleOptional.map(col => (
+                      <td key={col.key} className={`col-${col.key}`}>
+                        {renderCell(s, i, col.key)}
+                      </td>
+                    ))}
+                  </tr>
+                  {!isEmpty(s.notes) && (
+                    <tr className="step-note-row">
+                      <td className="col-count" />
+                      <td className="col-note" colSpan={noteColSpan}>
+                        <span className="step-note-bullet">•</span> {s.notes}
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              ))}
+            </tbody>
+          </table>
         </div>
-      ) : null)}
-    </div>
-  )
+      </div>
+    )
+  }
 
   return (
     <div className="detail-panel">
