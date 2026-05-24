@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
-import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY, FIGURE_RICH_DATA } from './data.js'
+import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY, FIGURE_RICH_DATA, LEVEL_ORDER } from './data.js'
 import { SEED_SESSIONS } from './seedData.js'
 import AuthGate from './components/AuthGate.jsx'
 import InviteManager from './components/InviteManager.jsx'
@@ -935,6 +935,15 @@ function MTBuilder({ session, onSessionChange }) {
                     onChange={e => update({ studentNames: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
                     placeholder="Names, comma-separated" />
                 </div>
+                <div className="session-meta-row">
+                  <span className="form-label" style={{ marginBottom: 0, flexShrink: 0 }}>Target</span>
+                  <select className="form-input" style={{ flex: 1 }}
+                    value={session.targetLevel || ''}
+                    onChange={e => update({ targetLevel: e.target.value || null })}>
+                    <option value="">Any level</option>
+                    {LEVEL_ORDER.map(l => <option key={l} value={l}>{l}</option>)}
+                  </select>
+                </div>
               </div>
               <div className="builder-sections-scroll">
                 {session.sections.map((sec) => (
@@ -1006,6 +1015,15 @@ function MTBuilder({ session, onSessionChange }) {
               value={(session.studentNames || []).join(', ')}
               onChange={e => update({ studentNames: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
               placeholder="Names, comma-separated" />
+          </div>
+          <div className="session-meta-row">
+            <span className="form-label" style={{ marginBottom: 0, flexShrink: 0 }}>Target</span>
+            <select className="form-input" style={{ flex: 1 }}
+              value={session.targetLevel || ''}
+              onChange={e => update({ targetLevel: e.target.value || null })}>
+              <option value="">Any level</option>
+              {LEVEL_ORDER.map(l => <option key={l} value={l}>{l}</option>)}
+            </select>
           </div>
         </div>
 
@@ -1190,7 +1208,7 @@ export default function App() {
   }, [user, isPS])
 
   const newSession = () => {
-    const s = { id: uid(), title: 'New Session', date: new Date().toISOString().slice(0,10), time: '', studentNames: [], sections: [] }
+    const s = { id: uid(), title: 'New Session', date: new Date().toISOString().slice(0,10), time: '', studentNames: [], targetLevel: null, sections: [] }
     persistSessions([s, ...sessions])
     setActiveId(s.id)
     setView('builder')
