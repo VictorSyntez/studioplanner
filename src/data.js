@@ -1,3 +1,28 @@
+// ─── SYLLABUS LEVELS & FIGURE QUERIES ────────────────
+export const LEVEL_ORDER = ['Beginners', 'Pre-Bronze', 'Bronze', 'Silver', 'Gold', 'Gold Star']
+
+export function levelIndex(level) {
+  return LEVEL_ORDER.indexOf(level)
+}
+
+// NOTE: FIGURES is still keyed by dance ({ 'Waltz': [...] }) in this pass, so we
+// flatten its values rather than calling FIGURES.filter directly (see §4.3).
+export function getFigures({ dance, maxLevel, category } = {}) {
+  return Object.values(FIGURES).flat().filter(f => {
+    if (dance && f.dance !== dance) return false
+    if (category && f.category !== category) return false
+    if (maxLevel && levelIndex(f.syllabusLevel) > levelIndex(maxLevel)) return false
+    return true
+  }).sort((a, b) =>
+    levelIndex(a.syllabusLevel) - levelIndex(b.syllabusLevel) ||
+    a.syllabusNumber - b.syllabusNumber
+  )
+}
+
+export function getFiguresForSession(session) {
+  return getFigures({ maxLevel: session.targetLevel || undefined })
+}
+
 // ─── DANCE COLORS ────────────────────────────────────
 export const DANCE_COLORS = {
   'Waltz': { bg: '#1D69A2', lt: '#c4ddf0' },
@@ -6,39 +31,39 @@ export const DANCE_COLORS = {
 // ─── WALTZ FIGURES ───────────────────────────────────
 export const FIGURES = {
   'Waltz': [
-    { n: 'Natural Turn',           c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,FW,BDC',           sw: 'S,R,R',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'CBM on 1. Body swings R. No sway on step 1.' },
-    { n: 'Reverse Turn',           c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDC,FC,BDW',           sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'CBM on 1. Heel turn step 2. Body swings L.' },
-    { n: 'Closed Change (RF)',     c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDC,FDC,FD',           sw: 'S,R,R',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'Slight CBM step 1. Side step slightly fwd on 2.' },
-    { n: 'Closed Change (LF)',     c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,FDW,FDW',          sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'Opposite of RF Closed Change.' },
-    { n: 'Natural Spin Turn',      c: '1-2-3,4-5-6', fw: 'HT,T,TH,TH,T,TH',   al: 'FDW',                  sw: 'S,R,R,S,L,L', rise: 'Rise e/o 1, pivot on 3, top 5&6',      notes: 'Pivot on step 3. Strong body swing.' },
-    { n: 'Double Reverse Spin',    c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDC',                  sw: 'S,L,L',       rise: 'Rise e/o 1, top 2, lower e/o 3',       notes: '3/8 turn L. Heel turn for lady.' },
-    { n: 'Whisk',                  c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,FDW,BDW',          sw: 'S,R,R',       rise: 'Rise e/o 1, top 2&3',                  notes: 'Step 3 crosses behind into Promenade Position.' },
-    { n: 'Chassé from PP',         c: '1-&-2',       fw: 'TH,T,TH',            al: 'LOD,LOD,LOD',          sw: 'S,S,S',       rise: 'Cont rise',                             notes: 'From PP. Side, close, side. Quick steps.' },
-    { n: 'Hesitation Change',      c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,FW,BDC',           sw: 'S,L,L',       rise: 'Rise e/o 1, lower e/o 3',               notes: 'Step 2: close foot without transferring weight.' },
-    { n: 'Outside Change',         c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,FDW,BDC',          sw: 'S,R,R',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',     notes: 'Leader steps outside partner on step 1. CBMP.' },
-    { n: 'Hover Corté',            c: '1-2-3',       fw: 'HT,T,T',             al: 'FDW,BDW,BDW',          sw: 'S,L,L',       rise: 'Rise to top 2&3, no lower on 3',        notes: 'Hover action — do not lower on step 3.' },
-    { n: 'Contra Check',           c: '1-2-3',       fw: 'HT,TH,T',            al: 'LOD,BLOD,BLOD',        sw: 'S,S,S',       rise: 'Lower into 1',                          notes: 'Strong forward check on 1. Body contra to feet.' },
-    { n: 'Back Lock',              c: '1-2-3',       fw: 'TH,T,TH',            al: 'BDW,BDW,BDW',          sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',     notes: 'Back, side-cross-behind, side. Lock action.' },
-    { n: 'Back Whisk',             c: '1-2-3',       fw: 'TH,T,TH',            al: 'BDC,BDC,BDW',          sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3',                  notes: 'Backs into Promenade. Step 3 behind.' },
-    { n: 'Closed Impetus',         c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,BDW,FDC',          sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',     notes: 'Heel turn on 2. Used to change direction.' },
-    { n: 'Fallaway Reverse & Slip Pivot', c: '1-2-3,4', fw: 'HT,T,TH,T',      al: 'FDC,BDW,FDW,Spot',     sw: 'S,L,L,S',    rise: 'Rise e/o 1, top 2&3, pivot 4',         notes: 'Ends in PP. Slip pivot is a strong rotation.' },
-    { n: 'Outside Spin',           c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW',                  sw: 'S,R,R',       rise: 'Rise e/o 1, top 2, lower e/o 3',       notes: 'Leader outside partner. Strong spin.' },
-    { n: 'Drag Hesitation',        c: '1-2-3',       fw: 'HT,T,T',             al: 'FDW,FW,FW',            sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3, no lower',        notes: 'Drag trailing foot. Held position on 3.' },
-    { n: 'Progressive Chassé to R', c: '1-&-2',      fw: 'HT,T,TH',            al: 'FDW,FDW,FDW',          sw: 'S,S,S',       rise: 'Cont rise',                             notes: 'To the right. Side, close, side. Quick.' },
-    { n: 'Turning Lock',           c: '1-2-3,4',     fw: 'HT,T,TH,T',          al: 'FDW',                  sw: 'S,R,R,S',     rise: 'Rise e/o 1, top 2&3, lower e/o 4',     notes: 'Lock on beat 4. Rotates to R.' },
-    { n: 'Basic Weave',            c: '1-2-3,1-2-3', fw: 'TH,HT,TH,TH,T,TH',  al: 'BDW,BDW,BLOD,BDC,BDC,PDW', sw: 'S,S,S,S,S,S', rise: 'Rise e/o 2, top 3&4, lower e/o 3/6',  notes: 'Backing figure. Step 2 fwd against LOD.' },
-    { n: 'Closed Telemark',        c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDC,BLOD,FDW',         sw: 'S,L,S',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'CBM on 1. Leads heel turn for lady.' },
-    { n: 'Closed Wing',            c: '1-2-3',       fw: 'H,WF,WF',            al: 'FDC,FDC,FDC',          sw: 'S,S,S',       rise: 'No rise',                              notes: 'OP on step 1. Lady closes to man.' },
-    { n: 'Fallaway Whisk',         c: '1-2-3',       fw: 'TH,TH,TH',           al: 'BLOD,BDC,FDC',         sw: 'S,S,R',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'Ends in Fallaway PP.' },
-    { n: 'Left Whisk',             c: '1-2-3',       fw: 'H,TH,T',             al: 'FDW,FDW,FDW',          sw: 'S,S,S',       rise: 'No rise',                              notes: 'Man steps RF across in PP. Ends in PP.' },
-    { n: 'Open Impetus and Cross Hesitation', c: '1-2-3,1-2-3', fw: 'TH,HT,TH,HT,TT,TH', al: 'BLOD,FDC,FDC,FDC,FDC,FDC', sw: 'S,L,S,S,S,S', rise: 'Rise e/o 2, top 3&5, lower e/o 6', notes: 'Open Impetus bar 1, Cross Hesitation bar 2.' },
-    { n: 'Open Impetus and Wing',  c: '1-2-3,1-2-3', fw: 'TH,HT,TH,H,WF,WF',  al: 'BLOD,FDC,FDC,FDC,FDC,FDC', sw: 'S,L,S,S,S,S', rise: 'Rise e/o 2, top 3&5, lower e/o 6', notes: 'Open Impetus bar 1, Wing bar 2.' },
-    { n: 'Open Telemark and Cross Hesitation', c: '1-2-3,1-2-3', fw: 'HT,T,TH,HT,TT,TH', al: 'FDC,BDW,FDW,FDW,FDW,FDW', sw: 'S,L,S,S,S,S', rise: 'Rise e/o 1, top 2-5, lower e/o 6', notes: 'Open Telemark bar 1, Cross Hesitation bar 2.' },
-    { n: 'Open Telemark and Wing', c: '1-2-3,1-2-3', fw: 'HT,T,TH,H,WF,WF',   al: 'FDC,BDW,FDW,LOD,FDC,FDC', sw: 'S,L,S,S,S,S', rise: 'Rise e/o 1, top 2-5, lower e/o 6', notes: 'Open Telemark bar 1, Wing bar 2.' },
-    { n: 'Reverse Corté',          c: '1-2-3',       fw: 'TH,H,TH',            al: 'BLOD,BDC,BDC',         sw: 'S,S,R',       rise: 'Rise e/o 1, top 2, lower e/o 3',      notes: 'Back, close without weight, hold.' },
-    { n: 'Reverse Pivot',          c: '&',           fw: 'THT',                 al: 'DC',                   sw: 'S',           rise: 'Up',                                   notes: 'Single pivot on &. Foot turned in.' },
-    { n: 'Turning Lock to R',      c: '1-&-2-3',     fw: 'TH,T,T,TH',          al: 'BDC,BDC,FDW,FDW',     sw: 'S,S,S,S',     rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'Turning lock rotating to right.' },
-    { n: 'Weave from PP',          c: '1-2-3,1-2-3,1', fw: 'HT,HT,TH,TH,T,TH,H', al: 'FDC,FC,BLOD,BDC,BDC,PDW,FDW', sw: 'S,S,S,S,S,S,S', rise: 'Rise e/o 1, top 2&5, lower e/o 3/6', notes: 'From PP. 3 bars. Ends OP.' },
+    { n: 'Natural Turn',           c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,FW,BDC',           sw: 'S,R,R',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'CBM on 1. Body swings R. No sway on step 1.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 2, syllabusBody: 'NDCC' },
+    { n: 'Reverse Turn',           c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDC,FC,BDW',           sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'CBM on 1. Heel turn step 2. Body swings L.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 3, syllabusBody: 'NDCC' },
+    { n: 'Closed Change (RF)',     c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDC,FDC,FD',           sw: 'S,R,R',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'Slight CBM step 1. Side step slightly fwd on 2.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 1, syllabusBody: 'NDCC' },
+    { n: 'Closed Change (LF)',     c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,FDW,FDW',          sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'Opposite of RF Closed Change.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 1, syllabusBody: 'NDCC' },
+    { n: 'Natural Spin Turn',      c: '1-2-3,4-5-6', fw: 'HT,T,TH,TH,T,TH',   al: 'FDW',                  sw: 'S,R,R,S,L,L', rise: 'Rise e/o 1, pivot on 3, top 5&6',      notes: 'Pivot on step 3. Strong body swing.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 4, syllabusBody: 'NDCC' },
+    { n: 'Double Reverse Spin',    c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDC',                  sw: 'S,L,L',       rise: 'Rise e/o 1, top 2, lower e/o 3',       notes: '3/8 turn L. Heel turn for lady.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 13, syllabusBody: 'NDCC' },
+    { n: 'Whisk',                  c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,FDW,BDW',          sw: 'S,R,R',       rise: 'Rise e/o 1, top 2&3',                  notes: 'Step 3 crosses behind into Promenade Position.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 5, syllabusBody: 'NDCC' },
+    { n: 'Chassé from PP',         c: '1-&-2',       fw: 'TH,T,TH',            al: 'LOD,LOD,LOD',          sw: 'S,S,S',       rise: 'Cont rise',                             notes: 'From PP. Side, close, side. Quick steps.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 6, syllabusBody: 'NDCC' },
+    { n: 'Hesitation Change',      c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,FW,BDC',           sw: 'S,L,L',       rise: 'Rise e/o 1, lower e/o 3',               notes: 'Step 2: close foot without transferring weight.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 8, syllabusBody: 'NDCC' },
+    { n: 'Outside Change',         c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,FDW,BDC',          sw: 'S,R,R',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',     notes: 'Leader steps outside partner on step 1. CBMP.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 9, syllabusBody: 'NDCC' },
+    { n: 'Hover Corté',            c: '1-2-3',       fw: 'HT,T,T',             al: 'FDW,BDW,BDW',          sw: 'S,L,L',       rise: 'Rise to top 2&3, no lower on 3',        notes: 'Hover action — do not lower on step 3.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 32, syllabusBody: 'NDCC' },
+    { n: 'Contra Check',           c: '1-2-3',       fw: 'HT,TH,T',            al: 'LOD,BLOD,BLOD',        sw: 'S,S,S',       rise: 'Lower into 1',                          notes: 'Strong forward check on 1. Body contra to feet.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 27, syllabusBody: 'NDCC' },
+    { n: 'Back Lock',              c: '1-2-3',       fw: 'TH,T,TH',            al: 'BDW,BDW,BDW',          sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',     notes: 'Back, side-cross-behind, side. Lock action.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 15, syllabusBody: 'NDCC' },
+    { n: 'Back Whisk',             c: '1-2-3',       fw: 'TH,T,TH',            al: 'BDC,BDC,BDW',          sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3',                  notes: 'Backs into Promenade. Step 3 behind.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 11, syllabusBody: 'NDCC' },
+    { n: 'Closed Impetus',         c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW,BDW,FDC',          sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',     notes: 'Heel turn on 2. Used to change direction.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 7, syllabusBody: 'NDCC' },
+    { n: 'Fallaway Reverse & Slip Pivot', c: '1-2-3,4', fw: 'HT,T,TH,T',      al: 'FDC,BDW,FDW,Spot',     sw: 'S,L,L,S',    rise: 'Rise e/o 1, top 2&3, pivot 4',         notes: 'Ends in PP. Slip pivot is a strong rotation.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 30, syllabusBody: 'NDCC' },
+    { n: 'Outside Spin',           c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDW',                  sw: 'S,R,R',       rise: 'Rise e/o 1, top 2, lower e/o 3',       notes: 'Leader outside partner. Strong spin.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 24, syllabusBody: 'NDCC' },
+    { n: 'Drag Hesitation',        c: '1-2-3',       fw: 'HT,T,T',             al: 'FDW,FW,FW',            sw: 'S,L,L',       rise: 'Rise e/o 1, top 2&3, no lower',        notes: 'Drag trailing foot. Held position on 3.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 21, syllabusBody: 'NDCC' },
+    { n: 'Progressive Chassé to R', c: '1-&-2',      fw: 'HT,T,TH',            al: 'FDW,FDW,FDW',          sw: 'S,S,S',       rise: 'Cont rise',                             notes: 'To the right. Side, close, side. Quick.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 16, syllabusBody: 'NDCC' },
+    { n: 'Turning Lock',           c: '1-2-3,4',     fw: 'HT,T,TH,T',          al: 'FDW',                  sw: 'S,R,R,S',     rise: 'Rise e/o 1, top 2&3, lower e/o 4',     notes: 'Lock on beat 4. Rotates to R.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 25, syllabusBody: 'NDCC' },
+    { n: 'Basic Weave',            c: '1-2-3,1-2-3', fw: 'TH,HT,TH,TH,T,TH',  al: 'BDW,BDW,BLOD,BDC,BDC,PDW', sw: 'S,S,S,S,S,S', rise: 'Rise e/o 2, top 3&4, lower e/o 3/6',  notes: 'Backing figure. Step 2 fwd against LOD.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 12, syllabusBody: 'NDCC' },
+    { n: 'Closed Telemark',        c: '1-2-3',       fw: 'HT,T,TH',            al: 'FDC,BLOD,FDW',         sw: 'S,L,S',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'CBM on 1. Leads heel turn for lady.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 18, syllabusBody: 'NDCC' },
+    { n: 'Closed Wing',            c: '1-2-3',       fw: 'H,WF,WF',            al: 'FDC,FDC,FDC',          sw: 'S,S,S',       rise: 'No rise',                              notes: 'OP on step 1. Lady closes to man.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 28, syllabusBody: 'NDCC' },
+    { n: 'Fallaway Whisk',         c: '1-2-3',       fw: 'TH,TH,TH',           al: 'BLOD,BDC,FDC',         sw: 'S,S,R',       rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'Ends in Fallaway PP.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 31, syllabusBody: 'NDCC' },
+    { n: 'Left Whisk',             c: '1-2-3',       fw: 'H,TH,T',             al: 'FDW,FDW,FDW',          sw: 'S,S,S',       rise: 'No rise',                              notes: 'Man steps RF across in PP. Ends in PP.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 26, syllabusBody: 'NDCC' },
+    { n: 'Open Impetus and Cross Hesitation', c: '1-2-3,1-2-3', fw: 'TH,HT,TH,HT,TT,TH', al: 'BLOD,FDC,FDC,FDC,FDC,FDC', sw: 'S,L,S,S,S,S', rise: 'Rise e/o 2, top 3&5, lower e/o 6', notes: 'Open Impetus bar 1, Cross Hesitation bar 2.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 22, syllabusBody: 'NDCC' },
+    { n: 'Open Impetus and Wing',  c: '1-2-3,1-2-3', fw: 'TH,HT,TH,H,WF,WF',  al: 'BLOD,FDC,FDC,FDC,FDC,FDC', sw: 'S,L,S,S,S,S', rise: 'Rise e/o 2, top 3&5, lower e/o 6', notes: 'Open Impetus bar 1, Wing bar 2.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 23, syllabusBody: 'NDCC' },
+    { n: 'Open Telemark and Cross Hesitation', c: '1-2-3,1-2-3', fw: 'HT,T,TH,HT,TT,TH', al: 'FDC,BDW,FDW,FDW,FDW,FDW', sw: 'S,L,S,S,S,S', rise: 'Rise e/o 1, top 2-5, lower e/o 6', notes: 'Open Telemark bar 1, Cross Hesitation bar 2.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 19, syllabusBody: 'NDCC' },
+    { n: 'Open Telemark and Wing', c: '1-2-3,1-2-3', fw: 'HT,T,TH,H,WF,WF',   al: 'FDC,BDW,FDW,LOD,FDC,FDC', sw: 'S,L,S,S,S,S', rise: 'Rise e/o 1, top 2-5, lower e/o 6', notes: 'Open Telemark bar 1, Wing bar 2.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 20, syllabusBody: 'NDCC' },
+    { n: 'Reverse Corté',          c: '1-2-3',       fw: 'TH,H,TH',            al: 'BLOD,BDC,BDC',         sw: 'S,S,R',       rise: 'Rise e/o 1, top 2, lower e/o 3',      notes: 'Back, close without weight, hold.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 10, syllabusBody: 'NDCC' },
+    { n: 'Reverse Pivot',          c: '&',           fw: 'THT',                 al: 'DC',                   sw: 'S',           rise: 'Up',                                   notes: 'Single pivot on &. Foot turned in.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 14, syllabusBody: 'NDCC' },
+    { n: 'Turning Lock to R',      c: '1-&-2-3',     fw: 'TH,T,T,TH',          al: 'BDC,BDC,FDW,FDW',     sw: 'S,S,S,S',     rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'Turning lock rotating to right.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 29, syllabusBody: 'NDCC' },
+    { n: 'Weave from PP',          c: '1-2-3,1-2-3,1', fw: 'HT,HT,TH,TH,T,TH,H', al: 'FDC,FC,BLOD,BDC,BDC,PDW,FDW', sw: 'S,S,S,S,S,S,S', rise: 'Rise e/o 1, top 2&5, lower e/o 3/6', notes: 'From PP. 3 bars. Ends OP.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC' },
   ],
 }
 
@@ -193,6 +218,7 @@ export const GLOSSARY = {
 export const FIGURE_RICH_DATA = {
   'Back Lock': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 15, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF back in CBMP', alignment: 'Backing DW', footwork: 'TH', turn: '--', sway: '--', rise: 'CBM | start to rise e/o 1, NFR', notes: '' },
       { bar: 1, count: '2 (1/2 beat)', foot: 'RF BW', alignment: 'Backing DW', footwork: 'T', turn: '--', sway: '--', rise: 'Continue to rise on 2 and 3', notes: '' },
@@ -209,6 +235,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Back Whisk': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 11, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF Back in CBMP', alignment: 'Backing DC against LOD', footwork: 'TH', turn: '--', sway: 'Sway(S)', rise: 'slight CBM | start to rise e/o 1, NFR Lower through R leg and hip to R using CBMP, allowing lady to step OP.', notes: '' },
       { bar: 1, count: '2', foot: 'RF diag back', alignment: 'Backing DC against LOD', footwork: 'T', turn: '--', sway: 'Sway(L)', rise: '- | continue to rise on 2 Rotate upper body to right, leaving hip in same place. Isolate the upper body.', notes: 'Point the foot in the finishing direction' },
@@ -223,6 +250,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Basic Weave': {
     bars: 2,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 12, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF back', alignment: 'BDW', footwork: 'TH', turn: '--', sway: '-', rise: 'CBM | --', notes: '' },
       { bar: 1, count: '2', foot: 'LF fwd', alignment: 'BDW', footwork: 'HT', turn: 'starts to turn L', sway: '-', rise: 'CBM | rise e/o 2', notes: '' },
@@ -243,6 +271,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Chassé from PP': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 6, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF fwd, across in PP and CBMP', alignment: 'FDW, moving LOD', footwork: 'HT', turn: '--', sway: '--', rise: 'slight CBM | Start to rise at end of 1', notes: '' },
       { bar: 1, count: '2', foot: 'LF to side and slightly fwd', alignment: 'FDW', footwork: 'T', turn: '--', sway: '--', rise: 'Cont to rise on 2 and 3 Upper body/frame rotate to left to close the lady. Close hips.3', notes: '' },
@@ -259,6 +288,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Closed Change (LF)': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 1, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF forward', alignment: 'FDW', footwork: 'HT', turn: 'Sway(S)', sway: 'Slight CBM', rise: 'Start to rise at end of 1', notes: '' },
       { bar: 1, count: '2', foot: 'RF side, slightly fwd', alignment: 'FDW', footwork: 'T', turn: 'Sway(L)', sway: 'Cont to rise on 2 and 3', rise: '', notes: '' },
@@ -273,6 +303,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Closed Change (RF)': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 1, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF forward', alignment: 'FDC', footwork: 'HT', turn: 'Sway(S)', sway: 'Slight CBM', rise: 'Start to rise at end of 1', notes: 'When stepping forward, body naturally lowers to its lowest. When moving the other foot, body starts to rise.' },
       { bar: 1, count: '2', foot: 'LF side, slightly fwd', alignment: 'FDC', footwork: 'T', turn: 'Sway(R)', sway: 'Cont to rise on 2 and 3', rise: '', notes: 'LF should keep contact with floor all the time Start by point LF to side, then push off RF. At the end of 2, you are on slightly bent knees to allow for more rise and balance.' },
@@ -287,6 +318,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Closed Impetus': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 7, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF back', alignment: 'Backing LOD', footwork: 'TH', turn: 'Start to turn R', sway: 'Sway(S)', rise: 'CBM | -- This step can be OP, depending on previous figure.', notes: '' },
       { bar: 1, count: '2', foot: 'RF closes to LF (Heel Turn)', alignment: 'Facing DC', footwork: 'HT', turn: '3/8 between 1-2', sway: 'Sway(L)', rise: 'Rise e/o 2 Man\'s heel turn.', notes: 'Legs should straighten as RF comes in, creating late rise. Late rise is required to allow lady to pass the man.Too early a rise will stop her. See note below. Need to drag heel on the closed impetus. Feet should not come together until weight is committed to RF. That’s going to provide the signal for the lady to commit her weight on her left foot. Turn continues on the ball of the foot through the 3rd step' },
@@ -301,6 +333,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Closed Telemark': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 18, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF fwd', alignment: 'FDC', footwork: 'HT', turn: 'start to turn L', sway: 'Sway(S)', rise: 'CBM | rise e/o 1 Use CBM and rise a bit early to lead heel turn.', notes: '' },
       { bar: 1, count: '2', foot: 'RF to side', alignment: 'almost BLOD', footwork: 'T', turn: 'slightly less than 3/8 between 1-2', sway: 'Sway(L)', rise: 'Up Get strong rotation through the feet, do not come off RF too early, which will allow Lady to turn. A little hover helps to keep Lady in front of Man.', notes: '' },
@@ -315,6 +348,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Closed Wing': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 28, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF fwd in CBMP, OP', alignment: 'FDC', footwork: 'H', turn: '-', sway: '-', rise: '- | -', notes: '' },
       { bar: 1, count: '2', foot: 'LF starts to close to RF', alignment: 'FDC', footwork: 'WF, pressure on IE of T of LF', turn: 'Slight body turn to L on 2 and 3', sway: '-', rise: '- | Slight rise on 2 and 3 NFR', notes: '' },
@@ -329,6 +363,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Contra Check': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 27, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF fwd in CBMP', alignment: 'DW, pointing almost LOD', footwork: 'H or Ball Flat', turn: 'Body turn to L', sway: '--', rise: 'CBM | Down with knees slightly flexed If preferred, could be LF fwd with foot flat.', notes: '' },
       { bar: 1, count: '2', foot: 'Transfer weight back to RF', alignment: 'DW', footwork: 'T', turn: 'Body turn to R', sway: '--', rise: 'Rise e/o 2', notes: '' },
@@ -343,6 +378,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Double Reverse Spin': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 13, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF fwd', alignment: 'Facing LOD', footwork: 'HT', turn: 'Starts to turn L', sway: 'Sway(S)', rise: 'CBM | Start to rise at end of 1 Important to do CBM. Give Lady the indication of left by lowering.', notes: 'Early rise is to lead Lady into closing her feet into a heel turn.' },
       { bar: 1, count: '2', foot: 'RF to side', alignment: 'BDW', footwork: 'T', turn: '3/8 btwn 1-2', sway: 'Sway(S)', rise: 'Up Wait until the lady\'s feet are together before taking this step.', notes: 'When taking step, point RF forward with straight knees, then step onto the straight knee and turn to L. Track your RF, don\'t do ronde. It will help with balance. Think about getting hips around, rather than shoulders or feet. Same for second step on any turn where Man is going forward. Lengthen spine, don\'t bend forward.' },
@@ -358,6 +394,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Drag Hesitation': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 21, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF fwd', alignment: 'Facing LOD', footwork: 'HT', turn: 'start to turn L', sway: '-', rise: 'CBM | - Sending lady to inside of turn.', notes: '' },
       { bar: 1, count: '2', foot: 'RF to side', alignment: 'Backing Wall', footwork: 'T', turn: '1/4 btwn 1-2', sway: '-', rise: '- | rise e/o 2 Left side is axis point. Staying down at the beginning, rise takes place when R leg passes the body.', notes: 'Could add Sway, then level off at 3.' },
@@ -372,6 +409,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Fallaway Reverse & Slip Pivot': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 30, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF fwd', alignment: 'FDC', footwork: 'HT', turn: 'Start to turn L', sway: '-', rise: 'CBM | Rise e/o 1', notes: '' },
       { bar: 1, count: '2', foot: 'RF back in Fallaway, R side leading', alignment: 'BDW, Moving down LOD', footwork: 'T', turn: '1/4 between step 1-2', sway: '--', rise: 'Up', notes: '' },
@@ -388,6 +426,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Fallaway Whisk': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 31, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF back', alignment: 'Backing LOD', footwork: 'TH', turn: 'Start to turn R', sway: 'Sway(S)', rise: 'CBM | Start to rise e/o 1, NFR', notes: '' },
       { bar: 1, count: '2', foot: 'RF to side and slightly back', alignment: 'Pointing DC', footwork: 'TH', turn: '3/8 btwn 1-2, body turns less', sway: 'Sway(S)', rise: '- | Continue to rise on 2 Using "T" footwork is also correct.', notes: '' },
@@ -402,6 +441,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Hesitation Change': {
     bars: 2,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 8, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF fwd', alignment: 'Facing DW', footwork: 'HT', turn: 'Start to turn R', sway: 'Sway(S)', rise: 'CBM | Start to rise e/o 1', notes: '' },
       { bar: 1, count: '2', foot: 'LF to side', alignment: 'Backing DC', footwork: 'T', turn: '1/4 between 1-2', sway: 'Sway(R)', rise: 'Continue to rise on 2 and 3', notes: '' },
@@ -422,6 +462,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Hover Corté': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 32, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF back', alignment: 'BLOD', footwork: 'TH', turn: 'Start to turn L', sway: 'Sway(S)', rise: 'CBM | Start to rise e/o 1, NFR', notes: '' },
       { bar: 1, count: '2', foot: 'LF to side and slightly fwd', alignment: 'Pointing DW', footwork: 'T', turn: '3/8 btwn 1-2, body turns less; Continue to turn body on step 2.', sway: 'Sway(R)', rise: 'Continue to rise on 2', notes: '' },
@@ -436,6 +477,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Left Whisk': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 26, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF fwd and across in PP and CBMP', alignment: 'FDW, moving along LOD', footwork: 'H', turn: '-', sway: '-', rise: '-', notes: '' },
       { bar: 1, count: '2', foot: 'LF to side and slightly fwd', alignment: 'Pointing DW', footwork: 'TH', turn: 'Body start to turn L', sway: '-', rise: '- | -', notes: '' },
@@ -450,6 +492,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Natural Spin Turn': {
     bars: 2,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 4, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF fwd', alignment: 'FDW', footwork: 'HT', turn: 'Start to turn R', sway: 'Sway(S)', rise: 'CBM | Start to rise at end of 1 Need to "lower and drive forward".', notes: 'Don\'t lean to the right, when getting into the turn; struggle against that and put left side more forward. Spine tilted left, hip to Lady, so it won\'t gap. Do not turn feet when rotating/twisting the frame (CBM). Think about stepping forward through step 2, don\'t start turning too soon. Start turning as you come out of your first step, not as you go into it. In Natural turning figures, Man achieves the turn more through position.' },
       { bar: 1, count: '2', foot: 'LF to side', alignment: 'BDC', footwork: 'T', turn: '1/4 between 1-2', sway: 'Sway(R)', rise: 'Cont to rise on 2 and 3 Rise on toes, it will help to bring the feet together on 3rd step.', notes: 'Have continuous swing of the leg through the step.' },
@@ -470,6 +513,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Natural Turn': {
     bars: 2,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 2, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF fwd', alignment: 'FDW', footwork: 'HT', turn: 'Starts to turn R', sway: 'Sway(S)', rise: 'CBM | Start to rise at end of 1 Man starts to turn frame (CBM) as step begins, "opening the door" to allow him to pass the follower. (i.e. rotate frame 1/8 to the right.) 1/8 is about the max that is comfortable.', notes: 'Man drives, big step, to get through partner.' },
       { bar: 1, count: '2', foot: 'LF to side', alignment: 'DC', footwork: 'T', turn: '1/4 between 1 and 2', sway: 'Sway(R)', rise: 'Cont to rise on 2 and 3 Though written as side step, Man actually starts by pointing LF straight forward, then as you push off RF, turning the body as well, it ends up being a side step. Continue turning on next step to end BLOD.', notes: '' },
@@ -490,6 +534,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Open Impetus and Cross Hesitation': {
     bars: 2,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 22, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF back', alignment: 'BLOD', footwork: 'TH', turn: 'start to turn R', sway: 'Sway(S)', rise: 'CBM | - This is "Open Impetus".', notes: 'Main the sway from previous Natural Turn and transition into PP. See Open Impetus to Wing Notes' },
       { bar: 1, count: '2', foot: 'RF closes to LF (Heel Turn)', alignment: 'FDC', footwork: 'HT', turn: '3/8 btwn 1-2', sway: 'Sway(L)', rise: 'rise e/o 2', notes: '' },
@@ -510,6 +555,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Open Impetus and Wing': {
     bars: 2,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 23, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF back', alignment: 'BLOD', footwork: 'TH', turn: 'start to turn R', sway: 'Sway(S)', cbm: 'CBM', rise: '--', notes: 'Do not dissolve the sway from previous Natural Turn. Maintain the sway through the heel turn (longer than you normally would.)' },
       { bar: 1, count: '2', foot: 'RF closes to LF (Heel Turn)', alignment: 'FDC', footwork: 'HT', turn: '3/8 btwn 1-2', sway: 'Sway(L)', cbm: '--', rise: 'rise e/o 2', notes: 'Rise through the diagonal of the body. Rotate the body pass the base and stretch the right side. Head is forward, sending body diagonally back, changing angle. Do not lift foot. Keep foot very flat during heel turn, ball of feet just free enough to swivel.' },
@@ -530,6 +576,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Open Telemark and Cross Hesitation': {
     bars: 2,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 19, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF fwd', alignment: 'DC', footwork: 'HT', turn: 'start to turn L', sway: 'Sway(S)', rise: 'CBM | rise e/o 1 This is "Open Telemark"', notes: '' },
       { bar: 1, count: '2', foot: 'RF to side', alignment: 'BDW', footwork: 'T', turn: '1/4 btwn 1-2', sway: 'Sway(L)', rise: 'up Has strong swivel action in the base area.', notes: '' },
@@ -550,6 +597,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Open Telemark and Wing': {
     bars: 2,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 20, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF fwd', alignment: 'DC', footwork: 'HT', turn: 'start to turn L', sway: 'Sway(S)', rise: 'CBM | rise e/o 1 This is "Open Telemark".', notes: 'Left side is axis point, stretch diagonal. See " Closed Telemark " for leading Lady to do heel turn.' },
       { bar: 1, count: '2', foot: 'RF to side', alignment: 'BDW', footwork: 'T', turn: '1/4 btwn 1-2', sway: 'Sway(L)', rise: 'up', notes: '' },
@@ -570,6 +618,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Outside Change': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 9, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF back', alignment: 'BDC', footwork: 'TH', turn: '--', sway: 'Start to rise e/o 1 Use range of motion.', rise: '', notes: '' },
       { bar: 1, count: '2', foot: 'RF back', alignment: 'BDC', footwork: 'T', turn: 'starts to turn L', sway: '-', rise: 'CBM | continue to rise on 2 Watch lady\'s position, do not turn hips without lady. Keep lady in front to the R side.', notes: '' },
@@ -584,6 +633,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Outside Spin': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 24, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF back in CBMP (small step)', alignment: 'DC against LOD, toe turned in', footwork: 'THT', turn: '3/8 to R on 1 (pivot)', sway: '--', rise: 'CBM | - This is outside partner. Leave RF back in CBMP, to give lady room to get by.', notes: 'Start by turning right from the knees up. Upper body is twisting right much faster than feet. This is a very small step. Then just swivel the left foot. Rotation is much more in the base area (waist down to feet), leaving right side through diagonal. Do not over turn upper body. Keep head on your own left.' },
       { bar: 1, count: '2', foot: 'RF fwd in CBMP, OP', alignment: 'Facing against LOD', footwork: 'HT', turn: 'continue to turn', sway: '--', rise: 'CBM | rise e/o 2 Maintain CBMP stepping forward on RF, step behind the lady (step outside the lady, otherwise the leg is going to block lady and knock her off balance), give lady a chance to come around and close before stepping back and pivoting on the LF. This feels like a rock turn to the man.', notes: 'Really drive deep. Sharper rise to make Lady close her feet.' },
@@ -598,6 +648,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Progressive Chassé to R': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 16, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF fwd', alignment: 'Facing DC', footwork: 'HT', turn: 'Start to turn L', sway: '-', rise: 'CBM | start to rise e/o 1', notes: '' },
       { bar: 1, count: '2', foot: 'RF to side', alignment: 'Backing Wall', footwork: 'T', turn: '1/8 between 1 and 2', sway: '--', rise: 'continue to rise on 2 and 3 Track foot, no rondes.', notes: '' },
@@ -614,6 +665,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Reverse Corté': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 10, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF back', alignment: 'BLOD', footwork: 'TH', turn: 'start to turn L', sway: 'Sway(S)', rise: 'CBM | -- Do not step side ways, straight back, use CBM', notes: '' },
       { bar: 1, count: '2', foot: 'LF closes to RF without weight', alignment: 'BDC against LOD (or BDC on new LOD)', footwork: 'H(LF) then toes both feet', turn: '3/8 between 1-2', sway: 'Sway(R)', rise: 'rise on 2 Track foot. Drag LF in with heel. No rondes. Keep feet flat, keep knees flexed. Do not pop up both toes too early. Stay down till lady gets on her RF, then rise.', notes: '' },
@@ -628,6 +680,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Reverse Pivot': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 14, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '&', foot: 'RF back in CBMP (small step), LF held in CBMP', alignment: 'DC toe turned in', footwork: 'THT', turn: 'up to 1/2 to L (Pivot)', sway: '--', rise: 'CBM | -- RF should track under the body. Body begins turning at the beginning of this step.', notes: 'Small step. Straight back. Keep head weight on your left. Watch Lady\'s position, don\'t pivot too much too early, which will peel off from lady.' },
     ],
@@ -638,6 +691,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Reverse Turn': {
     bars: 2,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 3, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF fwd', alignment: 'FDC', footwork: 'HT', turn: 'Stars to turn L', sway: 'Sway(S)', rise: 'CBM | Start to rise at end of 1 In Reverse turning figures, Man should maintain the frame orientation. The turn is achieved through movement (than position).', notes: '' },
       { bar: 1, count: '2', foot: 'RF to side', alignment: 'BDW', footwork: 'T', turn: '1/4 btwn 1-2', sway: 'Sway(L)', rise: 'Cont to rise on 2 and 3 Track and brush feet. No ronde.', notes: '' },
@@ -658,6 +712,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Turning Lock': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 25, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1 (1/2 beat)', foot: 'RF back, R side leading', alignment: 'BDC', footwork: 'T', turn: '--', sway: 'Sway(L)', rise: 'start to rise e/o 1 Thigh and hips are 1/8 to R. (not turning feet)', notes: 'Angle through diagonal, head stretch leftward. Poised diagonally forward. Do not pull back.' },
       { bar: 1, count: '& (1/2 beat)', foot: 'LF crosses in front of RF', alignment: 'BDC', footwork: 'T', turn: '--', sway: 'Sway(L)', rise: 'rise on 2 and 3', notes: '' },
@@ -674,6 +729,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Turning Lock to R': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 29, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF back R side leading', alignment: 'Down LOD', footwork: 'T', turn: '-', sway: 'Sway (L or R)', rise: '- | Start to rise e/o 1', notes: 'Sway: LLSS or RRSS Count &: LF crosses loosely in front of RF | Facing center | T | 1/4 to R btwn 1-2 | Sway (L or R) | - | Continue to rise 2 and 3' },
       { bar: 1, count: '2', foot: 'RF to side and slightly fwd, small step, btwn partner\'s feet', alignment: 'FDC', footwork: 'T', turn: '1/8 btwn 2-3', sway: 'Sway(S)', rise: '- | -', notes: '' },
@@ -688,6 +744,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Weave from PP': {
     bars: 3,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'RF fwd and across in PP and CBMP', alignment: 'Pointing DC, body facing LOD, traveling DC', footwork: 'HT', turn: '1/8 btwn preceding step and 1', sway: '-', rise: 'Start to rise at end of 1', notes: '3 different points in PP: base: waist area down to feet, rotate slightly to left belly button: low center, slightly different angle. sternum: high center 3 different points enables you to stay parallel to Lady. Do not turn hips and feet too much to the Lady (makes position awkward). For this left turning figure, keep the differential consistent while moving in a curve, maintain upper body toward to Lady. Don\'t let upper body rotate further than feet, which will pull the lady to your left.' },
       { bar: 1, count: '2', foot: 'LF fwd', alignment: 'Facing center', footwork: 'T', turn: 'cont to turn L', sway: '-', rise: 'CBM | Cont to rise on 2 and 3', notes: '' },
@@ -711,6 +768,7 @@ export const FIGURE_RICH_DATA = {
   },
   'Whisk': {
     bars: 1,
+    dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 5, syllabusBody: 'NDCC',
     leader: [
       { bar: 1, count: '1', foot: 'LF fwd', alignment: 'FDW', footwork: 'HT', turn: 'Nil', sway: 'Sway(S)', rise: 'slight | Start to rise at end of 1', notes: '' },
       { bar: 1, count: '2', foot: 'RF to side and slightly fwd', alignment: 'FDW', footwork: 'T', turn: 'Nil', sway: 'Sway(L)', rise: 'Cont to rise on 2 and 3 Position of this step is consistent with step 2 of LF Closed Change .', notes: 'This is not a side step (which will be abrupt change of direction), it\'s a forward step (smoother) When pushing LF, allow RF to slide on the floor, so the weight doesn\'t pass the foot (otherwise, momentum carries weight to right which causes balance issue). Rotate upper body to right to lead lady to whisk' },
