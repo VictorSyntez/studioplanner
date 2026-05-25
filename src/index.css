@@ -626,7 +626,6 @@ h3 { font-size: 1.1rem; }
   width: auto;
   max-width: none;
   white-space: normal;
-  overflow: visible;
   overflow-wrap: anywhere;
   word-break: break-word;
 }
