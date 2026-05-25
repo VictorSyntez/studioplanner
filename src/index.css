@@ -400,7 +400,12 @@ h3 { font-size: 1.1rem; }
 .detail-mt-notes div { font-size: 13px; color: var(--light2); line-height: 1.6; }
 
 /* ─── MT BUILDER ─────────────────────────────────────── */
-.mt-builder { flex: 1; display: flex; overflow: hidden; }
+/* Desktop 3-panel grid: Library 240 | Builder 360 (1.5× Library) | Item Editor (rest, dominant) */
+.mt-builder {
+  flex: 1; display: grid;
+  grid-template-columns: 240px 360px minmax(0, 1fr);
+  overflow: hidden;
+}
 
 /* Library panel */
 .library-panel {
@@ -556,7 +561,7 @@ h3 { font-size: 1.1rem; }
 .tree-kind { font-size: 12px; flex-shrink: 0; }
 .tree-kind-sm { font-size: 10px; }
 .tree-item-name {
-  flex: 1; font-size: 15px; line-height: 19px; color: var(--light2); min-width: 0;
+  flex: 1; font-size: 16px; line-height: 19px; color: var(--light2); min-width: 0;
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
 }
 .tree-primary-badge {
@@ -621,8 +626,18 @@ h3 { font-size: 1.1rem; }
   width: auto;
   max-width: none;
   white-space: normal;
+  overflow: visible;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+/* Item 4: when the last count's Rise is a short value (no dot), shrink-wrap the
+   table so the Rise column stays compact instead of stretching the full width.
+   (The .rise-compact class is set in App.jsx based on the last count's content.) */
+.item-editor .detail-table.rise-compact { width: max-content; max-width: 100%; }
+.item-editor .detail-table.rise-compact th:last-child,
+.item-editor .detail-table.rise-compact .step-row td:last-child {
+  width: 22ch;
+  max-width: 22ch;
 }
 .item-editor .detail-table .alignment-edit-input {
   width: 100%;
@@ -857,6 +872,7 @@ h3 { font-size: 1.1rem; }
 
 /* ─── MT BUILDER MOBILE LAYOUT ──────────────────────── */
 .mt-builder-mobile {
+  display: flex;
   flex-direction: column;
 }
 .mt-builder-mobile .mobile-builder-content {

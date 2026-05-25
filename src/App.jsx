@@ -110,6 +110,12 @@ function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, b
     const colCount = 2 + visibleOptional.length // Count + Foot + optionals
     const noteColSpan = colCount - 1 // notes row spans from Foot column onward
 
+    // Item 4: keep the Rise column compact unless the last count's Rise value is a
+    // full sentence (contains a dot) — only then does it take the remaining width.
+    const riseColVisible = visibleOptional.some(col => col.key === 'rise')
+    const lastRise = steps.length ? steps[steps.length - 1].rise : ''
+    const riseCompact = riseColVisible && !String(lastRise || '').includes('.')
+
     const renderCell = (s, i, key) => {
       const v = s[key]
       if (key === 'alignment') {
@@ -137,7 +143,7 @@ function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, b
       <div className="rich-role-section">
         <div className="rich-role-label">{role === 'leader' ? 'Leader' : 'Follower'}</div>
         <div className="detail-table-wrap">
-          <table className="detail-table">
+          <table className={`detail-table${riseCompact ? ' rise-compact' : ''}`}>
             <thead>
               <tr>
                 <th>Count</th>
