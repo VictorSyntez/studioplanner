@@ -155,27 +155,40 @@ function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, b
               </tr>
             </thead>
             <tbody>
-              {steps.map((s, i) => (
-                <Fragment key={i}>
-                  <tr className="step-row">
-                    <td className="col-count">{s.count}</td>
-                    <td className="col-foot">{isEmpty(s.foot) ? '--' : s.foot}</td>
-                    {visibleOptional.map(col => (
-                      <td key={col.key} className={`col-${col.key}`}>
-                        {renderCell(s, i, col.key)}
-                      </td>
-                    ))}
-                  </tr>
-                  {!isEmpty(s.notes) && (
-                    <tr className="step-note-row">
-                      <td className="col-note" colSpan={noteColSpan}>
-                        <span className="step-note-bullet">•</span> {s.notes}
-                      </td>
-                      {riseColVisible && <td className="col-rise" />}
+              {steps.map((s, i) => {
+                // TODO(data-audit): Rise values in FIGURE_RICH_DATA use "CBM | rise text"
+                // combined strings. CBM prefix belongs in notes. Fix at source during Phase 2
+                // data audit (OP-9).
+                const pipeIdx = typeof s.rise === 'string' ? s.rise.indexOf('|') : -1
+                const risePrefix = pipeIdx >= 0 ? s.rise.slice(0, pipeIdx).trim() : ''
+                const riseDisplay = pipeIdx >= 0 ? s.rise.slice(pipeIdx + 1).trim() : s.rise
+                // Only a real prefix (e.g. CBM) moves to notes; dash placeholders are dropped.
+                const prefixToNote = !isEmpty(risePrefix) && risePrefix !== '-' ? risePrefix : ''
+                const notesDisplay = [prefixToNote, s.notes].filter(v => !isEmpty(v)).join(' ')
+                return (
+                  <Fragment key={i}>
+                    <tr className="step-row">
+                      <td className="col-count">{s.count}</td>
+                      <td className="col-foot">{isEmpty(s.foot) ? '--' : s.foot}</td>
+                      {visibleOptional.map(col => (
+                        <td key={col.key} className={`col-${col.key}`}>
+                          {col.key === 'rise'
+                            ? (isEmpty(riseDisplay) ? '--' : riseDisplay)
+                            : renderCell(s, i, col.key)}
+                        </td>
+                      ))}
                     </tr>
-                  )}
-                </Fragment>
-              ))}
+                    {!isEmpty(notesDisplay) && (
+                      <tr className="step-note-row">
+                        <td className="col-note" colSpan={noteColSpan}>
+                          <span className="step-note-bullet">•</span> {notesDisplay}
+                        </td>
+                        {riseColVisible && <td className="col-rise" />}
+                      </tr>
+                    )}
+                  </Fragment>
+                )
+              })}
             </tbody>
           </table>
         </div>
