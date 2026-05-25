@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
-import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY, FIGURE_RICH_DATA, LEVEL_ORDER } from './data.js'
+import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY, FIGURE_RICH_DATA, LEVEL_ORDER, getFiguresForSession } from './data.js'
 import { SEED_SESSIONS } from './seedData.js'
 import AuthGate from './components/AuthGate.jsx'
 import InviteManager from './components/InviteManager.jsx'
@@ -466,14 +466,43 @@ function PSView({ session }) {
 // ─────────────────────────────────────────────────────
 // ─── MT BUILDER ──────────────────────────────────────
 // ─────────────────────────────────────────────────────
-function LibraryPanel({ isMobile, onAddItem }) {
+// Group a flat, pre-sorted figure list into category → dance → tier.
+// Input is assumed sorted by syllabus level then number (see getFigures), so
+// tiers land in level order and figures within a tier in syllabusNumber order.
+function groupFigures(figures) {
+  const cats = []
+  const catMap = new Map()
+  const danceMap = new Map()
+  const tierMap = new Map()
+  for (const f of figures) {
+    const catKey = f.category || 'Other'
+    let cat = catMap.get(catKey)
+    if (!cat) { cat = { category: catKey, dances: [] }; catMap.set(catKey, cat); cats.push(cat) }
+
+    const danceKey = `${catKey}|${f.dance || 'Other'}`
+    let dance = danceMap.get(danceKey)
+    if (!dance) { dance = { dance: f.dance || 'Other', tiers: [] }; danceMap.set(danceKey, dance); cat.dances.push(dance) }
+
+    const tierKey = `${danceKey}|${f.syllabusLevel || 'Other'}`
+    let tier = tierMap.get(tierKey)
+    if (!tier) { tier = { tier: f.syllabusLevel || 'Other', figures: [] }; tierMap.set(tierKey, tier); dance.tiers.push(tier) }
+
+    tier.figures.push(f)
+  }
+  return cats
+}
+
+function LibraryPanel({ isMobile, onAddItem, session }) {
   const [search, setSearch] = useState('')
   const [tab, setTab] = useState('figures')
 
-  const figures = WALTZ_FIGURES.filter(f => f.n.toLowerCase().includes(search.toLowerCase()))
+  const q = search.toLowerCase()
+  // Apply the session's targetLevel filter (Bronze → Beginners..Bronze), then search.
+  const figures = getFiguresForSession(session || {}).filter(f => f.n.toLowerCase().includes(q))
+  const figureGroups = groupFigures(figures)
   const tecs = TEC_LIBRARY.filter(t =>
-    t.name.toLowerCase().includes(search.toLowerCase()) ||
-    t.category.toLowerCase().includes(search.toLowerCase())
+    t.name.toLowerCase().includes(q) ||
+    t.category.toLowerCase().includes(q)
   )
 
   const dragStart = (e, data) => {
@@ -488,7 +517,7 @@ function LibraryPanel({ isMobile, onAddItem }) {
   return (
     <div className="library-panel">
       <div className="library-header">
-        <div className="library-title">Library · Waltz</div>
+        <div className="library-title">Library</div>
         <input className="library-search" placeholder="Search…" value={search} onChange={e => setSearch(e.target.value)} />
         <div className="library-tabs">
           <button className={`library-tab${tab === 'figures' ? ' active' : ''}`} onClick={() => setTab('figures')}>
@@ -500,22 +529,37 @@ function LibraryPanel({ isMobile, onAddItem }) {
         </div>
       </div>
       <div className="library-list">
-        {tab === 'figures' && figures.map(fig => (
-          <div
-            key={fig.n}
-            className="library-item library-figure"
-            draggable={!isMobile}
-            onDragStart={e => dragStart(e, { kind: 'figure', name: fig.n })}
-            title={fig.notes}
-          >
-            <span className="lib-icon">▶</span>
-            <div className="lib-text">
-              <div className="lib-name">{fig.n}</div>
-              <div className="lib-sub">{fig.c} · {fig.fw}</div>
-            </div>
-            {isMobile && (
-              <button className="mobile-add-btn" onClick={() => handleTapAdd({ kind: 'figure', name: fig.n })}>+</button>
-            )}
+        {tab === 'figures' && figureGroups.map(cat => (
+          <div key={cat.category} className="lib-group-category">
+            <div className="lib-cat-header">{cat.category}</div>
+            {cat.dances.map(d => (
+              <div key={d.dance} className="lib-group-dance">
+                <div className="lib-dance-header">{d.dance}</div>
+                {d.tiers.map(t => (
+                  <div key={t.tier} className="lib-group-tier">
+                    <div className="lib-tier-header">{t.tier}</div>
+                    {t.figures.map(fig => (
+                      <div
+                        key={fig.n}
+                        className="library-item library-figure"
+                        draggable={!isMobile}
+                        onDragStart={e => dragStart(e, { kind: 'figure', name: fig.n })}
+                        title={fig.notes}
+                      >
+                        <span className="lib-icon">▶</span>
+                        <div className="lib-text">
+                          <div className="lib-name">{fig.n}</div>
+                          <div className="lib-sub">{fig.c} · {fig.fw}</div>
+                        </div>
+                        {isMobile && (
+                          <button className="mobile-add-btn" onClick={() => handleTapAdd({ kind: 'figure', name: fig.n })}>+</button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         ))}
         {tab === 'tec' && tecs.map(tec => (
@@ -914,7 +958,7 @@ function MTBuilder({ session, onSessionChange }) {
       <div className="mt-builder mt-builder-mobile">
         <div className="mobile-builder-content">
           {mobilePanel === 'library' && (
-            <LibraryPanel isMobile={true} onAddItem={handleMobileAddItem} />
+            <LibraryPanel isMobile={true} onAddItem={handleMobileAddItem} session={session} />
           )}
           {mobilePanel === 'builder' && (
             <div className="builder-tree-panel">
@@ -996,7 +1040,7 @@ function MTBuilder({ session, onSessionChange }) {
 
   return (
     <div className="mt-builder">
-      <LibraryPanel isMobile={false} />
+      <LibraryPanel isMobile={false} session={session} />
 
       <div className="builder-tree-panel">
         <div className="builder-tree-topbar">
