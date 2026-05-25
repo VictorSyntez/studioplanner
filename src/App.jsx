@@ -330,6 +330,9 @@ function PSView({ session }) {
               {(session.studentNames || []).length > 0 && (
                 <span>👥 {session.studentNames.join(', ')}</span>
               )}
+              {session.targetLevel && (
+                <span className="ps-target-badge">Target: {session.targetLevel}</span>
+              )}
             </div>
           </div>
           <div className="ps-hint">Tap a section to open ›</div>

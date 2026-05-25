@@ -223,7 +223,11 @@ h3 { font-size: 1.1rem; }
 /* Level 1 */
 .ps-session-header { margin-bottom: 20px; }
 .ps-session-header h2 { color: var(--light); margin-bottom: 6px; }
-.ps-session-meta { display: flex; gap: 14px; font-size: 12px; color: var(--ink-faint); flex-wrap: wrap; }
+.ps-session-meta { display: flex; gap: 14px; font-size: 12px; color: var(--ink-faint); flex-wrap: wrap; align-items: center; }
+.ps-target-badge {
+  background: var(--brand); color: #fff; font-weight: 600;
+  padding: 2px 8px; border-radius: 10px; font-size: 11px;
+}
 
 .ps-section-cards { display: flex; flex-direction: column; gap: 8px; }
 .ps-section-card {
