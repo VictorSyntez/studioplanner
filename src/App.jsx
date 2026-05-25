@@ -108,13 +108,16 @@ function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, b
       steps.some(s => !isEmpty(s[col.key]))
     )
     const colCount = 2 + visibleOptional.length // Count + Foot + optionals
-    const noteColSpan = colCount - 1 // notes row spans from Foot column onward
 
     // Item 4: keep the Rise column compact unless the last count's Rise value is a
     // full sentence (contains a dot) — only then does it take the remaining width.
     const riseColVisible = visibleOptional.some(col => col.key === 'rise')
     const lastRise = steps.length ? steps[steps.length - 1].rise : ''
     const riseCompact = riseColVisible && !String(lastRise || '').includes('.')
+
+    // Notes span every column except the trailing Rise column, so coaching text
+    // never flows under the Rise cell — Rise stays its own separate last column.
+    const noteColSpan = riseColVisible ? colCount - 1 : colCount
 
     const renderCell = (s, i, key) => {
       const v = s[key]
@@ -165,10 +168,10 @@ function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, b
                   </tr>
                   {!isEmpty(s.notes) && (
                     <tr className="step-note-row">
-                      <td className="col-count" />
                       <td className="col-note" colSpan={noteColSpan}>
                         <span className="step-note-bullet">•</span> {s.notes}
                       </td>
+                      {riseColVisible && <td className="col-rise" />}
                     </tr>
                   )}
                 </Fragment>

@@ -643,7 +643,7 @@ h3 { font-size: 1.1rem; }
   min-width: 0;
 }
 
-/* Notes row — spans from Foot column onward, wraps freely */
+/* Notes row — spans every column except the trailing Rise column, wraps freely */
 .detail-table .step-note-row td.col-note {
   white-space: normal;
   overflow: visible;
@@ -657,7 +657,8 @@ h3 { font-size: 1.1rem; }
   font-family: var(--font-sans);
   border-bottom: 1px solid var(--border-lt);
 }
-.detail-table .step-note-row td.col-count {
+/* Trailing empty Rise cell keeps the note row's bottom border continuous */
+.detail-table .step-note-row td.col-rise {
   padding: 0;
   border-bottom: 1px solid var(--border-lt);
 }
