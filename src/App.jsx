@@ -1,6 +1,15 @@
-import { useState, useEffect, useCallback } from 'react'
-import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY, FIGURE_RICH_DATA } from './data.js'
+import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
+import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY, FIGURE_RICH_DATA, LEVEL_ORDER, getFiguresForSession } from './data.js'
 import { SEED_SESSIONS } from './seedData.js'
+import AuthGate from './components/AuthGate.jsx'
+import InviteManager from './components/InviteManager.jsx'
+import {
+  onAuthStateChanged,
+  signOut,
+  getUserDoc,
+  saveSessions,
+  subscribeSessions,
+} from './firebase.js'
 
 // ─── HELPERS ──────────────────────────────────────────
 let _uid = Date.now()
@@ -41,32 +50,16 @@ function sectionIcon(type) {
   return '•'
 }
 
-// ─── ROLE GATE ────────────────────────────────────────
-function RoleGate({ onSelect }) {
-  return (
-    <div className="role-gate">
-      <div className="role-gate-card">
-        <div className="role-gate-logo">StudioPlanner</div>
-        <p className="role-gate-sub">Ballroom lesson planning &amp; delivery</p>
-        <div className="role-options">
-          <button className="role-option" onClick={() => onSelect('mt')}>
-            <span className="role-icon">🎓</span>
-            <div>
-              <div className="role-title">Main Teacher</div>
-              <div className="role-desc">Build sessions, drag figures &amp; TECs, manage content</div>
-            </div>
-          </button>
-          <button className="role-option role-option-ps" onClick={() => onSelect('ps')}>
-            <span className="role-icon">📋</span>
-            <div>
-              <div className="role-title">Practice Supervisor</div>
-              <div className="role-desc">View session plan, drill into sections &amp; figures</div>
-            </div>
-          </button>
-        </div>
-      </div>
-    </div>
-  )
+// ─── MOBILE DETECTION ─────────────────────────────────
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(() => window.matchMedia('(max-width: 768px)').matches)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)')
+    const handler = (e) => setIsMobile(e.matches)
+    mq.addEventListener('change', handler)
+    return () => mq.removeEventListener('change', handler)
+  }, [])
+  return isMobile
 }
 
 // ─── FIGURE DETAIL PANEL ─────────────────────────────
@@ -81,11 +74,9 @@ function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, b
     </div>
   )
 
-  // If we have rich data, use it; otherwise fall back to old simple display
   const bars = rich ? rich.bars : 1
   const barNums = rich ? [...new Set(rich.leader.map(s => s.bar))] : [1]
 
-  // Filter steps to active bar
   const leaderSteps = rich ? rich.leader.filter(s => s.bar === activeBar) : []
   const followerSteps = rich ? rich.follower.filter(s => s.bar === activeBar) : []
 
@@ -100,47 +91,110 @@ function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, b
     onAlignmentChange(key, val)
   }
 
-  const renderStepsTable = (steps, role) => (
-    <div className="rich-role-section">
-      <div className="rich-role-label">{role === 'leader' ? 'Leader' : 'Follower'}</div>
-      <table className="detail-table">
-        <thead>
-          <tr><th>Count</th><th>Foot</th><th>Alignment</th><th>Footwork</th><th>Sway</th><th>Rise</th></tr>
-        </thead>
-        <tbody>
-          {steps.map((s, i) => (
-            <tr key={i}>
-              <td style={{fontFamily:'var(--font-mono)', color:'var(--gold)', whiteSpace:'nowrap'}}>{s.count}</td>
-              <td>{s.foot}</td>
-              <td>
-                {isEditable ? (
-                  <input
-                    className="alignment-edit-input"
-                    value={getAlignment(role, i)}
-                    onChange={e => handleAlignmentChange(role, i, e.target.value)}
-                    title="Edit alignment for this session"
-                  />
-                ) : (
-                  <span style={alignmentOverrides && alignmentOverrides[`${role}-${activeBar}-${i}`] ? {color:'var(--gold-lt)', fontStyle:'italic'} : {}}>
-                    {getAlignment(role, i)}
-                  </span>
-                )}
-              </td>
-              <td style={{fontFamily:'var(--font-mono)', fontSize:11}}>{s.footwork}</td>
-              <td style={{fontFamily:'var(--font-mono)', fontSize:11}}>{s.sway}</td>
-              <td style={{fontSize:11, color:'var(--ink-faint)'}}>{s.rise}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {steps.filter(s => s.notes).map((s, i) => s.notes ? (
-        <div key={i} className="rich-step-note">
-          <span className="rich-step-note-count">{s.count}</span>
-          <span>{s.notes}</span>
+  const isEmpty = v => !v || v === '--' || v === '---'
+  // Optional columns: shown only if at least one step has non-empty content.
+  // Count and Foot are always shown.
+  const OPTIONAL_COLS = [
+    { key: 'alignment', label: 'Alignment' },
+    { key: 'footwork',  label: 'Footwork'  },
+    { key: 'turn',      label: 'Turn'      },
+    { key: 'sway',      label: 'Sway'      },
+    { key: 'cbm',       label: 'CBM'       },
+    { key: 'rise',      label: 'Rise'      },
+  ]
+
+  const renderStepsTable = (steps, role) => {
+    const visibleOptional = OPTIONAL_COLS.filter(col =>
+      steps.some(s => !isEmpty(s[col.key]))
+    )
+    const colCount = 2 + visibleOptional.length // Count + Foot + optionals
+
+    // Item 4: keep the Rise column compact unless the last count's Rise value is a
+    // full sentence (contains a dot) — only then does it take the remaining width.
+    const riseColVisible = visibleOptional.some(col => col.key === 'rise')
+    const lastRise = steps.length ? steps[steps.length - 1].rise : ''
+    const riseCompact = riseColVisible && !String(lastRise || '').includes('.')
+
+    // Notes span every column except the trailing Rise column, so coaching text
+    // never flows under the Rise cell — Rise stays its own separate last column.
+    const noteColSpan = riseColVisible ? colCount - 1 : colCount
+
+    const renderCell = (s, i, key) => {
+      const v = s[key]
+      if (key === 'alignment') {
+        if (isEditable) {
+          return (
+            <input
+              className="alignment-edit-input"
+              value={getAlignment(role, i)}
+              onChange={e => handleAlignmentChange(role, i, e.target.value)}
+              title="Edit alignment for this session"
+            />
+          )
+        }
+        const overridden = alignmentOverrides && alignmentOverrides[`${role}-${activeBar}-${i}`]
+        return (
+          <span style={overridden ? {color:'var(--brand-lt)', fontStyle:'italic'} : {}}>
+            {getAlignment(role, i)}
+          </span>
+        )
+      }
+      return isEmpty(v) ? '--' : v
+    }
+
+    return (
+      <div className="rich-role-section">
+        <div className="rich-role-label">{role === 'leader' ? 'Leader' : 'Follower'}</div>
+        <div className="detail-table-wrap">
+          <table className={`detail-table${riseCompact ? ' rise-compact' : ''}`}>
+            <thead>
+              <tr>
+                <th>Count</th>
+                <th>Foot</th>
+                {visibleOptional.map(col => <th key={col.key}>{col.label}</th>)}
+              </tr>
+            </thead>
+            <tbody>
+              {steps.map((s, i) => {
+                // TODO(data-audit): Rise values in FIGURE_RICH_DATA use "CBM | rise text"
+                // combined strings. CBM prefix belongs in notes. Fix at source during Phase 2
+                // data audit (OP-9).
+                const pipeIdx = typeof s.rise === 'string' ? s.rise.indexOf('|') : -1
+                const risePrefix = pipeIdx >= 0 ? s.rise.slice(0, pipeIdx).trim() : ''
+                const riseDisplay = pipeIdx >= 0 ? s.rise.slice(pipeIdx + 1).trim() : s.rise
+                // Only a real prefix (e.g. CBM) moves to notes; dash placeholders are dropped.
+                const prefixToNote = !isEmpty(risePrefix) && risePrefix !== '-' ? risePrefix : ''
+                const notesDisplay = [prefixToNote, s.notes].filter(v => !isEmpty(v)).join(' ')
+                return (
+                  <Fragment key={i}>
+                    <tr className="step-row">
+                      <td className="col-count">{s.count}</td>
+                      <td className="col-foot">{isEmpty(s.foot) ? '--' : s.foot}</td>
+                      {visibleOptional.map(col => (
+                        <td key={col.key} className={`col-${col.key}`}>
+                          {col.key === 'rise'
+                            ? (isEmpty(riseDisplay) ? '--' : riseDisplay)
+                            : renderCell(s, i, col.key)}
+                        </td>
+                      ))}
+                    </tr>
+                    {!isEmpty(notesDisplay) && (
+                      <tr className="step-note-row">
+                        <td className="col-note" colSpan={noteColSpan}>
+                          <span className="step-note-bullet">•</span> {notesDisplay}
+                        </td>
+                        {riseColVisible && <td className="col-rise" />}
+                      </tr>
+                    )}
+                  </Fragment>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
-      ) : null)}
-    </div>
-  )
+      </div>
+    )
+  }
 
   return (
     <div className="detail-panel">
@@ -152,7 +206,6 @@ function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, b
         {onClose && <button className="icon-btn" onClick={onClose}>✕</button>}
       </div>
 
-      {/* Bar selector — only shown if figure has multiple bars */}
       {barNums.length > 1 && (
         <div className="bar-tabs">
           {barNums.map(b => (
@@ -179,23 +232,24 @@ function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, b
           )}
         </div>
       ) : (
-        // Fallback for figures without rich data
         <div>
           {fig && <div className="detail-rise">{fig.rise}</div>}
           {fig && (
-            <table className="detail-table">
-              <thead><tr><th>Beat</th><th>Footwork</th><th>Sway</th><th>Alignment</th></tr></thead>
-              <tbody>
-                {fig.c.split(',').map((beat, i) => (
-                  <tr key={i}>
-                    <td>{beat}</td>
-                    <td>{(fig.fw.split(',')[i]) || '—'}</td>
-                    <td>{(fig.sw||'').split(',')[i] || '—'}</td>
-                    <td>{(fig.al||'').split(',')[i] || '—'}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <div className="detail-table-wrap">
+              <table className="detail-table">
+                <thead><tr><th>Beat</th><th>Footwork</th><th>Sway</th><th>Alignment</th></tr></thead>
+                <tbody>
+                  {fig.c.split(',').map((beat, i) => (
+                    <tr key={i}>
+                      <td>{beat}</td>
+                      <td>{(fig.fw.split(',')[i]) || '—'}</td>
+                      <td>{(fig.sw||'').split(',')[i] || '—'}</td>
+                      <td>{(fig.al||'').split(',')[i] || '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
           {fig?.notes && <div className="detail-notes">{fig.notes}</div>}
         </div>
@@ -265,7 +319,6 @@ function PSView({ session }) {
 
   return (
     <div className="ps-view">
-      {/* Breadcrumb */}
       <div className="ps-breadcrumb">
         <span
           className={`ps-crumb${level === 1 ? ' active' : ' clickable'}`}
@@ -288,7 +341,6 @@ function PSView({ session }) {
         )}
       </div>
 
-      {/* ── LEVEL 1 — Session overview ── */}
       {level === 1 && (
         <div className="ps-level1">
           <div className="ps-session-header">
@@ -299,6 +351,9 @@ function PSView({ session }) {
               <span>⏱ {totalSessionMinutes(session.sections)} min total</span>
               {(session.studentNames || []).length > 0 && (
                 <span>👥 {session.studentNames.join(', ')}</span>
+              )}
+              {session.targetLevel && (
+                <span className="ps-target-badge">Target: {session.targetLevel}</span>
               )}
             </div>
           </div>
@@ -334,7 +389,6 @@ function PSView({ session }) {
         </div>
       )}
 
-      {/* ── LEVEL 2 — Section detail ── */}
       {level === 2 && activeSection && (
         <div className="ps-level2">
           <button className="ps-back-btn" onClick={goBack}>← Back</button>
@@ -437,14 +491,43 @@ function PSView({ session }) {
 // ─────────────────────────────────────────────────────
 // ─── MT BUILDER ──────────────────────────────────────
 // ─────────────────────────────────────────────────────
-function LibraryPanel() {
+// Group a flat, pre-sorted figure list into category → dance → tier.
+// Input is assumed sorted by syllabus level then number (see getFigures), so
+// tiers land in level order and figures within a tier in syllabusNumber order.
+function groupFigures(figures) {
+  const cats = []
+  const catMap = new Map()
+  const danceMap = new Map()
+  const tierMap = new Map()
+  for (const f of figures) {
+    const catKey = f.category || 'Other'
+    let cat = catMap.get(catKey)
+    if (!cat) { cat = { category: catKey, dances: [] }; catMap.set(catKey, cat); cats.push(cat) }
+
+    const danceKey = `${catKey}|${f.dance || 'Other'}`
+    let dance = danceMap.get(danceKey)
+    if (!dance) { dance = { dance: f.dance || 'Other', tiers: [] }; danceMap.set(danceKey, dance); cat.dances.push(dance) }
+
+    const tierKey = `${danceKey}|${f.syllabusLevel || 'Other'}`
+    let tier = tierMap.get(tierKey)
+    if (!tier) { tier = { tier: f.syllabusLevel || 'Other', figures: [] }; tierMap.set(tierKey, tier); dance.tiers.push(tier) }
+
+    tier.figures.push(f)
+  }
+  return cats
+}
+
+function LibraryPanel({ isMobile, onAddItem, session }) {
   const [search, setSearch] = useState('')
   const [tab, setTab] = useState('figures')
 
-  const figures = WALTZ_FIGURES.filter(f => f.n.toLowerCase().includes(search.toLowerCase()))
+  const q = search.toLowerCase()
+  // Apply the session's targetLevel filter (Bronze → Beginners..Bronze), then search.
+  const figures = getFiguresForSession(session || {}).filter(f => f.n.toLowerCase().includes(q))
+  const figureGroups = groupFigures(figures)
   const tecs = TEC_LIBRARY.filter(t =>
-    t.name.toLowerCase().includes(search.toLowerCase()) ||
-    t.category.toLowerCase().includes(search.toLowerCase())
+    t.name.toLowerCase().includes(q) ||
+    t.category.toLowerCase().includes(q)
   )
 
   const dragStart = (e, data) => {
@@ -452,10 +535,14 @@ function LibraryPanel() {
     e.dataTransfer.effectAllowed = 'copy'
   }
 
+  const handleTapAdd = (data) => {
+    if (onAddItem) onAddItem(data)
+  }
+
   return (
     <div className="library-panel">
       <div className="library-header">
-        <div className="library-title">Library · Waltz</div>
+        <div className="library-title">Library</div>
         <input className="library-search" placeholder="Search…" value={search} onChange={e => setSearch(e.target.value)} />
         <div className="library-tabs">
           <button className={`library-tab${tab === 'figures' ? ' active' : ''}`} onClick={() => setTab('figures')}>
@@ -467,26 +554,44 @@ function LibraryPanel() {
         </div>
       </div>
       <div className="library-list">
-        {tab === 'figures' && figures.map(fig => (
-          <div
-            key={fig.n}
-            className="library-item library-figure"
-            draggable
-            onDragStart={e => dragStart(e, { kind: 'figure', name: fig.n })}
-            title={fig.notes}
-          >
-            <span className="lib-icon">▶</span>
-            <div className="lib-text">
-              <div className="lib-name">{fig.n}</div>
-              <div className="lib-sub">{fig.c} · {fig.fw}</div>
-            </div>
+        {tab === 'figures' && figureGroups.map(cat => (
+          <div key={cat.category} className="lib-group-category">
+            <div className="lib-cat-header">{cat.category}</div>
+            {cat.dances.map(d => (
+              <div key={d.dance} className="lib-group-dance">
+                <div className="lib-dance-header">{d.dance}</div>
+                {d.tiers.map(t => (
+                  <div key={t.tier} className="lib-group-tier">
+                    <div className="lib-tier-header">{t.tier}</div>
+                    {t.figures.map(fig => (
+                      <div
+                        key={fig.n}
+                        className="library-item library-figure"
+                        draggable={!isMobile}
+                        onDragStart={e => dragStart(e, { kind: 'figure', name: fig.n })}
+                        title={fig.notes}
+                      >
+                        <span className="lib-icon">▶</span>
+                        <div className="lib-text">
+                          <div className="lib-name">{fig.n}</div>
+                          <div className="lib-sub">{fig.c} · {fig.fw}</div>
+                        </div>
+                        {isMobile && (
+                          <button className="mobile-add-btn" onClick={() => handleTapAdd({ kind: 'figure', name: fig.n })}>+</button>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            ))}
           </div>
         ))}
         {tab === 'tec' && tecs.map(tec => (
           <div
             key={tec.id}
             className="library-item library-tec"
-            draggable
+            draggable={!isMobile}
             onDragStart={e => dragStart(e, { kind: 'tec', tecId: tec.id, name: tec.name })}
             title={tec.summary}
           >
@@ -495,6 +600,9 @@ function LibraryPanel() {
               <div className="lib-name">{tec.name}</div>
               <div className="lib-sub">{tec.category}</div>
             </div>
+            {isMobile && (
+              <button className="mobile-add-btn" onClick={() => handleTapAdd({ kind: 'tec', tecId: tec.id, name: tec.name })}>+</button>
+            )}
           </div>
         ))}
         {((tab === 'figures' && figures.length === 0) || (tab === 'tec' && tecs.length === 0)) && (
@@ -505,7 +613,7 @@ function LibraryPanel() {
   )
 }
 
-function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectItem }) {
+function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectItem, isMobile, isActive, onMakeActive }) {
   const [rootDragOver, setRootDragOver] = useState(false)
   const [childDragOver, setChildDragOver] = useState(null)
   const [reorderDragId, setReorderDragId] = useState(null)
@@ -516,7 +624,6 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
   const handleDropRoot = (e) => {
     e.preventDefault(); setRootDragOver(false)
     if (section.type !== 'main') return
-    // Ignore reorder drops — handled by item drop handlers
     try {
       const data = JSON.parse(e.dataTransfer.getData('application/json'))
       if (data._reorder) return
@@ -549,6 +656,18 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
     update({ items: next })
   }
 
+  const moveItem = (itemId, direction) => {
+    const items = section.items || []
+    const idx = items.findIndex(i => i.id === itemId)
+    if (idx === -1) return
+    const newIdx = idx + direction
+    if (newIdx < 0 || newIdx >= items.length) return
+    const next = [...items]
+    const [moved] = next.splice(idx, 1)
+    next.splice(newIdx, 0, moved)
+    update({ items: next })
+  }
+
   const deleteItem = (id) => update({ items: (section.items || []).filter(it => it.id !== id) })
   const deleteChild = (parentId, childId) => update({
     items: (section.items || []).map(it => it.id === parentId
@@ -560,8 +679,15 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
     : section.type === 'conclusion' ? '#4a5a8a'
     : WALTZ_COLOR.bg
 
+  const canActivate = isMobile && section.type === 'main' && typeof onMakeActive === 'function'
+  const handleSectionTap = () => { if (canActivate) onMakeActive(section.id) }
+
   return (
-    <div className="builder-section" style={{ borderLeftColor: sectionAccent }}>
+    <div
+      className={`builder-section${isActive ? ' builder-section--active' : ''}`}
+      style={{ borderLeftColor: sectionAccent }}
+      onClick={handleSectionTap}
+    >
       <div className="builder-section-header">
         <span className="builder-section-icon">{sectionIcon(section.type)}</span>
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -583,10 +709,9 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
             )}
           </div>
         </div>
-        <button className="icon-btn danger" onClick={() => onDelete(section.id)}>✕</button>
+        <button className="icon-btn danger" onClick={e => { e.stopPropagation(); onDelete(section.id) }}>✕</button>
       </div>
 
-      {/* WARMUP */}
       {section.type === 'warmup' && (
         <div className="builder-section-body">
           {(section.dances || []).map((d, i) => (
@@ -605,7 +730,6 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
         </div>
       )}
 
-      {/* MAIN TOPIC TREE */}
       {section.type === 'main' && (
         <div className="builder-section-body">
           <div
@@ -615,9 +739,9 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
             onDrop={handleDropRoot}
           >
             {(section.items || []).length === 0 && (
-              <div className="drop-hint">← Drag figures or TECs from the library</div>
+              <div className="drop-hint">{isMobile ? 'Use Library tab to add items' : '← Drag figures or TECs from the library'}</div>
             )}
-            {(section.items || []).map((item) => {
+            {(section.items || []).map((item, idx) => {
               const isPrimary = section.mode === 'figures' ? item.kind === 'figure' : item.kind === 'tec'
               const isDragging = reorderDragId === item.id
               const isOver = reorderOverId === item.id
@@ -625,7 +749,7 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
                 <div
                   key={item.id}
                   className={`tree-item${selectedItemId === item.id ? ' selected' : ''}${isDragging ? ' reorder-dragging' : ''}${isOver ? ' reorder-over' : ''}`}
-                  draggable
+                  draggable={!isMobile}
                   onDragStart={e => { setReorderDragId(item.id); e.dataTransfer.setData('application/json', JSON.stringify({ _reorder: true })) }}
                   onDragEnd={() => { setReorderDragId(null); setReorderOverId(null) }}
                   onDragOver={e => { e.preventDefault(); e.stopPropagation(); setReorderOverId(item.id) }}
@@ -634,7 +758,14 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
                   onClick={() => onSelectItem(section.id, item, section.mode)}
                 >
                   <div className="tree-item-row">
-                    <span className="tree-drag-handle" title="Drag to reorder">⠿</span>
+                    {isMobile ? (
+                      <div className="mobile-reorder-btns">
+                        <button className="mobile-reorder-btn" onClick={e => { e.stopPropagation(); moveItem(item.id, -1) }} disabled={idx === 0}>↑</button>
+                        <button className="mobile-reorder-btn" onClick={e => { e.stopPropagation(); moveItem(item.id, 1) }} disabled={idx === (section.items || []).length - 1}>↓</button>
+                      </div>
+                    ) : (
+                      <span className="tree-drag-handle" title="Drag to reorder">⠿</span>
+                    )}
                     <span className={`tree-kind kind-${item.kind}`}>{item.kind === 'figure' ? '▶' : '◆'}</span>
                     <span className="tree-item-name">{item.name}</span>
                     {isPrimary && <span className="tree-primary-badge">MAIN</span>}
@@ -658,14 +789,16 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
                         onClick={e => { e.stopPropagation(); deleteChild(item.id, child.id) }}>✕</button>
                     </div>
                   ))}
-                  <div
-                    className={`child-drop-zone${childDragOver === item.id ? ' drag-over' : ''}`}
-                    onDragOver={e => { e.preventDefault(); e.stopPropagation(); setChildDragOver(item.id) }}
-                    onDragLeave={e => { e.stopPropagation(); setChildDragOver(null) }}
-                    onDrop={e => handleDropChild(e, item.id)}
-                  >
-                    drop child here
-                  </div>
+                  {!isMobile && (
+                    <div
+                      className={`child-drop-zone${childDragOver === item.id ? ' drag-over' : ''}`}
+                      onDragOver={e => { e.preventDefault(); e.stopPropagation(); setChildDragOver(item.id) }}
+                      onDragLeave={e => { e.stopPropagation(); setChildDragOver(null) }}
+                      onDrop={e => handleDropChild(e, item.id)}
+                    >
+                      drop child here
+                    </div>
+                  )}
                 </div>
               )
             })}
@@ -673,9 +806,15 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
         </div>
       )}
 
-      {/* CONCLUSION */}
       {section.type === 'conclusion' && (
         <div className="builder-section-body">
+          <div className="warmup-row" style={{ marginBottom: 10 }}>
+            <span className="warmup-dance-lbl">Duration</span>
+            <input className="form-input minutes-input" type="number" min={1} max={120}
+              value={section.minutes || ''}
+              onChange={e => update({ minutes: +e.target.value })} />
+            <span className="unit-lbl">min</span>
+          </div>
           <label className="form-label">Teaching Notes</label>
           <textarea className="form-textarea" value={section.teachingNotes || ''}
             onChange={e => update({ teachingNotes: e.target.value })}
@@ -705,7 +844,6 @@ function ItemEditor({ item, onUpdate }) {
     const next = current.includes(bar)
       ? current.filter(b => b !== bar)
       : [...current, bar].sort()
-    // Must keep at least one bar
     if (next.length === 0) return
     update({ barsUsed: next })
   }
@@ -735,7 +873,6 @@ function ItemEditor({ item, onUpdate }) {
           value={item.minutes || ''} onChange={e => update({ minutes: +e.target.value })} />
       </div>
 
-      {/* Bar selector — only for multi-bar figures */}
       {barNums.length > 1 && (
         <div className="form-group">
           <label className="form-label">Bars to use</label>
@@ -777,7 +914,10 @@ function ItemEditor({ item, onUpdate }) {
 }
 
 function MTBuilder({ session, onSessionChange }) {
+  const isMobile = useIsMobile()
   const [selectedItem, setSelectedItem] = useState(null)
+  const [mobilePanel, setMobilePanel] = useState('builder')
+  const [activeMainId, setActiveMainId] = useState(null)
 
   const update = (c) => onSessionChange({ ...session, ...c })
 
@@ -796,6 +936,7 @@ function MTBuilder({ session, onSessionChange }) {
   const deleteSection = (id) => {
     update({ sections: session.sections.filter(s => s.id !== id) })
     if (selectedItem) setSelectedItem(null)
+    if (activeMainId === id) setActiveMainId(null)
   }
 
   const addSection = (type) => {
@@ -806,9 +947,13 @@ function MTBuilder({ session, onSessionChange }) {
         ? { ...base, type, minutes: 15, mode: 'figures', items: [] }
         : { ...base, type, minutes: 10, teachingNotes: '' }
     update({ sections: [...session.sections, newSec] })
+    if (type === 'main') setActiveMainId(newSec.id)
   }
 
-  const handleSelectItem = (sectionId, item) => setSelectedItem(item)
+  const handleSelectItem = (sectionId, item) => {
+    setSelectedItem(item)
+    if (isMobile) setMobilePanel('editor')
+  }
 
   const handleItemUpdate = (updatedItem) => {
     const sections = session.sections.map(sec => {
@@ -819,9 +964,108 @@ function MTBuilder({ session, onSessionChange }) {
     setSelectedItem(updatedItem)
   }
 
+  // Mobile: add item from library tap to the active main section
+  // (falls back to the most recent main, then to the first main)
+  const handleMobileAddItem = (data) => {
+    const mains = session.sections.filter(s => s.type === 'main')
+    if (mains.length === 0) return
+    const mainSec =
+      mains.find(s => s.id === activeMainId) ||
+      mains[mains.length - 1]
+    const newItem = { id: uid(), kind: data.kind, name: data.name, tecId: data.tecId || null, minutes: 5, mtNotes: '', children: [] }
+    updateSection({ ...mainSec, items: [...(mainSec.items || []), newItem] })
+    setActiveMainId(mainSec.id)
+    setMobilePanel('builder')
+  }
+
+  if (isMobile) {
+    return (
+      <div className="mt-builder mt-builder-mobile">
+        <div className="mobile-builder-content">
+          {mobilePanel === 'library' && (
+            <LibraryPanel isMobile={true} onAddItem={handleMobileAddItem} session={session} />
+          )}
+          {mobilePanel === 'builder' && (
+            <div className="builder-tree-panel">
+              <div className="builder-tree-topbar">
+                <input className="session-title-input" value={session.title}
+                  onChange={e => update({ title: e.target.value })} placeholder="Session title" />
+                <div className="session-meta-row">
+                  <input type="date" className="form-input" style={{ flex: 1 }} value={session.date || ''}
+                    onChange={e => update({ date: e.target.value })} />
+                  <input type="time" className="form-input" style={{ width: 100 }} value={session.time || ''}
+                    onChange={e => update({ time: e.target.value })} />
+                  <span className="session-total-badge">{totalSessionMinutes(session.sections)} min</span>
+                </div>
+                <div className="session-meta-row">
+                  <span className="form-label" style={{ marginBottom: 0, flexShrink: 0 }}>Students</span>
+                  <input className="form-input" style={{ flex: 1 }}
+                    value={(session.studentNames || []).join(', ')}
+                    onChange={e => update({ studentNames: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
+                    placeholder="Names, comma-separated" />
+                </div>
+                <div className="session-meta-row">
+                  <span className="form-label" style={{ marginBottom: 0, flexShrink: 0 }}>Target</span>
+                  <select className="form-input" style={{ flex: 1 }}
+                    value={session.targetLevel || ''}
+                    onChange={e => update({ targetLevel: e.target.value || null })}>
+                    <option value="">Any level</option>
+                    {LEVEL_ORDER.map(l => <option key={l} value={l}>{l}</option>)}
+                  </select>
+                </div>
+              </div>
+              <div className="builder-sections-scroll">
+                {session.sections.map((sec) => (
+                  <BuilderSection
+                    key={sec.id}
+                    section={sec}
+                    onUpdate={updateSection}
+                    onDelete={deleteSection}
+                    selectedItemId={selectedItem?.id}
+                    onSelectItem={handleSelectItem}
+                    isMobile={true}
+                    isActive={sec.type === 'main' && sec.id === activeMainId}
+                    onMakeActive={setActiveMainId}
+                  />
+                ))}
+                {session.sections.length === 0 && (
+                  <div className="empty-state">
+                    <div style={{ fontSize: 36, opacity: 0.2, marginBottom: 10 }}>🎼</div>
+                    <div>Add sections below to build your session</div>
+                  </div>
+                )}
+              </div>
+              <div className="builder-add-bar">
+                <button className="btn btn-ghost btn-sm" onClick={() => addSection('warmup')}>+ Warm-up</button>
+                <button className="btn btn-primary btn-sm" onClick={() => addSection('main')}>+ Main Topic</button>
+                <button className="btn btn-ghost btn-sm" onClick={() => addSection('conclusion')}>+ Conclusion</button>
+              </div>
+            </div>
+          )}
+          {mobilePanel === 'editor' && (
+            <div className="builder-editor-panel">
+              <div className="builder-editor-header">
+                <button className="ps-back-btn" style={{ marginBottom: 0, display: 'inline' }} onClick={() => setMobilePanel('builder')}>← Back</button>
+                Item Editor
+              </div>
+              <div className="builder-editor-body">
+                <ItemEditor item={selectedItem} onUpdate={handleItemUpdate} />
+              </div>
+            </div>
+          )}
+        </div>
+        <div className="mobile-tab-bar">
+          <button className={`mobile-tab${mobilePanel === 'library' ? ' active' : ''}`} onClick={() => setMobilePanel('library')}>Library</button>
+          <button className={`mobile-tab${mobilePanel === 'builder' ? ' active' : ''}`} onClick={() => setMobilePanel('builder')}>Builder</button>
+          <button className={`mobile-tab${mobilePanel === 'editor' ? ' active' : ''}`} onClick={() => setMobilePanel('editor')}>Editor</button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="mt-builder">
-      <LibraryPanel />
+      <LibraryPanel isMobile={false} session={session} />
 
       <div className="builder-tree-panel">
         <div className="builder-tree-topbar">
@@ -841,6 +1085,15 @@ function MTBuilder({ session, onSessionChange }) {
               onChange={e => update({ studentNames: e.target.value.split(',').map(s => s.trim()).filter(Boolean) })}
               placeholder="Names, comma-separated" />
           </div>
+          <div className="session-meta-row">
+            <span className="form-label" style={{ marginBottom: 0, flexShrink: 0 }}>Target</span>
+            <select className="form-input" style={{ flex: 1 }}
+              value={session.targetLevel || ''}
+              onChange={e => update({ targetLevel: e.target.value || null })}>
+              <option value="">Any level</option>
+              {LEVEL_ORDER.map(l => <option key={l} value={l}>{l}</option>)}
+            </select>
+          </div>
         </div>
 
         <div className="builder-sections-scroll">
@@ -852,6 +1105,7 @@ function MTBuilder({ session, onSessionChange }) {
               onDelete={deleteSection}
               selectedItemId={selectedItem?.id}
               onSelectItem={handleSelectItem}
+              isMobile={false}
             />
           ))}
           {session.sections.length === 0 && (
@@ -939,30 +1193,148 @@ function GlossaryView() {
   )
 }
 
+// ─── LOADING SPINNER ──────────────────────────────────
+function LoadingSpinner() {
+  return (
+    <div className="role-gate">
+      <div className="role-gate-card" style={{ padding: '60px 36px' }}>
+        <div className="role-gate-logo">StudioPlanner</div>
+        <div className="loading-spinner-wrap">
+          <div className="loading-spinner" />
+          <div style={{ color: 'var(--ink-faint)', fontSize: 13, marginTop: 12 }}>Loading…</div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── APP ROOT ─────────────────────────────────────────
 export default function App() {
-  const [role, setRole] = useState(null)
+  const [user, setUser] = useState(undefined) // undefined = loading, null = not logged in
+  const [userDoc, setUserDoc] = useState(null)
   const [view, setView] = useState('sessions')
-  const [sessions, setSessions] = useState(() => {
-    try { const s = localStorage.getItem('sp-sessions'); return s ? JSON.parse(s) : SEED_SESSIONS } catch { return SEED_SESSIONS }
-  })
+  const [sessions, setSessions] = useState([])
   const [activeId, setActiveId] = useState(null)
+  const [showInvites, setShowInvites] = useState(false)
+  const [dataLoading, setDataLoading] = useState(true)
+  const saveTimeoutRef = useRef(null)
+  const unsubSessionsRef = useRef(null)
+  const isMobile = useIsMobile()
 
+  // Auth state listener
   useEffect(() => {
-    try { localStorage.setItem('sp-sessions', JSON.stringify(sessions)) } catch {}
-  }, [sessions])
+    const unsub = onAuthStateChanged(async (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser)
+        const doc = await getUserDoc(firebaseUser.uid)
+        setUserDoc(doc)
+      } else {
+        setUser(null)
+        setUserDoc(null)
+        setSessions([])
+        setDataLoading(false)
+      }
+    })
+    return unsub
+  }, [])
 
-  const active = sessions.find(s => s.id === activeId) || null
+  // Subscribe to sessions once we know the user & role
+  useEffect(() => {
+    if (!user || !userDoc) {
+      setDataLoading(false)
+      return
+    }
+
+    const mtId = userDoc.role === 'ps' ? userDoc.linkedMtId : user.uid
+    if (!mtId) {
+      setDataLoading(false)
+      return
+    }
+
+    setDataLoading(true)
+    unsubSessionsRef.current = subscribeSessions(mtId, (data) => {
+      setSessions(data)
+      setDataLoading(false)
+    })
+
+    return () => {
+      if (unsubSessionsRef.current) unsubSessionsRef.current()
+    }
+  }, [user, userDoc])
+
+  const role = userDoc?.role || null
   const isPS = role === 'ps'
+  const active = sessions.find(s => s.id === activeId) || null
+
+  // Save sessions to Firestore (debounced)
+  const persistSessions = useCallback((newSessions) => {
+    setSessions(newSessions)
+    if (isPS || !user) return
+    if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current)
+    saveTimeoutRef.current = setTimeout(() => {
+      saveSessions(user.uid, newSessions).catch(console.error)
+    }, 800)
+  }, [user, isPS])
 
   const newSession = () => {
-    const s = { id: uid(), title: 'New Session', date: new Date().toISOString().slice(0,10), time: '', studentNames: [], sections: [] }
-    setSessions(ss => [s, ...ss])
+    const s = { id: uid(), title: 'New Session', date: new Date().toISOString().slice(0,10), time: '', studentNames: [], targetLevel: null, sections: [] }
+    persistSessions([s, ...sessions])
     setActiveId(s.id)
     setView('builder')
   }
 
-  if (!role) return <RoleGate onSelect={setRole} />
+  const handleSignOut = async () => {
+    await signOut()
+    setView('sessions')
+    setActiveId(null)
+  }
+
+  const handleAuthGateComplete = () => {
+    // Force re-check user doc after role selection
+    if (user) {
+      getUserDoc(user.uid).then(setUserDoc)
+    }
+  }
+
+  const handlePsLinked = (mtId) => {
+    setUserDoc(prev => prev ? { ...prev, linkedMtId: mtId } : prev)
+    setShowInvites(false)
+  }
+
+  // Loading state
+  if (user === undefined) return <LoadingSpinner />
+
+  // Not logged in
+  if (!user) return <AuthGate onAuthenticated={handleAuthGateComplete} />
+
+  // Logged in but no role doc yet (new user just registered — AuthGate handles role pick)
+  if (!userDoc) return <AuthGate onAuthenticated={handleAuthGateComplete} />
+
+  // PS with no linked MT
+  if (isPS && !userDoc.linkedMtId) {
+    return (
+      <div className="app">
+        <div className="topbar">
+          <div className="topbar-brand">StudioPlanner</div>
+          <div className="topbar-right">
+            <span className="role-badge ps">Practice Supervisor</span>
+            <button className="btn btn-ghost" style={{ fontSize: 12 }} onClick={handleSignOut}>Sign Out</button>
+          </div>
+        </div>
+        <div className="main-content" style={{ justifyContent: 'center' }}>
+          <div style={{ maxWidth: 400, margin: '0 auto', padding: 24 }}>
+            <h2 style={{ marginBottom: 16, color: 'var(--light)' }}>Waiting for Invite</h2>
+            <p style={{ color: 'var(--ink-faint)', marginBottom: 20, lineHeight: 1.6 }}>
+              Ask your Main Teacher to send you an invite. Once accepted, you'll see their sessions here.
+            </p>
+            <InviteManager user={user} userDoc={userDoc} onLinked={handlePsLinked} />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (dataLoading) return <LoadingSpinner />
 
   return (
     <div className="app">
@@ -978,21 +1350,42 @@ export default function App() {
           <button className={`btn-nav${view === 'glossary' ? ' active' : ''}`} onClick={() => setView('glossary')}>Glossary</button>
         </div>
         <div className="topbar-right">
-          <span className={`role-badge ${role}`}>{isPS ? 'Practice Supervisor' : 'Main Teacher'}</span>
-          <button className="btn btn-ghost" style={{ fontSize: 12 }} onClick={() => setRole(null)}>Switch Role</button>
+          {!isMobile && <span className={`role-badge ${role}`}>{isPS ? 'Practice Supervisor' : 'Main Teacher'}</span>}
+          {!isPS && (
+            <button className="btn btn-ghost btn-sm" onClick={() => setShowInvites(!showInvites)}>
+              {isMobile ? '✉' : 'Invites'}
+            </button>
+          )}
+          <button className="btn btn-ghost" style={{ fontSize: 12 }} onClick={handleSignOut}>
+            {isMobile ? '↪' : 'Sign Out'}
+          </button>
         </div>
       </div>
+
+      {showInvites && (
+        <div className="invite-overlay">
+          <div className="invite-overlay-backdrop" onClick={() => setShowInvites(false)} />
+          <div className="invite-overlay-content">
+            <InviteManager user={user} userDoc={userDoc} onLinked={handlePsLinked} />
+            <button className="btn btn-ghost btn-sm" style={{ marginTop: 10, width: '100%' }} onClick={() => setShowInvites(false)}>Close</button>
+          </div>
+        </div>
+      )}
+
       <div className="main-content">
         {view === 'sessions' && (
           <SessionList sessions={sessions} activeId={activeId}
             onSelect={id => { setActiveId(id); setView('builder') }}
             onNew={newSession}
-            onDelete={id => { setSessions(ss => ss.filter(s => s.id !== id)); if (activeId === id) { setActiveId(null); setView('sessions') } }}
+            onDelete={id => {
+              persistSessions(sessions.filter(s => s.id !== id))
+              if (activeId === id) { setActiveId(null); setView('sessions') }
+            }}
             readOnly={isPS}
           />
         )}
         {view === 'builder' && active && (
-          isPS ? <PSView session={active} /> : <MTBuilder session={active} onSessionChange={u => setSessions(ss => ss.map(s => s.id === u.id ? u : s))} />
+          isPS ? <PSView session={active} /> : <MTBuilder session={active} onSessionChange={u => persistSessions(sessions.map(s => s.id === u.id ? u : s))} />
         )}
         {view === 'builder' && !active && (
           <div style={{ flex:1, display:'flex', alignItems:'center', justifyContent:'center', color:'var(--ink-faint)' }}>Select a session first</div>
