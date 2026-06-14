@@ -1,98 +1,99 @@
 # StudioPlanner — Handoff Document
 
-**Date:** 2026-06-12 (supersedes 2026-05-24)
-**Current branch:** `main` — last commit `d54e694` (Phase 2a Step 0 complete)
-**Deployed at:** https://dancepraktika-studioplanner.web.app/ (still `v0.2.0`; no deploy this session)
+**Date:** 2026-06-14 (supersedes 2026-06-12)
+**Current branch:** `main` — Phase 2a **Step 1 COMPLETE** (OP-9 root fix committed)
+**Step 1 commit hash:** `5a94d66`
+**Deployed at:** https://dancepraktika-studioplanner.web.app/ (still `v0.2.0`; no deploy this session — Step 1 is data/source work, not a release)
 **Repo:** https://github.com/VictorSyntez/studioplanner
 
 ---
 
 ## Project Overview
 
-StudioPlanner is a PWA for ballroom dance lesson planning and delivery. Teachers (MT role = Main Teacher) build session plans with warmup, main topics, and conclusion sections containing figures and TECs. A Practice Supervisor (PS role) can be linked via invite to view sessions during class (read-only execution).
-
-**Target devices:** iPhone 14 Pro Max (iOS Safari) and Pixel 7 (Android Chrome)
-
----
+StudioPlanner is a PWA for ballroom dance lesson planning and delivery. MT (Main Teacher) builds session plans (warmup / N main topics / conclusion) containing figures and TECs; PS (Practice Supervisor) views sessions read-only during class. Target devices: iPhone 14 Pro Max (iOS Safari), Pixel 7 (Android Chrome).
 
 ## Tech Stack
-
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React (Vite) |
-| Auth | Firebase Authentication (email/password) |
-| Database | Cloud Firestore |
-| Hosting | Firebase Hosting |
-| PWA | vite-plugin-pwa (Workbox) |
+React (Vite) · Firebase Auth / Firestore / Hosting · vite-plugin-pwa (Workbox).
 
 ---
 
 ## Current State
 
 ### Phase 1 — COMPLETE (`v0.2.0`, deployed 2026-05-24)
-All Phase 1 features shipped: Firebase Auth/Firestore/PWA; desktop three-panel + mobile three-tab layouts; session builder (warmup / N mains / conclusion); drag-reorder; rich figure data with leader/follower steps, alignment grid, bar selector; NDCC syllabus metadata on all 33 Waltz figures; `targetLevel` tier dropdown + grouped/filtered Library; PS target-level badge; OP-9 display-layer pipe-split workaround. Commit-level record in the previous handoff revision.
+Auth, builder, rich figure data, NDCC metadata on 33 Waltz figures, `targetLevel` filtering, PS badge. (Detail in prior handoff revisions.)
 
-### Phase 2a — Step 0 COMPLETE (this session, 2026-06-12)
-Source acquisition done and committed (`d54e694`). See `StudioPlanner_ARCHIVE_PROVENANCE.md` and `StudioPlanner_Phase2a_Step0_Session_Summary_2026-06-12.md`.
+### Phase 2a — Step 0 COMPLETE (2026-06-12)
+Source acquisition committed (`d54e694`). ballroomguide (structural) from Wayback raw captures — 314 files; dancecentral (enrichment) live mirror — 419 files. Archives gitignored (OQ-2 manifest-only); manifests + provenance committed. See `StudioPlanner_ARCHIVE_PROVENANCE.md`.
 
-- **ballroomguide** (PRIMARY STRUCTURAL): 314 files / 8.2 MB, from **Wayback raw `id_` captures** of `idans.nl/workshop` (live origin returned 522). Waltz = 33, matches `data.js` 1:1.
-- **dancecentral** (ENRICHMENT): 419 files / 135 MB, live `wget --mirror`. All 8 dances (Foxtrot under `slow-foxtrot`).
-- Archives gitignored (OQ-2 = manifest-only); manifests + cdx index + logs + provenance committed.
+### Phase 2a — Step 1 COMPLETE (2026-06-13/14) <- NEW
+OP-9 root fix + unified-pipeline Waltz re-parse, executed in Claude Code, approved at Checkpoint 2, committed. The unified pipeline is now **proven end-to-end on Waltz**: archive -> parse -> corrected schema -> clean render.
+
+What changed:
+- **New parser** `scripts/parse_bg_waltz.js` builds `FIGURE_RICH_DATA` from archived ballroomguide pages.
+- **Corrected step-row schema** — fields are now `bar, timing, foot, alignment, turn, footwork, sway, position, rise, cbm, notes`. (Was: `count, foot, alignment, footwork, turn, sway, rise, notes`.) OP-9 contamination gone: `rise` holds rise & fall only; `cbm` is its own field; `timing` is verbatim from source; technique fragments migrated into `notes` tagged `[migrated-from-rise: ...]`. The source 'Moving' column is parsed but not stored.
+- **Workaround removed** — `FigureDetailPanel` pipe-split deleted; binds to `s.timing`; `position` added to `OPTIONAL_COLS`.
+- **Figure count 33 -> 34** — added `Waltz Prep Step` (syllabusLevel 'Beginners', syllabusNumber 33), confirmed with Victor.
+- **Provenance per figure:** all `dataStatus: 'parsed'`. `sources: ['ballroomguide']` except **Fallaway Whisk** = `['dancecentral']` (no ballroomguide source; OP-9 in-place migration only) and the Prep Step.
+- **Open Impetus and Wing** (was the only audited figure): Victor accepted ballroomguide values -> `dataStatus: 'parsed'`, re-enters audit queue.
+- **Anomaly report** `docs/StudioPlanner_Phase2a_Step1_Anomalies.md` — 252 items, **0 unparseable, 0 conflicts**. Overwhelmingly cosmetic rise-phrasing normalization.
+- **6 figures tagged `auditPriority: 'high'`** (Phase 2b worklist; parser re-emits via `AUDIT_PRIORITY` map): Back Lock, Double Reverse Spin, Hesitation Change, Left Whisk, Turning Lock to R, Weave from PP.
 
 ---
 
 ## Locked decisions (Phase 2a)
-
-1. **Unified pipeline** — all 8 dances (incl. Waltz) take structural data from ballroomguide; dancecentral is enrichment only. **Supersedes roadmap A.3.**
-2. **Existing Waltz notes are scraped** — Step 1 preserves them while re-parsing structural fields; dancecentral re-merge stays at Step 4.
-3. **Structural source = Wayback** captures of idans.nl/workshop; live idans demoted to revive-and-reconcile.
-4. **OQ-2 = manifest-only.**
-5. **STANDING RULE: "No dreaming, no assumptions on dance content."** All dance content from archives + Victor's confirmation; missing data flagged not interpolated; conflicts logged not silently resolved (ballroomguide wins structural fields). Constrains dance content only, not pipeline/engineering reasoning.
-
----
-
-## Next action — Phase 2a Step 1 (in Claude Code)
-
-Unified-pipeline Waltz re-parse + OP-9 root fix. Opening prompt ready in `StudioPlanner_Phase2a_Step1_ClaudeCode_Prompt.md`. Launch with `claude --continue`; pause-after-each-commit pattern. Step 1 ends at the **Waltz before/after diff = Checkpoint 2** (highest-stakes review). Nothing non-Waltz parses until that diff is approved.
-
-OP-9 scope note (from this session's `data.js` audit): contamination is broader than "CBM | rise". 301 rise fields total — 104 piped (tokens: `CBM` ×69, `-`/`--` ×29, `slight`/`slight CBM` ×4, `Sway(R)` ×2), 197 with no pipe but run-on technique text. Root fix = re-parse rise & fall from ballroomguide source, route technique fragments to `notes`/`cbm`, preserve existing scraped notes.
+1. **Unified pipeline** — all 8 dances take structural data from ballroomguide; dancecentral is enrichment only. Supersedes roadmap A.3.
+2. **Structural source = Wayback** captures of `idans.nl/workshop` (live idans 522 -> demoted to revive-and-reconcile).
+3. **OQ-2 = manifest-only.**
+4. **Existing notes are scraped** — preserved during re-parse; dancecentral re-merge stays at Step 4.
+5. **STANDING RULE: "No dreaming, no assumptions on dance content."** All dance content from archives + Victor's confirmation; missing data flagged not interpolated; conflicts logged not silently resolved (ballroomguide wins structural). Constrains dance content only, not pipeline mechanics. (Also in Claude's memory for this Project.)
 
 ---
 
-## Flags carried forward
+## Next action — Phase 2a Step 2 (in Claude Code)
+Parse Tango -> Foxtrot -> Quickstep (Standard), then the Latin dances, using the **same validated process** as Step 1. Steps 2-3 are mechanical repeats — this is where the timeline collapses. Fresh checkpoint cycle; do NOT start mid-session without a review block.
 
-- **Jive structural gap (D-3):** ballroomguide ~6 Jive pages; dancecentral ~30 available as backfill. Victor decides resolution path.
-- **`foxtrot` ↔ `slow-foxtrot` alias:** seeded for Step 4 cross-source matching.
+**Step 2 prompt must fold in three things learned this session:**
+- **Path prefix:** ballroomguide tree is `sources/ballroomguide/workshop/standard/<dance>/` and `.../workshop/latin/<dance>/` (extra `workshop/` segment).
+- **Jive structural gap (D-3):** surfaces when Latin is reached — ballroomguide ~6 Jive pages; dancecentral ~30 available as backfill. Victor decides resolution (enrich-only vs. promote dancecentral to structural fallback for Jive).
+- **`foxtrot` <-> `slow-foxtrot` alias:** ballroomguide/NDCC use "foxtrot"; dancecentral uses "slow-foxtrot". Seeded for the Step 4 cross-source merge.
+
+Reuse the schema, provenance fields, anomaly-report format, and `auditPriority` tagging established in Step 1.
+
+---
+
+## Deferred / tracked issues
+- **OP-9: RESOLVED** (root fix shipped in Step 1). Display-layer workaround removed.
+- **6 `auditPriority:'high'` figures** — note-placement may be misaligned on step-count-mismatch figures; Left Whisk + Hesitation Change have blank rise in source. Phase 2b / pilot validates.
+- **Left Whisk structure** — 3->7 step count + all rise blank; worth confirming ballroomguide structures it as 7 vs. parser mis-segmentation (open source page during audit).
+- **Parser audited-exclusion bug** — applied the `dataStatus` label but did not hard-protect audited *data* (fell through to ballroomguide where fields were missing). Moot for Step 1 (OIW accepted as parsed). **Must be fixed with a fail-closed checksum/allowlist before any future audited-figure re-parse in Phase 2b.** Logged in the anomaly report.
+- **Security (pre-commercial):** Firestore `get()` latency in PS read rules; over-permissive invite create rule.
 
 ---
 
 ## Key Files
-
 | File | Purpose |
 |------|---------|
-| `src/App.jsx` | Main app — panels, builder, state, FigureDetailPanel (ranged reads: [1,223],[223,700],[700,1090]) |
-| `src/index.css` | All styling |
-| `src/firebase.js` | Firebase init, auth, Firestore CRUD |
-| `src/data.js` | `FIGURES` (dance-keyed object), `FIGURE_RICH_DATA` (33 Waltz), helpers. Ends with `FIGURE_RICH_DATA` = current; `GLOSSARY` export present upstream (verify if dead code). |
-| `firestore.rules` | Security rules |
-| `sources/` | **Gitignored.** Source archives (ballroomguide, dancecentral) + manifests |
-| `StudioPlanner_ARCHIVE_PROVENANCE.md` | Source origin, method, counts, gaps, OQ-2 (committed) |
-| `StudioPlanner_Phase2a_Data_Acquisition_Brief.md` | Executable Phase 2a spec |
-| `StudioPlanner_Phase2_Architecture_Roadmap.md` | Phase 2 data model + roadmap + gates |
+| `src/App.jsx` | Main app; FigureDetailPanel now binds `s.timing`, `position` in OPTIONAL_COLS. Ranged reads ([1,223],[223,700],[700,1090]). |
+| `src/data.js` | `FIGURES` + `FIGURE_RICH_DATA` (34 Waltz, corrected schema). |
+| `scripts/parse_bg_waltz.js` | Step 1 parser (corrected schema, note migration, AUDIT_PRIORITY map). Template for Step 2-3. |
+| `docs/StudioPlanner_Phase2a_Step1_Anomalies.md` | Step 1 anomaly report / audit worklist. |
+| `sources/` | **Gitignored.** Archives + manifests. ballroomguide tree under `workshop/`. |
+| `StudioPlanner_ARCHIVE_PROVENANCE.md` | Source origin, method, counts, gaps, OQ-2. |
+| `StudioPlanner_Phase2a_Data_Acquisition_Brief.md` | Executable Phase 2a spec (in KB; save to repo `docs/` if Claude Code needs it). |
+| `StudioPlanner_Phase2_Architecture_Roadmap.md` | Phase 2 data model, roadmap, gates. |
 
 ---
 
 ## Repo-hygiene TODO (non-blocking)
-
-- Continuity docs (this handoff, roadmap, `docs/`) are **untracked in git** — commit them.
-- `.firebase/` → gitignore.
+- Continuity docs reorganized into `docs/` and committed this session (was untracked). Confirm `.firebase/` is gitignored.
 - Roadmap path duplication: `phase_2_architecture_roadmap.md` (root) vs. `docs/StudioPlanner_Phase2_Architecture_Roadmap.md` — pick one canonical location.
+- Brief + roadmap still need the edits in `StudioPlanner_KB_Update_Instructions_2026-06-12.md` applied (plus a Step 1-complete pass). Best done as one full regen now that Step 1 is settled.
 
 ---
 
 ## Notes for next session
-
-- **Resume at Step 1** in Claude Code using the ready prompt; stop at Checkpoint 2; bring the diff to the claude.ai Project for review if a second read is wanted.
-- **App.jsx is large** — ranged reads required.
-- **NDCC is the syllabus authority**, not CDF.
-- After Step 1: regenerate the brief + roadmap in full to fold in the Waltz re-parse outcome (this session's deltas are captured in `StudioPlanner_KB_Update_Instructions_2026-06-12.md`).
+- **Resume at Step 2** in Claude Code; draft the Step 2 prompt in the claude.ai Project first (folds in the 3 learnings above).
+- `data.js` step rows use the **new schema** (`timing`/`cbm`/`position`) — don't revert to `count`.
+- App.jsx is large — ranged reads required.
+- NDCC is the syllabus authority, not CDF.
+- Claude Code persisted Step 2 context + the standing rule to its own project memory (recalled at session start). Treat the handoff/KB as the canonical source of truth; if Code's memory and the KB ever disagree, the KB wins — reconcile rather than trust Code's recall.
