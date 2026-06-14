@@ -1,0 +1,51 @@
+{
+  "_provenance": {
+    "source": "NDCC_Ballroom_Syllabus.pdf",
+    "sourceTitle": "APPENDIX VI \u2013 NDCC Ballroom Syllabus Step List, Competitions & Medal Test",
+    "sourceAuthor": "George Pytlik / National Dance Council of Canada",
+    "page": 1,
+    "column": "Tango (column 2 of 4: Waltz \u00b7 Tango \u00b7 Foxtrot \u00b7 Quickstep)",
+    "method": "Verbatim transcription from a 220-DPI rasterization of the page. Names are exactly as printed; nothing expanded, corrected, or inferred.",
+    "extractedDate": "2026-06-14",
+    "status": "EXTRACTED \u2014 pending Victor's confirmation. Not yet audited.",
+    "rules": "Figure-name \u2192 tier/number is dance content. This file is the verbatim NDCC side only. Matching these names to ballroomguide figure names is a separate step done by Claude Code, with fuzzy/unmatched pairs flagged for Victor (never guessed).",
+    "notes": [
+      "syllabusNumber is per-dance and cumulative across tiers \u2014 Tango runs its own 1..27 sequence, NOT a global number shared with the other dances.",
+      "Figure 4 prints as 'Closed' \u2014 appears truncated (NDCC/ISTD Tango commonly lists 'Closed Promenade'). Transcribed verbatim, NOT expanded. CONFIRM intended name. (flag on the figure record.)",
+      "Figure 5 'Promenade Rock Turn' wraps across two printed lines ('Promenade Rock' / 'Turn'); it is one figure.",
+      "Gold Star tier lists no individual figures: the source states 'Steps 1 \u2013 27 plus Gold Star groups / Fig. 1 \u2013 27 plus groupes Etoile d'Or'. No Gold Star figure records are emitted.",
+      "Tier labels are bilingual in the source (e.g. 'Beginners - D\u00e9butants', 'Gold - Or'); syllabusLevel uses the English form to match existing data.js Waltz entries."
+    ]
+  },
+  "dance": "Tango",
+  "tierOrder": ["Beginners", "Pre-Bronze", "Bronze", "Silver", "Gold", "Gold Star"],
+  "figures": [
+    { "syllabusNumber": 1,  "syllabusLevel": "Beginners",  "ndccName": "Walk" },
+    { "syllabusNumber": 2,  "syllabusLevel": "Beginners",  "ndccName": "Progressive Side Step" },
+    { "syllabusNumber": 3,  "syllabusLevel": "Beginners",  "ndccName": "Progressive Link" },
+    { "syllabusNumber": 4,  "syllabusLevel": "Beginners",  "ndccName": "Closed", "flag": "Prints as 'Closed' in source \u2014 possibly truncated 'Closed Promenade'. Confirm before use." },
+    { "syllabusNumber": 5,  "syllabusLevel": "Beginners",  "ndccName": "Promenade Rock Turn" },
+    { "syllabusNumber": 6,  "syllabusLevel": "Pre-Bronze", "ndccName": "Open Reverse Turn, Lady Outside" },
+    { "syllabusNumber": 7,  "syllabusLevel": "Pre-Bronze", "ndccName": "Back Corte" },
+    { "syllabusNumber": 8,  "syllabusLevel": "Pre-Bronze", "ndccName": "Open Reverse Turn, Lady in Line" },
+    { "syllabusNumber": 9,  "syllabusLevel": "Pre-Bronze", "ndccName": "Progressive Side Step Reverse Turn" },
+    { "syllabusNumber": 10, "syllabusLevel": "Bronze",     "ndccName": "Open Promenade" },
+    { "syllabusNumber": 11, "syllabusLevel": "Bronze",     "ndccName": "Left Foot and Right Foot Rocks" },
+    { "syllabusNumber": 12, "syllabusLevel": "Bronze",     "ndccName": "Natural Twist Turn" },
+    { "syllabusNumber": 13, "syllabusLevel": "Bronze",     "ndccName": "Natural Promenade Turn" },
+    { "syllabusNumber": 14, "syllabusLevel": "Silver",     "ndccName": "Promenade Link" },
+    { "syllabusNumber": 15, "syllabusLevel": "Silver",     "ndccName": "Four Step" },
+    { "syllabusNumber": 16, "syllabusLevel": "Silver",     "ndccName": "Back Open" },
+    { "syllabusNumber": 17, "syllabusLevel": "Silver",     "ndccName": "Promenade Outside" },
+    { "syllabusNumber": 18, "syllabusLevel": "Silver",     "ndccName": "Swivels Fallaway" },
+    { "syllabusNumber": 19, "syllabusLevel": "Silver",     "ndccName": "Promenade Four Step" },
+    { "syllabusNumber": 20, "syllabusLevel": "Silver",     "ndccName": "Change Brush Tap" },
+    { "syllabusNumber": 21, "syllabusLevel": "Gold",       "ndccName": "Fallaway Four Step" },
+    { "syllabusNumber": 22, "syllabusLevel": "Gold",       "ndccName": "Oversway" },
+    { "syllabusNumber": 23, "syllabusLevel": "Gold",       "ndccName": "Basic Reverse Turn" },
+    { "syllabusNumber": 24, "syllabusLevel": "Gold",       "ndccName": "The Chase" },
+    { "syllabusNumber": 25, "syllabusLevel": "Gold",       "ndccName": "Fallaway Reverse & Slip Pivot" },
+    { "syllabusNumber": 26, "syllabusLevel": "Gold",       "ndccName": "Five Step" },
+    { "syllabusNumber": 27, "syllabusLevel": "Gold",       "ndccName": "Contra Check" }
+  ]
+}
