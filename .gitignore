@@ -27,3 +27,4 @@ dist-ssr
 # Reference material (not shipped)
 reference/
 sources/
+.firebase/
