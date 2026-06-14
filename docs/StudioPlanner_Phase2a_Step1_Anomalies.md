@@ -1,0 +1,688 @@
+# StudioPlanner — Phase 2a Step 1 — Anomaly Report
+
+Generated: 2026-06-14
+
+## Summary
+
+| Category | Count |
+|---|---|
+| Blank Timing cells | 1 |
+| Blank Rise & Fall cells | 41 |
+| Rise content divergence (old → notes) | 197 |
+| Non-CBM pipe prefixes (→ notes) | 3 |
+| Step-count mismatches | 8 |
+| Figures without ballroomguide source | 1 |
+| Gzipped source files (handled mechanically) | 1 |
+
+## Figures with no ballroomguide source
+
+- **Fallaway Whisk** — no ballroomguide chart page; in-place OP-9 migration only
+
+## Step-count mismatches
+
+- **Back Lock** / follower: old=4  ·  new=5
+- **Double Reverse Spin** / leader: old=3  ·  new=4
+- **Left Whisk** / leader: old=3  ·  new=7
+- **Left Whisk** / follower: old=3  ·  new=7
+- **Turning Lock to R** / leader: old=3  ·  new=4
+- **Turning Lock to R** / follower: old=3  ·  new=4
+- **Weave from PP** / leader: old=7  ·  new=6
+- **Weave from PP** / follower: old=8  ·  new=6
+
+## Blank Timing cells in archive
+
+- **Back Lock** / follower / step 4
+
+## Blank Rise & Fall cells in archive
+
+- **Back Lock** / follower / step 4
+- **Basic Weave** / leader / step 1
+- **Basic Weave** / follower / step 1
+- **Closed Impetus** / leader / step 1
+- **Closed Impetus** / follower / step 1
+- **Closed Wing** / leader / step 1
+- **Drag Hesitation** / leader / step 1
+- **Drag Hesitation** / follower / step 1
+- **Hesitation Change** / leader / step 4
+- **Hesitation Change** / leader / step 5
+- **Hesitation Change** / leader / step 6
+- **Hesitation Change** / follower / step 4
+- **Hesitation Change** / follower / step 5
+- **Hesitation Change** / follower / step 6
+- **Left Whisk** / leader / step 1
+- **Left Whisk** / leader / step 2
+- **Left Whisk** / leader / step 3
+- **Left Whisk** / leader / step 4
+- **Left Whisk** / leader / step 5
+- **Left Whisk** / leader / step 6
+- **Left Whisk** / leader / step 7
+- **Left Whisk** / follower / step 1
+- **Left Whisk** / follower / step 2
+- **Left Whisk** / follower / step 3
+- **Left Whisk** / follower / step 4
+- **Left Whisk** / follower / step 5
+- **Left Whisk** / follower / step 6
+- **Left Whisk** / follower / step 7
+- **Natural Spin Turn** / leader / step 4
+- **Natural Spin Turn** / follower / step 4
+- **Open Impetus and Cross Hesitation** / leader / step 1
+- **Open Impetus and Cross Hesitation** / follower / step 1
+- **Open Impetus and Wing** / leader / step 1
+- **Open Impetus and Wing** / leader / step 4
+- **Open Impetus and Wing** / follower / step 1
+- **Open Telemark and Wing** / leader / step 4
+- **Outside Spin** / leader / step 1
+- **Reverse Corté** / leader / step 1
+- **Reverse Pivot** / leader / step 1
+- **Reverse Pivot** / follower / step 1
+- **Weave from PP** / follower / step 1
+
+## Non-CBM pipe prefixes routed to notes
+
+- **Hesitation Change** / leader / step 3: prefix=`Sway(R)`
+- **Reverse Corté** / leader / step 3: prefix=`Sway(R)`
+- **Whisk** / leader / step 1: prefix=`slight`
+
+## Rise content divergence (old rise material migrated to notes)
+
+- **Back Lock** / leader / step 1
+  - old: `start to rise e/o 1, NFR`
+  - new: `Com to rise e/o 1, NFR`
+- **Back Lock** / leader / step 2
+  - old: `Continue to rise on 2 and 3`
+  - new: `Cont to rise`
+- **Back Lock** / follower / step 1
+  - old: `start to rise e/o 1 Avoid jutting foot out before body moves`
+  - new: `Com to rise e/o 1`
+- **Back Lock** / follower / step 2
+  - old: `cont to rise on 2 and 3 keep feet parallel FDW`
+  - new: `Cont to rise`
+- **Back Lock** / follower / step 3
+  - old: `-- Lock is lead by moving more toward LOD relative to step 2`
+  - new: `Cont to rise`
+- **Back Lock** / follower / step 4
+  - old: `Up, lower e/o 4 next step, starts CBMP`
+  - new: ``
+- **Back Whisk** / leader / step 1
+  - old: `start to rise e/o 1, NFR Lower through R leg and hip to R using CBMP, allowing lady to step OP.`
+  - new: `Com to rise e/o 1, NFR`
+- **Back Whisk** / leader / step 2
+  - old: `continue to rise on 2 Rotate upper body to right, leaving hip in same place. Isolate the upper body.`
+  - new: `Cont to rise`
+- **Back Whisk** / follower / step 1
+  - old: `start to rise e/o 1 Into count 1: Lady activate L hip already, pick up/swing L lip. Ending L hip is lifted/higher.`
+  - new: `Com to rise e/o 1`
+- **Back Whisk** / follower / step 2
+  - old: `continue to rise on 2 This is a strong forward step, ending as a side step. Same direction as first step (drive through diagonally up with left side), then turn the hips, body stays, and head is the last to turn. stay behind man, both elbows still in front your body.`
+  - new: `Cont to rise`
+- **Back Whisk** / follower / step 3
+  - old: `Up, lower e/o 3 Drag the toe along the floor right underneath the left foot.`
+  - new: `Up. Lower e/o 3`
+- **Basic Weave** / leader / step 4
+  - old: `starts to rise e/o4, NFR`
+  - new: `Com to rise e/o 4, NFR`
+- **Basic Weave** / leader / step 5
+  - old: `continue to rise on 5`
+  - new: `Cont to rise`
+- **Basic Weave** / leader / step 6
+  - old: `up, lower e/o 6 This could end in PP.`
+  - new: `Up. Lower e/o 6`
+- **Basic Weave** / follower / step 1
+  - old: `-- More advanced version: use ball of foot to whole foot on step 1.`
+  - new: ``
+- **Basic Weave** / follower / step 2
+  - old: `rise e/o 2 Take center back.`
+  - new: `Rise e/o 2`
+- **Basic Weave** / follower / step 4
+  - old: `starts to rise e/o 4 This is like outside change step.`
+  - new: `Com to rise e/o 4`
+- **Basic Weave** / follower / step 5
+  - old: `cont to rise on 5 Taking spine to LF.`
+  - new: `Cont to rise`
+- **Basic Weave** / follower / step 6
+  - old: `up, lower e/o 6 Finish the turn on LF (in previous step) before stepping RF diagonally back.`
+  - new: `Up. Lower e/o 6`
+- **Chassé from PP** / leader / step 1
+  - old: `Start to rise at end of 1`
+  - new: `Com to rise e/o 1`
+- **Chassé from PP** / leader / step 2
+  - old: `Cont to rise on 2 and 3 Upper body/frame rotate to left to close the lady. Close hips.3`
+  - new: `Cont to rise`
+- **Chassé from PP** / follower / step 1
+  - old: `Start to rise e/o 1 End o f previous 3 is building the energy to feed into this step. (Previous steps ends in PP or Whisk position.)`
+  - new: `Com to rise e/o 1`
+- **Chassé from PP** / follower / step 2
+  - old: `Cont to rise on 2 and 3 Swing the R leg and R hip up. Power is from the 1st step. This Count 2 is not redriving. Coast it, step is still pretty big. Feels like sending the hip around Man.`
+  - new: `Cont to rise`
+- **Chassé from PP** / follower / step 3
+  - old: `-- Head turns back to Man's R between 2-3 (on &).`
+  - new: `Cont to rise`
+- **Chassé from PP** / follower / step 4
+  - old: `Up, lower e/o 4 This is not a side step. It's diagonally back. Pay attention to alignment. Make sure to settle and not be back weighted.`
+  - new: `Up. Lower e/o 4`
+- **Closed Change (LF)** / leader / step 1
+  - old: `Start to rise at end of 1`
+  - new: `Com to rise e/o 1`
+- **Closed Change (LF)** / follower / step 1
+  - old: `Start to rise e/o 1, NFR`
+  - new: `Com to rise e/o 1, NFR`
+- **Closed Change (RF)** / leader / step 1
+  - old: `Start to rise at end of 1`
+  - new: `Com to rise e/o 1`
+- **Closed Change (RF)** / follower / step 1
+  - old: `Start to rise e/o 1, NFR`
+  - new: `Com to rise e/o 1, NFR`
+- **Closed Impetus** / leader / step 1
+  - old: `-- This step can be OP, depending on previous figure.`
+  - new: ``
+- **Closed Impetus** / leader / step 2
+  - old: `Rise e/o 2 Man's heel turn.`
+  - new: `Rise e/o 2`
+- **Closed Impetus** / leader / step 3
+  - old: `Up. Lower e/o 3 Left heel does not come down until feet are together.`
+  - new: `Up. Lower e/o 3`
+- **Closed Impetus** / follower / step 1
+  - old: `-- Strong CBM (shoulder/upper body rotate to right), big step will make the step easier, lighter for Man. But always watch Man's central line.`
+  - new: ``
+- **Closed Impetus** / follower / step 2
+  - old: `rise e/o 2 Drive this step using whole left side (not just shoulder) to give Man the momentum. He's just there for a ride.`
+  - new: `Rise e/o 2`
+- **Closed Impetus** / follower / step 3
+  - old: `up, lower e/o 3 Extend and respond to Man, make arm more flexible and "give it" to Man (or, think about "leaving the arms with Man") to allow to extend more.`
+  - new: `Up. Lower e/o 3`
+- **Closed Telemark** / leader / step 1
+  - old: `rise e/o 1 Use CBM and rise a bit early to lead heel turn.`
+  - new: `Rise e/o 1`
+- **Closed Telemark** / leader / step 2
+  - old: `Up Get strong rotation through the feet, do not come off RF too early, which will allow Lady to turn. A little hover helps to keep Lady in front of Man.`
+  - new: `Up`
+- **Closed Telemark** / follower / step 1
+  - old: `rise slightly e/o 1, NFR Keep your own balance.`
+  - new: `Rise slightly e/o 1`
+- **Closed Telemark** / follower / step 2
+  - old: `continue to rise on 2 Heel turn, the feeling is the turn is mostly done on RF, has a slight feeling of pushing off LF, then RF step back on 3 to finish.`
+  - new: `Cont to rise`
+- **Closed Telemark** / follower / step 3
+  - old: `Up, lower e/o 3 Keep moving, don't hover and stop, strong, bigger step (Man is waiting, need more power). Keep head position (which will make it shape to right).`
+  - new: `Up. Lower e/o 3`
+- **Closed Wing** / leader / step 2
+  - old: `Slight rise on 2 and 3 NFR`
+  - new: `Slight rise, NFR`
+- **Closed Wing** / follower / step 1
+  - old: `start to rise e/o 1, NFR Keep upward balanced poised position, don't try to pull hip back to get around.`
+  - new: `Com to rise e/o 1`
+- **Closed Wing** / follower / step 2
+  - old: `continue to rise on 2 This step is not too big. Keep it underneath body. (Man is not moving anywhere)`
+  - new: `Cont to rise`
+- **Closed Wing** / follower / step 3
+  - old: `Up. Lower e/o 3 Lady keeps her head upward and leftward on step 3 and keep her poise back. L leg goes ahead of body to Wing position.`
+  - new: `Up. Lower e/o 3`
+- **Contra Check** / leader / step 1
+  - old: `Down with knees slightly flexed If preferred, could be LF fwd with foot flat.`
+  - new: `Down with flexed knees`
+- **Contra Check** / leader / step 3
+  - old: `Up, Lower e/o 3 Turn may be made between 2-3 to end in PP moving DC.`
+  - new: `Up. Lower e/o 3`
+- **Contra Check** / follower / step 1
+  - old: `Down with knees slightly flexed The step needs to feel more free. Lady does not bend straight back, there is rotation and head continues to extend go along body line.`
+  - new: `Down with flexed knees`
+- **Contra Check** / follower / step 2
+  - old: `Rise e/o 2 Push off back foot into PP. Time the push off together with Man. Feet swivel underneath the body. Need to be individually balanced.`
+  - new: `Rise e/o 2`
+- **Contra Check** / follower / step 3
+  - old: `Up. Lower e/o 3 Articulate head.`
+  - new: `Up. Lower e/o 3`
+- **Double Reverse Spin** / leader / step 1
+  - old: `Start to rise at end of 1 Important to do CBM. Give Lady the indication of left by lowering.`
+  - new: `Rise e/o 1`
+- **Double Reverse Spin** / leader / step 2
+  - old: `Up Wait until the lady's feet are together before taking this step.`
+  - new: `Up`
+- **Double Reverse Spin** / leader / step 3
+  - old: `Up, Lower at end of 3 settle and then drive to next step. Keep lengthening the spine.`
+  - new: `Up`
+- **Double Reverse Spin** / follower / step 1
+  - old: `rise slightly e/o 1, NFR Very important to do CBM, with CBM shoulder will clear way for Man to pass. Keep shoulder flat, and do not drop it on one side, do not pull left shoulder away from Man (It will "feel" left shoulder is "up", but in fact it will be flat.)`
+  - new: `Rise slightly e/o 1, NFR`
+- **Double Reverse Spin** / follower / step 2
+  - old: `Cont to rise on 2 Don't lift toes off ground (no need to show off the bottom of your shoe!), be sure feet are parallel and together.`
+  - new: `Cont to rise`
+- **Double Reverse Spin** / follower / step 3
+  - old: `Up Bigger step, push off left foot, get around (or "through") partner with more power.`
+  - new: `Up`
+- **Double Reverse Spin** / follower / step 4
+  - old: `Up. Lower e/o 4 Cross feet (LF maintains pressure on ground while dragging to cross RF), lower into plie. Hips up the Man.`
+  - new: `Up. Lower e/o 4`
+- **Drag Hesitation** / leader / step 1
+  - old: `- Sending lady to inside of turn.`
+  - new: ``
+- **Drag Hesitation** / leader / step 2
+  - old: `rise e/o 2 Left side is axis point. Staying down at the beginning, rise takes place when R leg passes the body.`
+  - new: `Rise e/o 2`
+- **Drag Hesitation** / leader / step 3
+  - old: `up, then lower e/o 3 The following step, Man will lead Lady OP`
+  - new: `Up. Lower e/o 3`
+- **Drag Hesitation** / follower / step 1
+  - old: `- Right shoulder relax down and connect to foot as axis point. Left hip rotate.`
+  - new: ``
+- **Drag Hesitation** / follower / step 2
+  - old: `rise e/o 2 Lady has slight foot swivel between 2 and 3.`
+  - new: `Rise e/o 2`
+- **Fallaway Reverse & Slip Pivot** / leader / step 2
+  - old: `Up`
+  - new: `Cont to rise`
+- **Fallaway Reverse & Slip Pivot** / leader / step 3
+  - old: `Up, Lower e/o 3`
+  - new: `Cont to rise`
+- **Fallaway Reverse & Slip Pivot** / follower / step 1
+  - old: `Rise e/o 1 NFR Similar to Double Reverse Spin , keep head left the whole time to help with the turn. Legs move backward, but body should not feel dancing backward. body feels upward, leftward curve dancing into Man's R side.`
+  - new: `Com to rise e/o 1, NFR`
+- **Fallaway Reverse & Slip Pivot** / follower / step 2
+  - old: `Up Keep chest area very lifted to Man.`
+  - new: `Cont to rise`
+- **Fallaway Reverse & Slip Pivot** / follower / step 3
+  - old: `Up, lower e/o 3 It feels hip is more twisted to left. Do not close left hip. Pick up left side and open left hip, Man's right hip in middle of Lady's left hip and center.`
+  - new: `Cont to rise`
+- **Fallaway Reverse & Slip Pivot** / follower / step 4
+  - old: `CBM Follow Man, don't gap.`
+  - new: `Up. Lower e/o 4`
+- **Hesitation Change** / leader / step 1
+  - old: `Start to rise e/o 1`
+  - new: `Com to rise e/o 1`
+- **Hesitation Change** / leader / step 2
+  - old: `Continue to rise on 2 and 3`
+  - new: `Cont to rise`
+- **Hesitation Change** / follower / step 1
+  - old: `start to rise e/o 1, NFR`
+  - new: `Com to rise e/o 1, NFR`
+- **Hesitation Change** / follower / step 2
+  - old: `continue to rise on 2 and 3`
+  - new: `Cont to rise`
+- **Hesitation Change** / follower / step 4
+  - old: `-- Drive. Do not cross Man's tie line.`
+  - new: ``
+- **Hesitation Change** / follower / step 5
+  - old: `-- Stay left to Man. Knees soft, compressed.`
+  - new: ``
+- **Hover Corté** / leader / step 1
+  - old: `Start to rise e/o 1, NFR`
+  - new: `Com to rise, NFR`
+- **Hover Corté** / leader / step 2
+  - old: `Continue to rise on 2`
+  - new: `Cont to rise`
+- **Hover Corté** / follower / step 1
+  - old: `Start to rise e/o 1 Options: keep head closed, or open to PP (especially when dancing extra bar of music)`
+  - new: `Com to rise e/o 1`
+- **Hover Corté** / follower / step 2
+  - old: `Continue to rise on 2 Big step. Whole R side to Man, stretch, big shape, breathe the frame. articulate head. Then articulate LF coming out.`
+  - new: `Cont to rise`
+- **Hover Corté** / follower / step 3
+  - old: `Up. Lower e/o 3`
+  - new: `Cont to rise. Lower e/o 3`
+- **Left Whisk** / leader / step 3
+  - old: `- Man looks towards Lady's face, not over her R shoulder.`
+  - new: ``
+- **Left Whisk** / follower / step 2
+  - old: `- RF forward, shape to R and close with Man, then R hip glued to Man. Follow hip curve.`
+  - new: ``
+- **Left Whisk** / follower / step 3
+  - old: `- To produce big shape: Take step LF back (along original travel direction, don't go around Man), move weight back to LF (this is a step, otherwise you'll block Man), collect RF (crossed in front of LF, w/o weight).`
+  - new: ``
+- **Natural Spin Turn** / leader / step 1
+  - old: `Start to rise at end of 1 Need to "lower and drive forward".`
+  - new: `Com to rise e/o 1`
+- **Natural Spin Turn** / leader / step 2
+  - old: `Cont to rise on 2 and 3 Rise on toes, it will help to bring the feet together on 3rd step.`
+  - new: `Cont to rise`
+- **Natural Spin Turn** / leader / step 3
+  - old: `Lower at end of 3 Collect at the end of 3 and then drive straight back on next step.`
+  - new: `Cont to rise. Lower e/o 3`
+- **Natural Spin Turn** / leader / step 4
+  - old: `No rise. Foot is placed turned 1/8 to right to prepare for turn.`
+  - new: ``
+- **Natural Spin Turn** / leader / step 5
+  - old: `Rise e/o 5 This is a large step, as the leader is on the outside of the turn. Avoid tendency to rise up on toe too soon, as this will negatively affect timing and balance. (Heel lead and rise up on toe completely, don't drop to heel too quickly to get into next step.) The rise and the turn happen together.`
+  - new: `Rise e/o 5`
+- **Natural Spin Turn** / leader / step 6
+  - old: `Up, Lower e/o 6 Be sure next step is straight through under body, it is common to swing the leg out a bit on the next step but this is not correct.`
+  - new: `Up. Lower e/o 6`
+- **Natural Spin Turn** / follower / step 1
+  - old: `Start to rise e/o 1, NFR When preceded with the preparation step, the twist in the upper body to the left in preparation step should lessen as you collect onto RF and then to this step 1. Continue to twist upper body to R.`
+  - new: `Com to rise e/o 1, NFR`
+- **Natural Spin Turn** / follower / step 2
+  - old: `Cont to rise on 2 and 3 Swing right side up. Move RF a bit faster to get out of the way, pay attention not to be back-weighted. Do not place RF till Man does. Step RF first before moving body.`
+  - new: `Cont to rise`
+- **Natural Spin Turn** / follower / step 3
+  - old: `Lower e/o 3 Stay left. Keep the feet with pressure on the ground in order to maintain balance on your toes when you collect on 3`
+  - new: `Cont to rise. Lower e/o 3`
+- **Natural Spin Turn** / follower / step 4
+  - old: `No rise Start by connecting the shoulder and weight down to standing leg (L leg) and then drive. Do not lead with upper body.`
+  - new: ``
+- **Natural Spin Turn** / follower / step 5
+  - old: `Rise e/o 5 Take a big step side/back on LF (help to stay behind Man) with pressure on RF toes to maintain balance; stay left.`
+  - new: `Rise e/o 5`
+- **Natural Spin Turn** / follower / step 6
+  - old: `Up. Lower e/o 6 During brushing, ball of RF (not Heel) is in contact with floor. Collect/track LF under body before stepping fwd in next step, to avoid ronde kind of look.`
+  - new: `Up. Lower e/o 6`
+- **Natural Turn** / leader / step 1
+  - old: `Start to rise at end of 1 Man starts to turn frame (CBM) as step begins, "opening the door" to allow him to pass the follower. (i.e. rotate frame 1/8 to the right.) 1/8 is about the max that is comfortable.`
+  - new: `Com to rise e/o 1`
+- **Natural Turn** / leader / step 2
+  - old: `Cont to rise on 2 and 3 Though written as side step, Man actually starts by pointing LF straight forward, then as you push off RF, turning the body as well, it ends up being a side step. Continue turning on next step to end BLOD.`
+  - new: `Cont to rise`
+- **Natural Turn** / leader / step 3
+  - old: `Lower at end of 3 Do not lower too early.`
+  - new: `Cont to rise. Lower e/o 3`
+- **Natural Turn** / leader / step 4
+  - old: `Start to rise e/o 4, NFR The leader starts to turn his frame right (CBM) to allow follower to pass`
+  - new: `Com to rise e/o 4, NFR`
+- **Natural Turn** / leader / step 5
+  - old: `Cont to rise on 5 and 6`
+  - new: `Cont to rise`
+- **Natural Turn** / follower / step 1
+  - old: `Start to rise e/o 1, NFR Do not move weight off too quickly, Relax R hip to prepare.`
+  - new: `Com to rise e/o 1, NFR`
+- **Natural Turn** / follower / step 2
+  - old: `Cont to rise on 2 and 3 Opening out to let Man through.`
+  - new: `Cont to rise`
+- **Natural Turn** / follower / step 3
+  - old: `Lower e/o 3 Keep the feet with pressure on the ground in order to maintain balance on your toes when you collect on 3.`
+  - new: `Cont to rise. Lower e/o 3`
+- **Natural Turn** / follower / step 4
+  - old: `Start to rise e/o 4 Shoulder connects down to hip joints, release the joints, then drive the spine (move weight from heel to center to ball of LF and then push to step RF fwd)`
+  - new: `Com to rise e/o 4`
+- **Natural Turn** / follower / step 5
+  - old: `cont to rise on 5 and 6 Though written as side step, Lady actually starts by pointing LF straight forward, then as you push off RF, turning the body as well, it ends up being a side step.`
+  - new: `Cont to rise`
+- **Natural Turn** / follower / step 6
+  - old: `Lower e/o 6 Circular movement action. In this case, next step is backward, moving weight onto front ball of RF, then to center, then heel. It may feel like moving 'into' partner.`
+  - new: `Cont to rise. Lower e/o 6`
+- **Open Impetus and Cross Hesitation** / leader / step 1
+  - old: `- This is "Open Impetus".`
+  - new: ``
+- **Open Impetus and Cross Hesitation** / leader / step 3
+  - old: `up, lower e/o 3 Think about a diagonal line to come out in PP.`
+  - new: `Up. Lower e/o 3`
+- **Open Impetus and Cross Hesitation** / leader / step 4
+  - old: `rise e/o 4 This is "Cross Hesitation".`
+  - new: `Com to rise e/o 1`
+- **Open Impetus and Cross Hesitation** / leader / step 5
+  - old: `cont to rise 5 and 6 As you bring feet together, rise on toes.`
+  - new: `Cont to rise`
+- **Open Impetus and Cross Hesitation** / leader / step 6
+  - old: `lower e/o 6`
+  - new: `Cont to rise. Lower e/o 3`
+- **Open Impetus and Cross Hesitation** / follower / step 1
+  - old: `-- This is "Open Impetus"`
+  - new: ``
+- **Open Impetus and Cross Hesitation** / follower / step 2
+  - old: `rise e/o 2 Allow feet to turn, delay head.`
+  - new: `Rise e/o 2`
+- **Open Impetus and Cross Hesitation** / follower / step 3
+  - old: `up, lower e/o 3 Keep shoulders/arms toward Man.`
+  - new: `Up. Lower e/o 3`
+- **Open Impetus and Cross Hesitation** / follower / step 4
+  - old: `start to rise e/o 4 This is "Cross Hesitation"`
+  - new: `Com to rise e/o 1`
+- **Open Impetus and Cross Hesitation** / follower / step 5
+  - old: `cont to rise on 5 and 6 Monitor Man's position.`
+  - new: `Cont to rise`
+- **Open Impetus and Cross Hesitation** / follower / step 6
+  - old: `lower e/o 6`
+  - new: `Cont to rise. Lower e/o 3`
+- **Open Impetus and Wing** / leader / step 5
+  - old: `slight rise on 5 and 6, NFR`
+  - new: `Slight rise, NFR`
+- **Open Impetus and Wing** / follower / step 4
+  - old: `start to rise e/o 4`
+  - new: `Com to rise e/o 1`
+- **Open Impetus and Wing** / follower / step 5
+  - old: `cont to rise on 5`
+  - new: `Cont to rise`
+- **Open Impetus and Wing** / follower / step 6
+  - old: `up, lower e/o 6`
+  - new: `Up. Lower e/o 3`
+- **Open Telemark and Cross Hesitation** / leader / step 1
+  - old: `rise e/o 1 This is "Open Telemark"`
+  - new: `Rise e/o 1`
+- **Open Telemark and Cross Hesitation** / leader / step 2
+  - old: `up Has strong swivel action in the base area.`
+  - new: `Up`
+- **Open Telemark and Cross Hesitation** / leader / step 3
+  - old: `up, lower e/o 3 Man complete Telemark with feet.`
+  - new: `Up. Lower e/o 3`
+- **Open Telemark and Cross Hesitation** / leader / step 4
+  - old: `rise e/o 4 This is "Cross Hesitation"`
+  - new: `Com to rise e/o 1`
+- **Open Telemark and Cross Hesitation** / leader / step 5
+  - old: `cont to rise 5 and 6`
+  - new: `Cont to rise`
+- **Open Telemark and Cross Hesitation** / leader / step 6
+  - old: `lower e/o 6`
+  - new: `Cont to rise. Lower e/o 3`
+- **Open Telemark and Cross Hesitation** / follower / step 1
+  - old: `rise slightly e/o 1, NFR This is "Open Telemark"`
+  - new: `Rise slightly e/o 1`
+- **Open Telemark and Cross Hesitation** / follower / step 2
+  - old: `cont rise on 2 Anchor, pull in center. Let base rotate. Do not cross center of Man.`
+  - new: `Cont to rise`
+- **Open Telemark and Cross Hesitation** / follower / step 3
+  - old: `up, lower e/o 3 Completing the Telemark with body turning to PP.`
+  - new: `Up. Lower e/o 3`
+- **Open Telemark and Cross Hesitation** / follower / step 4
+  - old: `start to rise e/o 4 This is "Cross Hesitation"`
+  - new: `Com to rise e/o 1`
+- **Open Telemark and Cross Hesitation** / follower / step 5
+  - old: `cont to rise on 5 and 6 Swing R hip ahead of body.`
+  - new: `Cont to rise`
+- **Open Telemark and Cross Hesitation** / follower / step 6
+  - old: `lower e/o 6 Add shaping to left.`
+  - new: `Cont to rise. Lower e/o 3`
+- **Open Telemark and Wing** / leader / step 1
+  - old: `rise e/o 1 This is "Open Telemark".`
+  - new: `Rise e/o 1`
+- **Open Telemark and Wing** / leader / step 4
+  - old: `-- This is "Wing". See Open Impetus and Wing .`
+  - new: ``
+- **Open Telemark and Wing** / leader / step 5
+  - old: `slight rise on 5 and 6, NFR No foot swivel, but body turn only to face LOD`
+  - new: `Slight rise, NFR`
+- **Open Telemark and Wing** / leader / step 6
+  - old: `-- Foot swivel is used to end facing DC.`
+  - new: `Slight rise, NFR, lower e/o 3`
+- **Open Telemark and Wing** / follower / step 1
+  - old: `rise slightly e/o 1, NFR This is "Open Telemark"`
+  - new: `Rise slightly e/o 1`
+- **Open Telemark and Wing** / follower / step 2
+  - old: `cont rise on 2`
+  - new: `Cont to rise`
+- **Open Telemark and Wing** / follower / step 4
+  - old: `start to rise e/o 4 This is "Wing"`
+  - new: `Com to rise e/o 1`
+- **Open Telemark and Wing** / follower / step 5
+  - old: `cont to rise on 5 Right side leading.`
+  - new: `Cont to rise`
+- **Open Telemark and Wing** / follower / step 6
+  - old: `up, lower e/o 6 No swivel on LF.`
+  - new: `Up. Lower e/o 3`
+- **Outside Change** / leader / step 2
+  - old: `continue to rise on 2 Watch lady's position, do not turn hips without lady. Keep lady in front to the R side.`
+  - new: `Cont to rise`
+- **Outside Change** / follower / step 2
+  - old: `Continue to rise on 2 Stepping in same direction as 1st step.`
+  - new: `Cont to rise`
+- **Outside Spin** / leader / step 1
+  - old: `- This is outside partner. Leave RF back in CBMP, to give lady room to get by.`
+  - new: ``
+- **Outside Spin** / leader / step 2
+  - old: `rise e/o 2 Maintain CBMP stepping forward on RF, step behind the lady (step outside the lady, otherwise the leg is going to block lady and knock her off balance), give lady a chance to come around and close before stepping back and pivoting on the LF. This feels like a rock turn to the man.`
+  - new: `Rise e/o 2`
+- **Outside Spin** / leader / step 3
+  - old: `up, lower e/o 3 Step side, ending with frame aligned with feet.`
+  - new: `Up. Lower e/o 3`
+- **Outside Spin** / follower / step 1
+  - old: `start to rise e/o 1 Outside Spin can start from different alignments. This is starting from Facing DC against LOD (with a full turn), it could also start from Facing DW, or Facing DW against LOD. (See notes below for amounts of turn when starting in different alignments.)`
+  - new: `Com to rise e/o 1`
+- **Outside Spin** / follower / step 2
+  - old: `cont to rise on 2 Stretch and keep R side to Man. Do not drift into Man's space. Allow L arm to rotate and get in front of body.`
+  - new: `Cont to rise`
+- **Outside Spin** / follower / step 3
+  - old: `up, lower e/o 3 RF step between Man's feet. Don't pop up.`
+  - new: `Up. Lower e/o 3`
+- **Progressive Chassé to R** / leader / step 1
+  - old: `start to rise e/o 1`
+  - new: `Com to rise e/o 1`
+- **Progressive Chassé to R** / leader / step 2
+  - old: `continue to rise on 2 and 3 Track foot, no rondes.`
+  - new: `Cont to rise`
+- **Progressive Chassé to R** / leader / step 3
+  - old: `Up, lower e/o 4`
+  - new: `Cont to rise`
+- **Progressive Chassé to R** / follower / step 1
+  - old: `start to rise e/o 1, NFR Inside of turn, don't dance too quickly ahead of Man.`
+  - new: `Com to rise e/o 1, NFR`
+- **Progressive Chassé to R** / follower / step 2
+  - old: `continue to rise on 2 and 3 Track foot. Pull ab muscle back to spine. Keep centers long, not push tummy out to connect with Man.`
+  - new: `Cont to rise`
+- **Progressive Chassé to R** / follower / step 3
+  - old: `-- Do not rush, stay on top longer, keep with Man. Give R side to Man.`
+  - new: `Cont to rise`
+- **Progressive Chassé to R** / follower / step 4
+  - old: `-- Left shoulder is quite forward.`
+  - new: `Up. Lower e/o 4`
+- **Reverse Corté** / leader / step 1
+  - old: `-- Do not step side ways, straight back, use CBM`
+  - new: ``
+- **Reverse Corté** / leader / step 2
+  - old: `rise on 2 Track foot. Drag LF in with heel. No rondes. Keep feet flat, keep knees flexed. Do not pop up both toes too early. Stay down till lady gets on her RF, then rise.`
+  - new: `Rise on 2`
+- **Reverse Corté** / leader / step 3
+  - old: `up, lower e/o 3 Lower down through the right foot.`
+  - new: `Up. Lower e/o 3`
+- **Reverse Corté** / follower / step 1
+  - old: `Start to rise e/o 1 This is the same footwork as second half of Reverse Turn .`
+  - new: `Com to rise e/o 1`
+- **Reverse Corté** / follower / step 2
+  - old: `Continue to rise on 2 and 3 Track RF.`
+  - new: `Cont to rise`
+- **Reverse Corté** / follower / step 3
+  - old: `lower e/o 3 Gracefully collect and get back (especially when extensions last extra measure.)`
+  - new: `Cont to rise. Lower e/o 3`
+- **Reverse Pivot** / leader / step 1
+  - old: `-- RF should track under the body. Body begins turning at the beginning of this step.`
+  - new: ``
+- **Reverse Turn** / leader / step 1
+  - old: `Start to rise at end of 1 In Reverse turning figures, Man should maintain the frame orientation. The turn is achieved through movement (than position).`
+  - new: `Com to rise e/o 1`
+- **Reverse Turn** / leader / step 2
+  - old: `Cont to rise on 2 and 3 Track and brush feet. No ronde.`
+  - new: `Cont to rise`
+- **Reverse Turn** / leader / step 3
+  - old: `Lower at end of 3`
+  - new: `Cont to rise. Lower e/o 3`
+- **Reverse Turn** / leader / step 4
+  - old: `Start to rise e/o 4, NFR`
+  - new: `Com to rise e/o 4, NFR`
+- **Reverse Turn** / leader / step 5
+  - old: `Cont to rise on 5 and 6`
+  - new: `Cont to rise`
+- **Reverse Turn** / follower / step 1
+  - old: `Start to rise e/o 1, NFR Start from perfect balance, lower first, release into L knee and hip, hip rotates, body and drive big, gliding smooth steps, keep pressure on floor. Curve.`
+  - new: `Com to rise e/o 1, NFR`
+- **Reverse Turn** / follower / step 2
+  - old: `Cont to rise on 2 and 3 LF really needs to track under body, collect to RF before stepping to side (pushes off RF).`
+  - new: `Cont to rise`
+- **Reverse Turn** / follower / step 3
+  - old: `Lower e/o 3 Keep foot on floor with pressure.`
+  - new: `Cont to rise. Lower e/o 3`
+- **Reverse Turn** / follower / step 4
+  - old: `Start to rise e/o 4 Really drive, bigger step.`
+  - new: `Com to rise e/o 4`
+- **Reverse Turn** / follower / step 5
+  - old: `cont to rise on 5 and 6`
+  - new: `Cont to rise`
+- **Turning Lock** / leader / step 1
+  - old: `start to rise e/o 1 Thigh and hips are 1/8 to R. (not turning feet)`
+  - new: `Com to rise e/o 1`
+- **Turning Lock** / leader / step 2
+  - old: `rise on 2 and 3`
+  - new: `Cont to rise`
+- **Turning Lock** / leader / step 3
+  - old: `-- Rotate through the hips, pivot RF and turn, make sure Lady stays with you.`
+  - new: `Cont to rise`
+- **Turning Lock** / follower / step 1
+  - old: `start to rise e/o 1 After end of previous step (often, Natural Spin Turn) which is ending R side lead, connect R shoulder down. Really swing L side forward, let L hip and L side come diagonally forward (feels like shoulder rotating to R) sooner, changing it to L side lead. Not simply sticking LF fwd, the left side has to come through.`
+  - new: `Com to rise e/o 1`
+- **Turning Lock** / follower / step 2
+  - old: `rise on 2 and 3 Glute forward, don't sag. head weight to left.`
+  - new: `Cont to rise`
+- **Turning Lock** / follower / step 4
+  - old: `up, lower e/o 4 This is closed finish.`
+  - new: `Up. Lower e/o 4`
+- **Turning Lock to R** / leader / step 1
+  - old: `Start to rise e/o 1`
+  - new: `Com to rise e/o 1`
+- **Turning Lock to R** / leader / step 3
+  - old: `Up. Lower e/o 4`
+  - new: `Cont to rise`
+- **Turning Lock to R** / follower / step 1
+  - old: `Start to rise e/o 1`
+  - new: `Com to rise e/o 1`
+- **Turning Lock to R** / follower / step 3
+  - old: `Up. Lower e/o 4`
+  - new: `Cont to rise`
+- **Weave from PP** / leader / step 1
+  - old: `Start to rise at end of 1`
+  - new: `Com to rise e/o 1`
+- **Weave from PP** / leader / step 2
+  - old: `Cont to rise on 2 and 3`
+  - new: `Cont to rise`
+- **Weave from PP** / leader / step 3
+  - old: `Up. Lower at end of 3`
+  - new: `Up. Lower e/o 3`
+- **Weave from PP** / leader / step 4
+  - old: `cont to rise e/o 4`
+  - new: `Com to rise e/o 4, NFR`
+- **Weave from PP** / leader / step 5
+  - old: `Rise e/o 5`
+  - new: `Cont to rise`
+- **Weave from PP** / follower / step 1
+  - old: `Start to rise e/o 1`
+  - new: ``
+- **Weave from PP** / follower / step 2
+  - old: `Cont to rise on 2 and 3`
+  - new: `Rise e/o 2`
+- **Weave from PP** / follower / step 4
+  - old: `Up. Lower e/o 3`
+  - new: `Com to rise e/o 4`
+- **Weave from PP** / follower / step 6
+  - old: `Rise e/o 5`
+  - new: `Up. Lower e/o 6`
+- **Whisk** / leader / step 1
+  - old: `Start to rise at end of 1`
+  - new: `Com to rise e/o 1`
+- **Whisk** / leader / step 2
+  - old: `Cont to rise on 2 and 3 Position of this step is consistent with step 2 of LF Closed Change .`
+  - new: `Cont to rise`
+- **Whisk** / leader / step 3
+  - old: `Lower at end of 3 Brush LF, turn the frame, bring the foot right underneath the body, knees are touching, both feet facing same direction, foot does not turn out.`
+  - new: `Up. Lower e/o 3`
+- **Whisk** / follower / step 1
+  - old: `Start to rise e/o 1, NFR Whisk starts with a contra check action to begin with, wind up, commit enough weight on RF and then unwind and go to side (basic version)`
+  - new: `Com to rise e/o 1, NFR`
+- **Whisk** / follower / step 2
+  - old: `Cont to rise on 2 and 3 Before taking step, LF needs to track under body.`
+  - new: `Cont to rise`
+- **Whisk** / follower / step 3
+  - old: `Lower e/o 3 Foot: RF comes right underneath the body. Do not leave lot of space between RF and LF. RF and LF should be parallel pointing to the same direction.`
+  - new: `Up. Lower e/o 3`
+
+## Mechanical / handled
+
+- **Gzipped source files** (auto-decompressed by parser): closed_impetus.html
+- **'Moving' column** from source tables: parsed, not stored (per Step 1.2 decision).
+- **Brief verification note:** the brief states 'Basic Weave leader had blank timing'; the archive shows **zero blank Timing cells** in 33 files. The Basic Weave step-1 blank is in **Rise & Fall**, not Timing.
+
+## Parser bugs deferred (Phase 2b — fix before any future audited-figure re-parse)
+
+- **Audited-exclusion label vs. data protection.** In the original Step 1 parser, the AUDITED_KEYS branch applied `dataStatus: 'audited'` and *intended* to preserve audited values, but did not provide a hard guarantee — fields that were missing from the old audited record fell through to ballroomguide values, and the comparison path was easy to bypass by editing one line. For Phase 2b, an audited figure must be protected by a checksum or explicit-allowlist override that fails closed if anything tries to modify it. Logged 2026-06-13 (Checkpoint 2). Not fixed in this commit (Victor's call: accepted the ballroomguide re-parse for 'Open Impetus and Wing', so this bug had no effect on Step 1's output).
