@@ -15,7 +15,6 @@ import {
 let _uid = Date.now()
 const uid = () => `id-${_uid++}`
 
-const WALTZ_FIGURES = FIGURES['Waltz'] || []
 const WALTZ_COLOR = DANCE_COLORS['Waltz']
 
 function totalSectionMinutes(section) {
@@ -32,8 +31,10 @@ function getTec(tecId) {
   return TEC_LIBRARY.find(t => t.id === tecId) || null
 }
 
-function getFigure(name) {
-  return WALTZ_FIGURES.find(f => f.n === name) || null
+// Legacy default: pre-2c items with no `dance` land in Waltz — matches the
+// FIGURE_RICH_DATA lookup fallback so both catalogs stay consistent.
+function getFigure(name, dance) {
+  return (FIGURES[dance || 'Waltz'] || []).find(f => f.n === name) || null
 }
 
 function sectionTypeLabel(type) {
@@ -63,9 +64,13 @@ function useIsMobile() {
 }
 
 // ─── FIGURE DETAIL PANEL ─────────────────────────────
-function FigureDetailPanel({ figureName, mtNotes, onClose, alignmentOverrides, barsUsed, onAlignmentChange, isEditable }) {
-  const rich = FIGURE_RICH_DATA[figureName]
-  const fig = getFigure(figureName)
+function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverrides, barsUsed, onAlignmentChange, isEditable }) {
+  // Legacy default: sessions saved before dance-namespacing (Step 2c) don't carry
+  // a `dance` on their figure items — all were Waltz-era. This fallback is
+  // mandatory and permanent for zero-migration Firestore compatibility.
+  const resolvedDance = dance || 'Waltz'
+  const rich = FIGURE_RICH_DATA[resolvedDance]?.[figureName]
+  const fig = getFigure(figureName, resolvedDance)
   const [activeBar, setActiveBar] = useState(1)
 
   if (!rich && !fig) return (
@@ -461,6 +466,7 @@ function PSView({ session }) {
           {activeItem.kind === 'figure' && (
             <FigureDetailPanel
               figureName={activeItem.name}
+              dance={activeItem.dance}
               mtNotes={activeItem.mtNotes}
               alignmentOverrides={activeItem.alignmentOverrides}
               barsUsed={activeItem.barsUsed}
@@ -556,7 +562,7 @@ function LibraryPanel({ isMobile, onAddItem, session }) {
                         key={fig.n}
                         className="library-item library-figure"
                         draggable={!isMobile}
-                        onDragStart={e => dragStart(e, { kind: 'figure', name: fig.n })}
+                        onDragStart={e => dragStart(e, { kind: 'figure', name: fig.n, dance: fig.dance })}
                         title={fig.notes}
                       >
                         <span className="lib-icon">▶</span>
@@ -565,7 +571,7 @@ function LibraryPanel({ isMobile, onAddItem, session }) {
                           <div className="lib-sub">{fig.c} · {fig.fw}</div>
                         </div>
                         {isMobile && (
-                          <button className="mobile-add-btn" onClick={() => handleTapAdd({ kind: 'figure', name: fig.n })}>+</button>
+                          <button className="mobile-add-btn" onClick={() => handleTapAdd({ kind: 'figure', name: fig.n, dance: fig.dance })}>+</button>
                         )}
                       </div>
                     ))}
@@ -615,7 +621,7 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
     try {
       const data = JSON.parse(e.dataTransfer.getData('application/json'))
       if (data._reorder) return
-      const newItem = { id: uid(), kind: data.kind, name: data.name, tecId: data.tecId || null, minutes: 5, mtNotes: '', children: [] }
+      const newItem = { id: uid(), kind: data.kind, name: data.name, dance: data.dance || null, tecId: data.tecId || null, minutes: 5, mtNotes: '', children: [] }
       update({ items: [...(section.items || []), newItem] })
     } catch {}
   }
@@ -625,7 +631,7 @@ function BuilderSection({ section, onUpdate, onDelete, selectedItemId, onSelectI
     try {
       const data = JSON.parse(e.dataTransfer.getData('application/json'))
       if (data._reorder) return
-      const newChild = { id: uid(), kind: data.kind, name: data.name, tecId: data.tecId || null }
+      const newChild = { id: uid(), kind: data.kind, name: data.name, dance: data.dance || null, tecId: data.tecId || null }
       update({ items: (section.items || []).map(it => it.id === parentId ? { ...it, children: [...(it.children || []), newChild] } : it) })
     } catch {}
   }
@@ -822,8 +828,9 @@ function ItemEditor({ item, onUpdate }) {
   )
   const update = (c) => onUpdate({ ...item, ...c })
   const tec = item.kind === 'tec' ? getTec(item.tecId) : null
-  const fig = item.kind === 'figure' ? getFigure(item.name) : null
-  const rich = item.kind === 'figure' ? FIGURE_RICH_DATA[item.name] : null
+  const fig = item.kind === 'figure' ? getFigure(item.name, item.dance || 'Waltz') : null
+  // Legacy default: pre-2c items have no `dance` — all were Waltz-era. Mandatory permanent fallback.
+  const rich = item.kind === 'figure' ? FIGURE_RICH_DATA[item.dance || 'Waltz']?.[item.name] : null
   const barNums = rich ? [...new Set(rich.leader.map(s => s.bar))] : []
   const barsUsed = item.barsUsed || barNums
 
@@ -889,6 +896,7 @@ function ItemEditor({ item, onUpdate }) {
         {fig && (
           <FigureDetailPanel
             figureName={item.name}
+            dance={item.dance}
             alignmentOverrides={item.alignmentOverrides}
             barsUsed={barsUsed}
             onAlignmentChange={handleAlignmentChange}
@@ -960,7 +968,7 @@ function MTBuilder({ session, onSessionChange }) {
     const mainSec =
       mains.find(s => s.id === activeMainId) ||
       mains[mains.length - 1]
-    const newItem = { id: uid(), kind: data.kind, name: data.name, tecId: data.tecId || null, minutes: 5, mtNotes: '', children: [] }
+    const newItem = { id: uid(), kind: data.kind, name: data.name, dance: data.dance || null, tecId: data.tecId || null, minutes: 5, mtNotes: '', children: [] }
     updateSection({ ...mainSec, items: [...(mainSec.items || []), newItem] })
     setActiveMainId(mainSec.id)
     setMobilePanel('builder')

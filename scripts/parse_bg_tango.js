@@ -248,7 +248,7 @@ const anomalies = {
   ndccBgNoMatch:      [],     // BG figures with no NDCC entry — null tier
   ndccNdccNoBg:       [],     // NDCC entries with no BG page — no rich data this run
   renames:            [],     // figures renamed BG → NDCC name (priorBgName recorded)
-  waltzCollisions:    [],     // Tango keys that collide with Waltz keys
+  withinDanceDupes:   [],     // within-Tango duplicate keys (rare; Step 2c: cross-dance collisions no longer checked)
 }
 
 const ndccList = loadNdcc()
@@ -335,23 +335,16 @@ for (const fig of figures) {
   }
 }
 
-// 4) Tango-Waltz collision verification — final sanity check.
-// Read the current data.js text (must be at HEAD via `git restore` before this
-// script runs) and collect Waltz-only keys by parsing each FIGURE_RICH_DATA
-// block's `dance:` line. Any Tango key that matches a Waltz key would silently
-// overwrite Waltz at runtime — those are flagged here.
+// 4) Within-dance duplicate-key check (Step 2c: cross-dance collisions are
+//    OBSOLETE — FIGURE_RICH_DATA is dance-namespaced, so cross-dance name
+//    reuse is meaningless and permitted).
 {
-  const text = fs.readFileSync(DATA_JS, 'utf-8')
-  const waltzOnly = new Set()
-  const blockRe = /^  '([^']+)':\s*\{\n    bars:[\s\S]*?\n    dance:\s*'([^']+)'/gm
-  let bm
-  while ((bm = blockRe.exec(text)) !== null) {
-    if (bm[2] === 'Waltz') waltzOnly.add(bm[1])
-  }
-  for (const tk of figures.map(f => f.key)) {
-    if (waltzOnly.has(tk)) {
-      anomalies.waltzCollisions.push({ tangoKey: tk, waltzKey: tk, note: 'IDENTICAL key — would silently overwrite Waltz at runtime; documented exception required' })
+  const seen = new Set()
+  for (const f of figures) {
+    if (seen.has(f.key)) {
+      anomalies.withinDanceDupes.push({ key: f.key, note: 'DUPLICATE key within Tango namespace — one entry will overwrite the other' })
     }
+    seen.add(f.key)
   }
 }
 
@@ -363,33 +356,48 @@ for (const e of ndccList) {
   }
 }
 
-// ─── Splice into src/data.js (NEVER touching Waltz) ────────────────────────
+// ─── Splice into src/data.js (post-Step 2c, dance-namespaced) ──────────────
+// This script is now the go-forward template for Foxtrot / Quickstep / Latin.
+// It writes into the dance's namespace inside FIGURE_RICH_DATA. The splice logic
+// below adds a new dance section OR replaces the existing one for this dance.
+// Waltz is never touched.
 const src = fs.readFileSync(DATA_JS, 'utf-8')
+const THIS_DANCE = 'Tango'
 
-// 1. FIGURES['Tango'] — insert after FIGURES['Waltz'] closing `],` and before
-//    the FIGURES `}` close. Pattern in current file:
-//       …Waltz: [
-//         …entries…
-//       ],
-//       }              <-- this `}` closes FIGURES
-const figuresInsert = `  'Tango': [\n${figures.map(serializeCatalogEntry).join('\n')}\n  ],\n`
-// Match the close of FIGURES = the FIRST `\n}\n` after the start of FIGURES.
-const figStart = src.indexOf('export const FIGURES = {')
-const figEnd = src.indexOf('\n}\n', figStart)
-if (figStart < 0 || figEnd < 0) throw new Error("can't locate FIGURES block")
-// Insert before `\n}\n` close
-const srcWithFigures = src.slice(0, figEnd + 1) + figuresInsert + src.slice(figEnd + 1)
+// 1. FIGURES['<dance>'] — same pattern as before (dance-keyed catalog).
+//    If FIGURES[THIS_DANCE] already exists we REPLACE the array; otherwise
+//    we INSERT a new dance block before the FIGURES close.
+const catalogEntries = figures.map(serializeCatalogEntry).join('\n')
+const existingCatalogRe = new RegExp(`  '${THIS_DANCE}':\\s*\\[[\\s\\S]*?\\n  \\],\\n`, 'm')
+let srcWithFigures
+if (existingCatalogRe.test(src)) {
+  srcWithFigures = src.replace(existingCatalogRe, `  '${THIS_DANCE}': [\n${catalogEntries}\n  ],\n`)
+} else {
+  const figStart = src.indexOf('export const FIGURES = {')
+  const figEnd = src.indexOf('\n}\n', figStart)
+  if (figStart < 0 || figEnd < 0) throw new Error("can't locate FIGURES block")
+  srcWithFigures = src.slice(0, figEnd + 1) + `  '${THIS_DANCE}': [\n${catalogEntries}\n  ],\n` + src.slice(figEnd + 1)
+}
 
-// 2. FIGURE_RICH_DATA — append before the final `}` of the file (FIGURE_RICH_DATA
-//    is the last export and ends the file). Find the LAST `\n}\s*$` and insert
-//    Tango blocks immediately before it.
-const tangoRichBlock = figures.map(f => serializeRichFigure(f.key, f)).join('\n')
-// The file ends with `...,\n  },\n}` — final `}` is the FIGURE_RICH_DATA close
-// Find the position of the final `}` on its own line at end of file
-const finalCloseMatch = srcWithFigures.match(/\n\}\s*$/)
-if (!finalCloseMatch) throw new Error("can't locate final FIGURE_RICH_DATA close `}`")
-const finalCloseIdx = srcWithFigures.length - finalCloseMatch[0].length
-const finalSrc = srcWithFigures.slice(0, finalCloseIdx) + '\n' + tangoRichBlock + srcWithFigures.slice(finalCloseIdx)
+// 2. FIGURE_RICH_DATA[<dance>] — nested (Step 2c). Same insert-or-replace
+//    logic. The dance block is a `'<Dance>': { …figures… },` inside the
+//    top-level FIGURE_RICH_DATA object.
+const richEntries = figures.map(f => serializeRichFigure(f.key, f)).join('\n')
+// After Step 2c, each rich-data figure is indented one level deeper than before.
+// serializeRichFigure emits lines starting with 2-space indent (matches the
+// pre-2c flat shape); to nest inside a dance block, we add 2 more spaces.
+const richEntriesNested = richEntries.split('\n').map(l => l ? '  ' + l : l).join('\n')
+const danceBlockRe = new RegExp(`  '${THIS_DANCE}':\\s*\\{\\n[\\s\\S]*?\\n  \\},\\n`, 'm')
+let finalSrc
+if (danceBlockRe.test(srcWithFigures)) {
+  finalSrc = srcWithFigures.replace(danceBlockRe, `  '${THIS_DANCE}': {\n${richEntriesNested}\n  },\n`)
+} else {
+  // Insert before the final `}` of the file (FIGURE_RICH_DATA close).
+  const finalCloseMatch = srcWithFigures.match(/\n\}\s*$/)
+  if (!finalCloseMatch) throw new Error("can't locate final FIGURE_RICH_DATA close `}`")
+  const finalCloseIdx = srcWithFigures.length - finalCloseMatch[0].length
+  finalSrc = srcWithFigures.slice(0, finalCloseIdx) + `\n  '${THIS_DANCE}': {\n${richEntriesNested}\n  },\n` + srcWithFigures.slice(finalCloseIdx)
+}
 
 fs.writeFileSync(DATA_JS, finalSrc)
 
@@ -411,7 +419,7 @@ md.push(`| Multi-chart pages (extra variants ignored) | ${anomalies.multiChartPa
 md.push(`| NDCC — matches applied (auto-exact + Victor-confirmed) | ${anomalies.ndccExactMatches.length} |`)
 md.push(`| NDCC — BG figures with no NDCC entry (null tier/number) | ${anomalies.ndccBgNoMatch.length} |`)
 md.push(`| BG → NDCC name renames (priorBgName recorded) | ${anomalies.renames.length} |`)
-md.push(`| Tango ↔ Waltz key collisions (documented exceptions) | ${anomalies.waltzCollisions.length} |`)
+md.push(`| Within-Tango duplicate keys | ${anomalies.withinDanceDupes.length} |`)
 md.push(`| NDCC — NDCC entries with no BG page (no rich data this run) | ${anomalies.ndccNdccNoBg.length} |`)
 md.push(`| Gzipped source files (auto-handled) | ${anomalies.gzipped.length} |`)
 md.push(``)
@@ -430,8 +438,8 @@ section('NDCC — NDCC Tango entries with no ballroomguide page (no rich data th
   r => `**${r.ndccName}** (${r.tier} · #${r.number})${r.flag ? '  ⚠ '+r.flag : ''}`)
 section('BG → NDCC name renames (priorBgName field set on the figure record)', anomalies.renames,
   r => `\`${r.priorBgName}\` → \`${r.newKey}\` (NDCC #${r.number}: \`${r.ndccName}\`)`)
-section('Tango ↔ Waltz key collisions (documented exceptions)', anomalies.waltzCollisions,
-  r => `**\`${r.tangoKey}\`** also exists as a Waltz key — ${r.note}`)
+section('Within-Tango duplicate keys (should be empty; cross-dance collisions no longer checked post-Step 2c)', anomalies.withinDanceDupes,
+  r => `**\`${r.key}\`** — ${r.note}`)
 section('Multi-chart pages (extra Man/Lady variants present; only first chart parsed)', anomalies.multiChartPages,
   r => `**${r.file}** — "${r.title}" — ${r.tableCount} tables (canonical chart = T0..T3)`)
 section('Blank Timing cells in archive', anomalies.blankTiming,
@@ -448,7 +456,8 @@ md.push(`- **\`rise\` and \`sway\`** emitted as \`''\` for every Tango step (no 
 md.push(`- **'Moving' column** (Table A col 5): parsed and discarded, per Step 1.2 decision.`)
 md.push(`- **Gzipped files** auto-decompressed by parser: ${anomalies.gzipped.length ? anomalies.gzipped.join(', ') : 'none this run'}.`)
 md.push(`- **No display-layer changes** this run: \`App.jsx\` untouched. \`OPTIONAL_COLS\` does NOT include \`rhythm\` — UI is a next-session task.`)
-md.push(`- **No Waltz modifications:** Tango appended to \`FIGURES\` and \`FIGURE_RICH_DATA\` only; no Waltz entry touched.`)
+md.push(`- **No cross-dance modifications:** parser writes into \`FIGURE_RICH_DATA['${THIS_DANCE}']\` and \`FIGURES['${THIS_DANCE}']\` only. Other dance namespaces are untouched.`)
+md.push(`- **Post-Step-2c note (2026-07-18):** the two Tango↔Waltz collision exceptions (Contra Check and Fallaway Reverse and Slip Pivot) are SUPERSEDED by dance-namespacing. If re-run, the two Tango entries are keyed \`'Contra Check'\` and \`'Fallaway Reverse & Slip Pivot'\` in their own namespace; the NDCC_OVERRIDES entries above are historical.`)
 md.push(`- **AUDIT_PRIORITY** for Tango: applied to \`Chase\` and \`Oversway\` (the two multi-chart pages) per Victor's checkpoint confirmation.`)
 md.push(`- **Tango per-step \`notes\` are empty by design.** Ballroomguide Tango pages don't carry per-step coaching commentary; coaching enrichment is deferred to **Step 4 (dancecentral merge)**.`)
 md.push(`- **Documented Tango↔Waltz exceptions:**`)

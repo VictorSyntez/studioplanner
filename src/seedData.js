@@ -32,6 +32,7 @@ export const SEED_SESSIONS = [
           {
             id: id(),
             kind: 'figure',
+            dance: 'Waltz',
             name: 'Closed Change (RF)',
             minutes: 4,
             mtNotes: 'Start here — simplest figure. Check heel-toe footwork.',
@@ -43,6 +44,7 @@ export const SEED_SESSIONS = [
           {
             id: id(),
             kind: 'figure',
+            dance: 'Waltz',
             name: 'Natural Turn',
             minutes: 8,
             mtNotes: 'Emphasise CBM on step 1. Don\'t rush beat 2.',
@@ -55,6 +57,7 @@ export const SEED_SESSIONS = [
           {
             id: id(),
             kind: 'figure',
+            dance: 'Waltz',
             name: 'Closed Change (LF)',
             minutes: 3,
             mtNotes: 'Link back from Natural Turn. Mirror of RF Change.',
@@ -63,6 +66,7 @@ export const SEED_SESSIONS = [
           {
             id: id(),
             kind: 'figure',
+            dance: 'Waltz',
             name: 'Reverse Turn',
             minutes: 5,
             mtNotes: 'Heel turn on step 2 for lady. Leader drives strongly on 1.',
@@ -89,8 +93,8 @@ export const SEED_SESSIONS = [
             minutes: 8,
             mtNotes: 'Wall exercise: hand on wall, practise rising and lowering before adding partner.',
             children: [
-              { id: id(), kind: 'figure', name: 'Natural Turn' },
-              { id: id(), kind: 'figure', name: 'Reverse Turn' },
+              { id: id(), kind: 'figure', dance: 'Waltz', name: 'Natural Turn' },
+              { id: id(), kind: 'figure', dance: 'Waltz', name: 'Reverse Turn' },
             ],
           },
           {
@@ -101,8 +105,8 @@ export const SEED_SESSIONS = [
             minutes: 7,
             mtNotes: 'Use the 3& timing exercise. Clap on the &. Students feel the difference.',
             children: [
-              { id: id(), kind: 'figure', name: 'Closed Change (RF)' },
-              { id: id(), kind: 'figure', name: 'Closed Change (LF)' },
+              { id: id(), kind: 'figure', dance: 'Waltz', name: 'Closed Change (RF)' },
+              { id: id(), kind: 'figure', dance: 'Waltz', name: 'Closed Change (LF)' },
             ],
           },
         ],
