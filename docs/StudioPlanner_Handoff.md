@@ -1,8 +1,8 @@
 # StudioPlanner — Handoff Document
 
 **Date:** 2026-07-18 (supersedes the 2026-06-14 evening revision)
-**Current branch:** `main` — Phase 2a **Step 3 (Foxtrot parse) COMPLETE** (`fda1892`, NOT deployed — data-only). Prior: Step 2c (`a187d4e`), Step 2b (`bcc703c`, deployed).
-**Session commits (in order):** `556ac3a` (outstanding handoff doc) → `a187d4e` (Step 2c) → `bcc703c` (Step 2b) → `3952966` (docs handoff) → `3c7874b` (routine sheets/floorcraft) → `fda1892` (Step 3 Foxtrot)
+**Current branch:** `main` — Phase 2a **Step 3 (Foxtrot parse) COMPLETE** (`fda1892`, NOT deployed — data-only) + **UI bugfix `a372ce0`** (dance-aware detail labels + vite dep-scan, NOT deployed). Prior: Step 2c (`a187d4e`), Step 2b (`bcc703c`, deployed).
+**Session commits (in order):** `556ac3a` (outstanding handoff doc) → `a187d4e` (Step 2c) → `bcc703c` (Step 2b) → `3952966` (docs handoff) → `3c7874b` (routine sheets/floorcraft) → `fda1892` (Step 3 Foxtrot) → `05a80e6` (Step 3 handoff) → `a372ce0` (UI bugfix)
 **Deployed at:** https://dancepraktika-studioplanner.web.app/ — last deploy 2026-07-18 includes Step 2c + Step 2b UI. **Step 3 (Foxtrot) is committed but NOT deployed** (data-only, per work order).
 **Repo:** https://github.com/VictorSyntez/studioplanner
 
@@ -12,7 +12,7 @@
 1. **Keying model:** Option B (dance-namespaced) — stable across Waltz/Tango/Foxtrot.
 2. **Next major action: Phase 2a Step 4 — Quickstep parse** (clone `parse_bg_foxtrot.js`). No work started. Spec under *Next action*. **Read the Foxtrot learnings first** — Quickstep's Table B column set must be verified from source, NOT assumed.
 3. **Josh-and-Jill legacy Tango item chore — RESOLVED (Victor-confirmed done, 2026-07-18).** No further action.
-4. Tree should be clean at `fda1892` — verify `git status` on resume per standard pre-flight.
+4. Tree should be clean at `a372ce0` — verify `git status` on resume per standard pre-flight.
 5. **Two NDCC source PDFs restored into the repo (untracked):** `docs/NDCC_Ballroom_Syllabus.pdf` (Waltz/Tango/Foxtrot/Quickstep source) and `docs/NDCC_Latin_Syllabus.pdf` (future Latin step). Victor chose NOT to commit them with Step 3 — decide tracking at a later step.
 
 ---
@@ -64,6 +64,13 @@ Executed per `StudioPlanner_Phase2a_Step2c_KeyingMigration_ClaudeCode_Prompt.md`
 - **5 residual null-tier ("Needs Review"):** Open Natural Turn, Foxtrot Prep Step, Natural Twist Turn with Closed Impetus & Feather Finish Ending / with Open Impetus Ending / with Weave Ending.
 - **Two source-chart anomalies flagged (Phase 2b), NOT auto-corrected:** `Hover Cross` (Man) had a spurious empty trailing row (step 8, dropped as noise); `Natural Zig-Zag from PP` (Lady) has misaligned Steps-vs-Timing charts (A `{1,2,3,5,6}` vs B `{1,2,3,4,5}`) — left as-is per Victor.
 - Build passes; `data.js` pure-addition (Waltz/Tango untouched); `App.jsx` untouched. No-Beginners tier edge case verified (library groups Foxtrot with no Beginners tier + "Needs Review"×5).
+
+### Post-Step-3 UI bugfix — COMPLETE (`a372ce0`, NOT deployed) ← NEW
+Reported symptom: mixed-dance session items "all show Waltz" and "render empty."
+- **Root cause (the real bug): two hardcoded literal `"Waltz"` labels** — `FigureDetailPanel` header (`FIGURE · Waltz`) and the item-editor sub-label (`Waltz · N bars`). The DATA path resolved `item.dance` correctly; only the LABEL was a string literal → label-vs-data divergence (e.g. Open Telemark & Feather Ending rendered full Foxtrot data yet labeled Waltz). Fixed: both derive from the resolved dance (`resolvedDance` / `item.dance || 'Waltz'`).
+- **The item-CREATION dance path was already correct — NO change made there.** All creation sites (`handleDropRoot`, `handleDropChild`, `handleMobileAddItem`) stamp `dance: data.dance || null`; every catalog entry carries `dance`; catalog↔rich accented-key parity is clean (`Reverse Corté` etc. resolve fine); Firestore save/load preserves `dance`. The "loses its dance stamp" premise did not hold.
+- **The "empty step tables" symptom = broken vite dep-scan dev session, NOT a data bug.** Fixed with `optimizeDeps.entries=['index.html']` in `vite.config.js` (scanner was globbing the gitignored `sources/` mirror and choking on `.../<fig>?src=routine.html` names → ~106 `UNRESOLVED_ENTRY`). Victor live-tested post-fix: all figures render. **Do NOT re-investigate.**
+- Legacy `|| 'Waltz'` fallback for pre-2c Firestore items preserved (mandatory/permanent).
 
 ---
 
@@ -126,7 +133,7 @@ Latin (Jive structural gap **D-3** surfaces there — ballroomguide thin, dancec
 ---
 
 ## Notes for next session
-- **Resume at Quickstep (Step 4).** Baseline `fda1892`; standard pre-flight (clean tree, per-dance counts 34/30/30, build). Clone `parse_bg_foxtrot.js`.
+- **Resume at Quickstep (Step 4).** Baseline `a372ce0`; standard pre-flight (clean tree, per-dance counts 34/30/30, build). Clone `parse_bg_foxtrot.js`.
 - **Biggest Foxtrot lesson:** the work order's stated Table B shape was WRONG (said 6-col, real source was 7-col hybrid). Verify Quickstep's columns + token set from source before writing the join. Standing rule held: real source won, flagged the discrepancy, no dreaming.
 - Josh-and-Jill legacy Tango item chore — **resolved** (no longer an open item).
 - NDCC is the syllabus authority, **not CDF**.
