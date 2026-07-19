@@ -1,18 +1,18 @@
 # StudioPlanner — Handoff Document
 
-**Date:** 2026-06-14 (evening — supersedes the earlier 2026-06-14 / Step 1 revision)
-**Current branch:** `main` — Phase 2a **Step 2 (Tango) COMPLETE** (committed `898211a`)
-**Step 2 commit hash:** `898211a` (prior Step 1 commit: `5a94d66`)
-**Deployed at:** https://dancepraktika-studioplanner.web.app/ (still `v0.2.0` — Step 2 is data-only, no deploy. The deploy happens at the micro-step below.)
+**Date:** 2026-07-18 (supersedes the 2026-06-14 evening revision)
+**Current branch:** `main` — Phase 2a **Step 2c (keying migration) COMPLETE** (`a187d4e`) and **Step 2b micro-step COMPLETE** (`bcc703c`, deployed)
+**Session commits (in order):** `556ac3a` (outstanding handoff doc) → `a187d4e` (Step 2c) → `bcc703c` (Step 2b)
+**Deployed at:** https://dancepraktika-studioplanner.web.app/ — deploy of 2026-07-18 includes the Step 2c migration and Step 2b UI; verified on-device (Android; iOS check per Victor's usual routine). No version-string bump was recorded this session.
 **Repo:** https://github.com/VictorSyntez/studioplanner
 
 ---
 
-## Fast re-entry — open items needing Victor on resume
-1. **Tango commit `898211a` is in** — verify clean tree on resume (`git status`), then proceed.
-2. **Resume at the micro-step** (null-figure library visibility + deploy) — fully specced under *Next action*.
-3. **One decision pending:** fold `rhythm`-column rendering into the same micro-step, or keep separate (both are App.jsx + deploy). Recommendation: fold. See *Next action* §Decision.
-4. **Open decision before Foxtrot — keying model.** Two Tango↔Waltz collisions were resolved two different ways (orthographic "and" vs. dance-qualified "(Tango)"). Cross-dance name collisions recur heavily from Foxtrot on (Natural Turn, Reverse Turn, Closed Telemark, Contra Check). Pick ONE durable rule — likely dance-qualify all keys + a separate clean display-name field so the library doesn't show redundant suffixes like "Contra Check (Tango)". Resolve before parsing the next dance.
+## Fast re-entry — state on resume
+1. **Keying model RESOLVED (2026-07-18): Option B — dance-namespaced rich data.** The former open decision #4 is closed. Foxtrot is **unblocked**.
+2. **Next major action: Phase 2a Step 3 — Foxtrot parse** (clone the Tango parser). No work started. Spec under *Next action*.
+3. **Small chore (Victor, manual, ~2 min):** delete the pre-2c Tango figure items in the "Josh and Jill" test session and re-add them from the library so they carry a `dance` stamp. Agreed: no repair script. **Status at session close: not yet confirmed done.**
+4. Tree should be clean at `bcc703c` — verify `git status` on resume per standard pre-flight.
 
 ---
 
@@ -33,26 +33,26 @@ Auth, builder, rich figure data, NDCC metadata on Waltz figures, `targetLevel` f
 Source acquisition: ballroomguide (structural, Wayback) + dancecentral (enrichment). Archives gitignored; manifests + provenance committed. See `StudioPlanner_ARCHIVE_PROVENANCE.md`.
 
 ### Phase 2a Step 1 — COMPLETE (`5a94d66`)
-OP-9 root fix + unified-pipeline Waltz re-parse. Corrected step-row schema. 34 Waltz figures. Pipeline proven end-to-end on Waltz.
+OP-9 root fix + unified-pipeline Waltz re-parse. Corrected step-row schema. 34 Waltz figures.
 
-### Phase 2a Step 2 (Tango) — COMPLETE, pending commit verification ← NEW
-Mechanical repeat of Step 1 on Tango, executed in Claude Code, approved at the §4 checkpoint.
+### Phase 2a Step 2 (Tango) — COMPLETE (`898211a`)
+30 Tango figures; `rhythm` field added to schema; 26 NDCC-matched, 4 null-standalone. Total 64 figures. Details in the 2026-06-14 handoff revision and `docs/StudioPlanner_Phase2a_Step2_Tango_Anomalies.md`.
 
-**What changed:**
-- **New parser** `scripts/parse_bg_tango.js` (clone of the Waltz parser, Tango source dir `sources/ballroomguide/workshop/standard/tango/`).
-- **30 Tango figures** added to `FIGURE_RICH_DATA` and `FIGURES['Tango']` (dance-keyed object shape preserved). **Waltz untouched** (md5 unchanged); diff is pure-additive (~+594 lines, −0). Build passes. `FIGURE_RICH_DATA` = 34 Waltz + 30 Tango = 64.
-- **New step-row field `rhythm`** (verbatim `S` / `Q` / `&` / `''`) added to the schema — Tango's defining slow/quick data. Waltz entries carry no `rhythm` key (read as empty). **STORED, NOT YET RENDERED** (no App.jsx touch this run).
-- **NDCC tagging** from `docs/ndcc_tango_syllabus.json` (27 verbatim Tango entries, extracted from `NDCC_Ballroom_Syllabus.pdf`). **26 figures matched** (tier + number); **4 left null-standalone** (full structural data, no tier).
-- **Naming convention:** the **NDCC name is the figure key** for matched figures, with the prior BG name recorded in a new **`priorBgName`** field. 6 renames applied (Back Open Promenade → Back Open, Chase → The Chase, Fallaway Promenade → Promenade Outside, Four Step Change → Promenade Four Step, Open Reverse Turn → Open Reverse Turn, Lady Outside, Contra Check → Contra Check (Tango)).
-- **TWO documented Tango↔Waltz collision exceptions — handled by two *different* mechanisms** (see Open decision below): (a) **`Fallaway Reverse and Slip Pivot`** keeps the BG "and" spelling (orthographic anti-collision with Waltz `Fallaway Reverse & Slip Pivot`); (b) **`Contra Check (Tango)`** is dance-qualified (Victor "Option A", 2026-06-14), NDCC name `Contra Check` preserved in `priorBgName`. Waltz untouched in both.
-- **`Closed Promenade` (#4) is a Victor-corrected name** — the NDCC JSON holds the flagged-truncated `Closed`; Victor authorized the expansion. So #4's key is neither verbatim-NDCC nor BG.
-- **Tango source Table B is 5-column** (Step# | Timing | Rhythm | Position | Footwork): **no Rise & Fall, no Sway columns.** `rise`/`sway` are empty for all 30 Tango figures — by source, not parse loss.
-- **`#4 Closed` provisional flag RESOLVED** → matched to NDCC #4 (Beginners) as `Closed Promenade` via override (resolves the truncation flag carried in the syllabus JSON).
-- **4 null-standalone Tango figures** (Victor's calls — kept as standalone, no tier, `syllabusLevel: null`): **Rock Turn, Point to Promenade Position, Outside Swivel, Reverse Outside Swivel.** These are NOT currently visible in the library (a null tier falls outside every tier filter) — the **micro-step fixes this**.
-- **NDCC entries with no BG figure this run** (kept in the syllabus JSON, not deleted): **#5 Promenade Rock Turn, #8 Open Reverse Turn Lady in Line, #18 Swivels Fallaway.**
-- **`auditPriority: 'high'`:** Chase, Oversway (multi-chart source pages).
-- **Tango per-step `notes` are empty BY DESIGN** — ballroomguide Tango pages carry the structural layer only; coaching prose arrives at the **Step 4 dancecentral merge**. Logged in the anomaly report so it isn't mistaken for parse loss.
-- **Docs produced:** `docs/StudioPlanner_Phase2a_Step2_Tango_Anomalies.md`, `docs/Tango_Null_Figures_Audit.md`.
+### Phase 2a Step 2c (keying migration) — COMPLETE (`a187d4e`) ← NEW
+Executed per `StudioPlanner_Phase2a_Step2c_KeyingMigration_ClaudeCode_Prompt.md` (in KB).
+- **`FIGURE_RICH_DATA` restructured to dance-namespaced:** `{ 'Waltz': {34}, 'Tango': {30} }`. Figure keys are clean NDCC names (BG name where unmatched). Cross-dance key collisions are structurally meaningless.
+- **Two Tango key reverts (Victor, 2026-07-18):** `Contra Check (Tango)` → `Contra Check`; `Fallaway Reverse and Slip Pivot` → `Fallaway Reverse & Slip Pivot` ("&" per Victor). `FIGURES['Tango']` `.n` values mirrored. Waltz keys unchanged.
+- **`item.dance` added to figure-item schema** at all creation sites; **lookups resolve `item.dance || 'Waltz'` — the legacy default is MANDATORY and PERMANENT** (it is what keeps all pre-2c Firestore sessions resolving with zero data migration). Do not "clean it up."
+- **Defect found and fixed in-step:** `getFigure()` in `App.jsx` was hardcoded to search `FIGURES['Waltz']` only (via a `WALTZ_FIGURES` closure, now removed). Root cause of all Tango detail panels rendering empty. Fixed to `getFigure(name, dance)` with the same `|| 'Waltz'` default; both call sites updated; repo-wide grep confirmed no remaining dance-blind `FIGURES[...]` reads.
+- **Migration script `scripts/migrate_2c_nesting.js` committed** as provenance record (Victor-approved).
+- Smoke-verified: legacy Waltz sessions resolve; fresh Tango adds resolve with "FIGURE · TANGO" context.
+
+### Phase 2a Step 2b (micro-step) — COMPLETE (`bcc703c`, DEPLOYED) ← NEW
+- **"Needs Review" library bucket:** the former accidental `|| 'Other'` tier fallback renamed and made intentional. Null-tier figures (`syllabusLevel: null`) now pass the `targetLevel` filter via an **explicit guard** in `getFigures` (`f.syllabusLevel != null && ...`) — no longer reliant on the `levelIndex(null) === -1` indexOf coincidence. Verified at every tier including Gold Star.
+- **Sort:** null tier → `Infinity` in the comparator — "Needs Review" renders at the **bottom** of each dance section. `syllabusNumber ?? Infinity` null-safe tiebreaker added.
+- **Rhythm column rendered:** `{ key: 'rhythm', label: 'Rhythm' }` added FIRST in `OPTIONAL_COLS` (table architecture does not allow adjacency to Timing; first-optional is the closest achievable). Waltz unaffected (no `rhythm` key → column hidden by `visibleOptional` filter).
+- Category/dance `|| 'Other'` fallbacks untouched (unreachable in current data). Visual treatment of the "Needs Review" tier deferred to a polish pass.
+- **Deployed to Firebase Hosting and verified on-device:** 4 Tango nulls (Rock Turn, Point to Promenade Position, Outside Swivel, Reverse Outside Swivel) visible under "Needs Review" below Gold at all target levels; Tango detail panels show S/Q/& rhythm; Waltz panels unchanged.
 
 ---
 
@@ -62,74 +62,63 @@ Mechanical repeat of Step 1 on Tango, executed in Claude Code, approved at the �
 3. **OQ-2 = manifest-only** (archives gitignored).
 4. **Existing notes are scraped**; dancecentral re-merge stays at Step 4.
 5. **STANDING RULE: "No dreaming, no assumptions on dance content."** All dance content from archives + Victor's confirmation; missing data flagged not interpolated; conflicts logged not silently resolved (ballroomguide wins structural). Constrains dance content only, not pipeline mechanics.
-6. **`rhythm` field** added to the step-row schema for Standard dances — verbatim `S`/`Q`/`&`. Stored now; rendering deferred. ← NEW
-7. **NDCC name = figure key** for NDCC-matched figures; prior BG name kept in `priorBgName`. Two documented Tango↔Waltz collision exceptions resolved by two different mechanisms (orthographic "and" for Fallaway Reverse and Slip Pivot; dance-qualified suffix for Contra Check (Tango)) — **a consistent keying rule is an open decision before Foxtrot (see Open decision).** ← NEW
-8. **Null-standalone figures are legitimate** — a parsed figure with no clean NDCC match keeps full structural data and `syllabusLevel: null`; it must be reviewable via a library "Needs Review" bucket (micro-step). ← NEW
-9. **#18 Swivels Fallaway stays in the NDCC JSON, unmatched** (no-op) — not deleted. ← NEW
+6. **`rhythm` field** in the step-row schema for Standard dances — verbatim `S`/`Q`/`&`. **Now rendered** (first optional column).
+7. **KEYING MODEL (Option B, 2026-07-18) — SUPERSEDES the former decision #7:** `FIGURE_RICH_DATA` is namespaced by dance (`FIGURE_RICH_DATA[dance][figureKey]`); keys are clean NDCC names (BG name where unmatched); no `displayName` field; no dance-qualified suffixes; no orthographic anti-collision spellings. The two former Tango collision-exception mechanisms are retired (keys reverted, see Step 2c). Lookup dance context comes from `item.dance`, legacy default `'Waltz'` (mandatory, permanent).
+8. **Null-standalone figures are legitimate** — full structural data, `syllabusLevel: null`, surfaced in the **"Needs Review"** library bucket (built, deployed).
+9. **#18 Swivels Fallaway stays in the NDCC JSON, unmatched** (no-op) — not deleted.
+10. **AUDIT RULE (from the Step 2c defect): the rich store and the catalog are peer stores.** Any lookup touching `FIGURES[...]` gets the same dance-namespacing audit as `FIGURE_RICH_DATA[...]`. Namespacing one without the other is a half-fix. ← NEW
+11. **Legacy pre-2c Tango test items are repaired manually** (delete/re-add), never by script or name-based dance guessing (silent wrong-render risk). ← NEW
 
 ---
 
-## Next action — Phase 2a Step 2b "micro-step": null-figure library visibility (App.jsx + deploy)
+## Next action — Phase 2a Step 3: Foxtrot parse
 
-**Goal:** surface every `syllabusLevel: null` figure in the library so Victor can review them on-device. This is a UI + deploy step — deliberately separated from the data-only Tango commit.
+Mechanical repeat of the Tango process under the Option B keying model. Work order to be drafted at session start.
+- **Clone `parse_bg_tango.js`** (NOT the Waltz parser) — it carries the 5-col Table B handling, NDCC override-with-rename + `priorBgName`, and now writes into `FIGURE_RICH_DATA[dance]`. Cross-dance collision detection is obsolete under Option B; **within-dance** duplicate-key detection stays.
+- Extract Foxtrot NDCC entries from `NDCC_Ballroom_Syllabus.pdf` (pdftoppm rasterize + crop method, as for Tango) → `docs/ndcc_foxtrot_syllabus.json`.
+- Source dir: `sources/ballroomguide/workshop/standard/foxtrot/`. (dancecentral's `slow-foxtrot` alias is a Step 4 merge concern only.)
+- **Expected recurring names (Natural Turn, Reverse Turn, etc.) need NO collision handling** — clean NDCC keys inside the Foxtrot namespace.
+- Integrity check: per-dance counts (`Object.keys(FIGURE_RICH_DATA['Waltz']).length === 34`, `['Tango'] === 30`, + Foxtrot) — Waltz md5 is retired as the check.
+- Victor confirms NDCC matches figure-by-figure; §-checkpoint before commit; data-only (no deploy).
+- Any unmatched figures → `syllabusLevel: null` → they surface automatically in "Needs Review."
 
-**Step 0 — verify (report, then go):**
-- `git log --oneline -3` — confirm HEAD is `898211a` (Tango Step 2); record any divergence.
-- `git status` clean; `FIGURES` = Waltz 34 + Tango 30; `npm run build` OK.
-
-**Do:**
-- Read the **live** `App.jsx` library-render logic (ranged reads — file is large; ranges that worked before: `[1,223]`, `[223,700]`, `[700,1090]`). Locate where figures are grouped by `syllabusLevel` for the library / tier filter.
-- Add a **"Needs Review / Unassigned"** library group that catches figures where `syllabusLevel == null`. Make it **dance-agnostic and durable** — it must catch nulls in every future dance, not be Tango-specific.
-- Result: the 4 Tango nulls (Rock Turn, Point to Promenade Position, Outside Swivel, Reverse Outside Swivel) appear in that bucket; matched figures — including the two Group-3 Silver matches (Promenade Outside, Promenade Four Step) — appear under their tiers and are **excluded** from the bucket.
-- **Checkpoint:** review the App.jsx diff before commit.
-- **Deploy** to Firebase Hosting (may need `--reauth`) so the nulls are reviewable on iPhone 14 Pro Max / Pixel 7.
-
-**Decision to make at resume:** fold **`rhythm`-column rendering** into this same micro-step? It is also an App.jsx + deploy change (add `rhythm` to `OPTIONAL_COLS` + a column header in `FigureDetailPanel` so the S/Q/& tokens display). **Recommendation: fold it in** — one App.jsx touch, one deploy, and Tango figures then show their defining rhythm. Victor's call.
-
-**Scope guard — "commenting":** Victor's post-commit review = his own notes back to chat/Code, **NOT an in-app comment feature.** In-app PS commenting is the unbuilt PS-write capability (open question **D-1**) — do **not** build it in the micro-step.
-
----
-
-## After the micro-step — Step 2 continues
-Parse **Foxtrot → Quickstep** (Standard), then the **Latin** dances, reusing the Tango process. Carry forward:
-- **Clone the TANGO parser (`parse_bg_tango.js`), NOT the Waltz one.** Tango's already encodes the Standard-dance variants future dances need: 5-col Table B, NDCC override-with-rename + `priorBgName`, and collision verification.
-- **`rhythm` field is now part of the schema** — Foxtrot/Quickstep use S/Q too (it's Tango-only in the data so far).
-- **Integrity check for future parses:** Waltz md5 alone is NOT sufficient. Use `Object.keys(FIGURE_RICH_DATA).length` **plus a per-dance count** (e.g. Waltz 34 / Tango 30 / + new) to confirm additive-only, no clobber.
-- **Cross-dance key collisions are expected from Foxtrot on** — Natural Turn, Reverse Turn, Contra Check, Open Telemark all recur across dances. Resolve the keying-model open decision (fast re-entry #4) BEFORE parsing, so collisions are handled by one consistent rule, not ad-hoc.
-- **Jive structural gap (D-3)** surfaces at Latin (ballroomguide ~6 pages; dancecentral ~30 as backfill — Victor decides resolution).
-- **`foxtrot` ↔ `slow-foxtrot` alias** — a Step 4 cross-source merge concern.
+## After Foxtrot
+Quickstep, then Latin (Jive structural gap **D-3** surfaces there — ballroomguide thin, dancecentral promotion is Victor's call). Then Phase 2b Victor-paced audit, Step 4 dancecentral enrichment merge.
 
 ---
 
 ## Deferred / tracked issues
-- **`rhythm` column not rendered yet** — pending the micro-step decision above.
-- **Silver swivel/fallaway audit cluster:** Outside Swivel + Reverse Outside Swivel remain null-standalone; #18 Swivels Fallaway unmatched. A deeper NDCC reconciliation may revisit these — below Bronze pilot scope, low urgency.
+- **PWA update prompt** (vite-plugin-pwa "new version available — refresh") — quality-of-life for Victor now, PS users and commercial studios later. Pre-commercial polish item. ← NEW
+- **Visual treatment for the "Needs Review" tier** (badge / italic header) — polish pass. ← NEW
+- **Fragility note (mitigated):** null-tier library visibility formerly depended on `levelIndex(null) === -1` slipping past the maxLevel filter; now an explicit documented guard in `getFigures`. Do not remove the guard when refactoring the filter. ← NEW
+- **Silver swivel/fallaway audit cluster:** Outside Swivel + Reverse Outside Swivel null-standalone; #18 Swivels Fallaway unmatched — below Bronze pilot scope.
 - **Open Reverse Turn, Lady in Line (#8)** has no BG figure — may need sourcing or a split later.
-- **Parser audited-exclusion fail-closed bug** — still deferred to Phase 2b; inert this run (no audited Tango figures).
+- **Parser audited-exclusion fail-closed bug** — deferred to Phase 2b.
 - **Security (pre-commercial):** Firestore `get()` latency in PS read rules; over-permissive invite create rule.
 - **Licensing review (Risk #4)** before any commercial rollout.
+- **D-1 (PS Firestore writes / `psNotes`)** — deferred to Phase 3.5 entry.
 
 ---
 
 ## Key Files
 | File | Purpose |
 |------|---------|
-| `src/App.jsx` | Main app. **Micro-step target** (library grouping; optionally `rhythm` rendering). Ranged reads required. |
-| `src/data.js` | `FIGURES` (Waltz 34 + Tango 30) + `FIGURE_RICH_DATA` (64). Corrected schema **+ `rhythm`**. Don't revert to `count`. |
-| `scripts/parse_bg_waltz.js` | Step 1 parser (Waltz). |
-| `scripts/parse_bg_tango.js` | Step 2 parser (Tango); template for Foxtrot/Quickstep/Latin. |
+| `src/App.jsx` | Main app. `getFigure(name, dance)` now dance-aware; "Needs Review" grouping; `rhythm` in `OPTIONAL_COLS`. Ranged reads required. |
+| `src/data.js` | `FIGURES` (dance-keyed) + **`FIGURE_RICH_DATA` (dance-NAMESPACED: Waltz 34 / Tango 30)**. Explicit null-tier guard + null-safe sort in `getFigures`. |
+| `scripts/parse_bg_tango.js` | Template for Foxtrot/Quickstep/Latin — writes into `FIGURE_RICH_DATA[dance]`. |
+| `scripts/parse_bg_waltz.js` | Historical (Step 1). Untouched by design. |
+| `scripts/migrate_2c_nesting.js` | Provenance record of the Step 2c nesting migration. |
 | `docs/ndcc_tango_syllabus.json` | Verbatim NDCC Tango tier/number source (27 entries). |
-| `docs/StudioPlanner_Phase2a_Step2_Tango_Anomalies.md` | Step 2 anomaly report / audit worklist. |
-| `docs/Tango_Null_Figures_Audit.md` | Per-figure step dump for the 7 null candidates (audit record). |
-| `docs/StudioPlanner_Phase2a_Step2_Tango_ClaudeCode_Prompt.md` | Step 2 work order. |
-| `sources/` | **Gitignored.** Archives + manifests. ballroomguide tree under `workshop/`. |
+| `docs/StudioPlanner_Phase2a_Step2_Tango_Anomalies.md` | Step 2 anomaly report — amend: both collision-exception mechanisms superseded 2026-07-18 (Option B); Fallaway "and" spelling is historical. |
+| `sources/` | **Gitignored.** Archives + manifests. |
 
 ---
 
 ## Notes for next session
-- **Resume at the micro-step** (App.jsx + deploy), fully specced above. Commit baseline is `898211a`.
+- **Resume at Foxtrot (Step 3).** Baseline `bcc703c`; standard pre-flight (clean tree, per-dance counts 34/30, build).
+- First: confirm the Josh-and-Jill legacy Tango item chore is done (fast re-entry #3).
 - NDCC is the syllabus authority, **not CDF**.
-- **KB-lag rule:** check live file state before new work (e.g. confirm `data.js` carries the `rhythm` field and Tango block before editing).
-- **Canonical-source rule:** Code maintains its own memory files (`project_data_audit.md`, `project_figure_schema.md`, `MEMORY.md`). These are Code's recall, **not** the source of truth — if Code's memory and this handoff/KB ever disagree, **the KB wins; reconcile rather than trust Code's recall.**
-- **Recommended prep (not blocking):** promote a canonical **`docs/SCHEMA.md`** into the repo/KB — Code has a schema doc only in its own memory; the shared field-by-field reference (incl. per-dance Table B variance, `rhythm`, `priorBgName`, record-level fields) should live in `docs/` so this chat, Code, and the KB share one authority. Best generated from the committed `data.js`.
-- **Upload this handoff** and any modified docs to the Project KB at session close so this chat and Claude Code resume from the same state.
+- **KB-lag rule:** check live file state before new work. (This session began with a stale KB `data.js` — the rule earned its keep.)
+- **Canonical-source rule:** Code's memory files are recall, not truth — KB wins on any disagreement. Code has recorded the Step 2c learnings in its memory; this handoff remains the authority.
+- **`docs/SCHEMA.md` recommendation stands** (not blocking): promote a canonical field-by-field schema reference into `docs/` — now including the nested `FIGURE_RICH_DATA` shape, `item.dance`, `rhythm`, `priorBgName`.
+- **Upload this handoff** and modified files to the Project KB at session close.
