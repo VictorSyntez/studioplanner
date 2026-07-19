@@ -99,7 +99,12 @@ function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverr
   const isEmpty = v => !v || v === '--' || v === '---'
   // Optional columns: shown only if at least one step has non-empty content.
   // Count and Foot are always shown.
+  // Rhythm is placed first — the table architecture pins Count + Foot as always-shown
+  // header cells, so Rhythm can't sit adjacent to Timing without restructuring. First
+  // among optionals is the closest achievable position. Column hides for Waltz (no
+  // rhythm field), shows for Tango/Standard with S/Q/& tokens.
   const OPTIONAL_COLS = [
+    { key: 'rhythm',    label: 'Rhythm'    },
     { key: 'alignment', label: 'Alignment' },
     { key: 'footwork',  label: 'Footwork'  },
     { key: 'turn',      label: 'Turn'      },
@@ -502,9 +507,11 @@ function groupFigures(figures) {
     let dance = danceMap.get(danceKey)
     if (!dance) { dance = { dance: f.dance || 'Other', tiers: [] }; danceMap.set(danceKey, dance); cat.dances.push(dance) }
 
-    const tierKey = `${danceKey}|${f.syllabusLevel || 'Other'}`
+    // Null-tier figures land in a "Needs Review" bucket per dance — sorted last
+    // by getFigures (see data.js) so this group always renders at the bottom.
+    const tierKey = `${danceKey}|${f.syllabusLevel || 'Needs Review'}`
     let tier = tierMap.get(tierKey)
-    if (!tier) { tier = { tier: f.syllabusLevel || 'Other', figures: [] }; tierMap.set(tierKey, tier); dance.tiers.push(tier) }
+    if (!tier) { tier = { tier: f.syllabusLevel || 'Needs Review', figures: [] }; tierMap.set(tierKey, tier); dance.tiers.push(tier) }
 
     tier.figures.push(f)
   }

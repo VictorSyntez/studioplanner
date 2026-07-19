@@ -7,15 +7,21 @@ export function levelIndex(level) {
 
 // NOTE: FIGURES is still keyed by dance ({ 'Waltz': [...] }) in this pass, so we
 // flatten its values rather than calling FIGURES.filter directly (see §4.3).
+// Null-tier figures (syllabusLevel == null) are the "Needs Review" queue —
+// they intentionally pass every maxLevel filter and are surfaced at the bottom
+// of each dance in the library grouping. The filter and sort below encode that
+// explicitly; do not rely on the indexOf(-1) coincidence.
 export function getFigures({ dance, maxLevel, category } = {}) {
+  const sortKey = f => f.syllabusLevel == null ? Infinity : levelIndex(f.syllabusLevel)
   return Object.values(FIGURES).flat().filter(f => {
     if (dance && f.dance !== dance) return false
     if (category && f.category !== category) return false
-    if (maxLevel && levelIndex(f.syllabusLevel) > levelIndex(maxLevel)) return false
+    // Null tier passes: it's the review queue, must remain visible at every maxLevel.
+    if (maxLevel && f.syllabusLevel != null && levelIndex(f.syllabusLevel) > levelIndex(maxLevel)) return false
     return true
   }).sort((a, b) =>
-    levelIndex(a.syllabusLevel) - levelIndex(b.syllabusLevel) ||
-    a.syllabusNumber - b.syllabusNumber
+    sortKey(a) - sortKey(b) ||
+    (a.syllabusNumber ?? Infinity) - (b.syllabusNumber ?? Infinity)
   )
 }
 
