@@ -4,6 +4,13 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Restrict the dep-scan to the real entry. Without this, the scanner globs the
+  // repo (incl. the gitignored `sources/` mirror) and chokes on archived filenames
+  // like `.../back-lock?src=routine.html` — the `?src=` reads as a query string,
+  // producing ~106 UNRESOLVED_ENTRY warnings on `npm run dev`. Dev-only; no build impact.
+  optimizeDeps: {
+    entries: ['index.html'],
+  },
   plugins: [
     react(),
     VitePWA({

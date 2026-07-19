@@ -198,7 +198,7 @@ function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverr
     <div className="detail-panel">
       <div className="detail-panel-header">
         <div>
-          <div className="detail-panel-type">FIGURE · Waltz</div>
+          <div className="detail-panel-type">FIGURE · {resolvedDance}</div>
           <div className="detail-panel-name">{figureName}</div>
         </div>
         {onClose && <button className="icon-btn" onClick={onClose}>✕</button>}
@@ -866,7 +866,7 @@ function ItemEditor({ item, onUpdate }) {
         <span className={`editor-kind-badge kind-${item.kind}`}>{item.kind === 'figure' ? '▶ Figure' : '◆ TEC'}</span>
         <div className="editor-item-name">{item.name}</div>
         {tec && <div className="editor-item-sub">{tec.category} · {tec.summary}</div>}
-        {fig && rich && <div className="editor-item-sub">Waltz · {rich.bars} bar{rich.bars > 1 ? 's' : ''}</div>}
+        {fig && rich && <div className="editor-item-sub">{item.dance || 'Waltz'} · {rich.bars} bar{rich.bars > 1 ? 's' : ''}</div>}
       </div>
 
       <div className="form-group">
