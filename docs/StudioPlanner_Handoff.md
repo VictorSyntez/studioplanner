@@ -1,18 +1,19 @@
 # StudioPlanner — Handoff Document
 
 **Date:** 2026-07-18 (supersedes the 2026-06-14 evening revision)
-**Current branch:** `main` — Phase 2a **Step 2c (keying migration) COMPLETE** (`a187d4e`) and **Step 2b micro-step COMPLETE** (`bcc703c`, deployed)
-**Session commits (in order):** `556ac3a` (outstanding handoff doc) → `a187d4e` (Step 2c) → `bcc703c` (Step 2b)
-**Deployed at:** https://dancepraktika-studioplanner.web.app/ — deploy of 2026-07-18 includes the Step 2c migration and Step 2b UI; verified on-device (Android; iOS check per Victor's usual routine). No version-string bump was recorded this session.
+**Current branch:** `main` — Phase 2a **Step 3 (Foxtrot parse) COMPLETE** (`fda1892`, NOT deployed — data-only). Prior: Step 2c (`a187d4e`), Step 2b (`bcc703c`, deployed).
+**Session commits (in order):** `556ac3a` (outstanding handoff doc) → `a187d4e` (Step 2c) → `bcc703c` (Step 2b) → `3952966` (docs handoff) → `3c7874b` (routine sheets/floorcraft) → `fda1892` (Step 3 Foxtrot)
+**Deployed at:** https://dancepraktika-studioplanner.web.app/ — last deploy 2026-07-18 includes Step 2c + Step 2b UI. **Step 3 (Foxtrot) is committed but NOT deployed** (data-only, per work order).
 **Repo:** https://github.com/VictorSyntez/studioplanner
 
 ---
 
 ## Fast re-entry — state on resume
-1. **Keying model RESOLVED (2026-07-18): Option B — dance-namespaced rich data.** The former open decision #4 is closed. Foxtrot is **unblocked**.
-2. **Next major action: Phase 2a Step 3 — Foxtrot parse** (clone the Tango parser). No work started. Spec under *Next action*.
-3. **Small chore (Victor, manual, ~2 min):** delete the pre-2c Tango figure items in the "Josh and Jill" test session and re-add them from the library so they carry a `dance` stamp. Agreed: no repair script. **Status at session close: not yet confirmed done.**
-4. Tree should be clean at `bcc703c` — verify `git status` on resume per standard pre-flight.
+1. **Keying model:** Option B (dance-namespaced) — stable across Waltz/Tango/Foxtrot.
+2. **Next major action: Phase 2a Step 4 — Quickstep parse** (clone `parse_bg_foxtrot.js`). No work started. Spec under *Next action*. **Read the Foxtrot learnings first** — Quickstep's Table B column set must be verified from source, NOT assumed.
+3. **Josh-and-Jill legacy Tango item chore — RESOLVED (Victor-confirmed done, 2026-07-18).** No further action.
+4. Tree should be clean at `fda1892` — verify `git status` on resume per standard pre-flight.
+5. **Two NDCC source PDFs restored into the repo (untracked):** `docs/NDCC_Ballroom_Syllabus.pdf` (Waltz/Tango/Foxtrot/Quickstep source) and `docs/NDCC_Latin_Syllabus.pdf` (future Latin step). Victor chose NOT to commit them with Step 3 — decide tracking at a later step.
 
 ---
 
@@ -54,6 +55,16 @@ Executed per `StudioPlanner_Phase2a_Step2c_KeyingMigration_ClaudeCode_Prompt.md`
 - Category/dance `|| 'Other'` fallbacks untouched (unreachable in current data). Visual treatment of the "Needs Review" tier deferred to a polish pass.
 - **Deployed to Firebase Hosting and verified on-device:** 4 Tango nulls (Rock Turn, Point to Promenade Position, Outside Swivel, Reverse Outside Swivel) visible under "Needs Review" below Gold at all target levels; Tango detail panels show S/Q/& rhythm; Waltz panels unchanged.
 
+### Phase 2a Step 3 (Foxtrot) — COMPLETE (`fda1892`, NOT deployed) ← NEW
+30 Foxtrot figures (from 31 BG pages; `parse_bg_foxtrot.js` cloned from the Tango parser). Per-dance counts now **Waltz 34 / Tango 30 / Foxtrot 30**. Full NDCC #1–25 coverage; 5 ISTD-only figures null-tier. Details in `docs/StudioPlanner_Phase2a_Step3_Foxtrot_Anomalies.md`.
+- **Table B is a 7-col HYBRID** (`Timing | Rhythm | Position | Rise & Fall | Sway | Footwork`) — carries BOTH Tango's `Rhythm` AND Waltz's `Rise & Fall`/`Sway`, all populated. This **contradicted the work order's §3.3 6-col spec**; the real source structure won (verified from all 31 files). *Lesson for Quickstep: verify Table B columns from source, never assume.*
+- **New rhythm token `S(S)`** (Foxtrot Prep Step) outside Tango's `S/Q/&` set — stored verbatim, not normalized.
+- **NDCC name-mapping (Victor's figure-by-figure §7 rulings):** 12 auto-exact + 13 overrides. Word-order pairs kept BG spelling as the key with NDCC number attached (e.g. `Hover Feather`→#12 "Feather Hover", `Natural Telemark`→#13, `Hover Telemark`→#14, `Hover Cross`→#15, `Top Spin`→#11, `Outside Swivel`→#16). Renames with `priorBgName`: `Weave from PP` (#18), `Curved Feather to Back Feather` (#21), `Natural Zig-Zag from PP` (#22).
+- **#10 is a two-page JOIN** (Victor-ruled): `Open Telemark` + `Feather Ending` → one entry `Open Telemark & Feather Ending` (6 steps/role, bars 1–2, `priorBgName: 'Open Telemark + Feather Ending'`). Steps concatenated verbatim across the seam; step data continuous (PP→PP / Facing DW→DW); the prose moving-label difference (`Ended Moving LOD` vs `Commenced Moving to Centre`) kept verbatim and flagged.
+- **5 residual null-tier ("Needs Review"):** Open Natural Turn, Foxtrot Prep Step, Natural Twist Turn with Closed Impetus & Feather Finish Ending / with Open Impetus Ending / with Weave Ending.
+- **Two source-chart anomalies flagged (Phase 2b), NOT auto-corrected:** `Hover Cross` (Man) had a spurious empty trailing row (step 8, dropped as noise); `Natural Zig-Zag from PP` (Lady) has misaligned Steps-vs-Timing charts (A `{1,2,3,5,6}` vs B `{1,2,3,4,5}`) — left as-is per Victor.
+- Build passes; `data.js` pure-addition (Waltz/Tango untouched); `App.jsx` untouched. No-Beginners tier edge case verified (library groups Foxtrot with no Beginners tier + "Needs Review"×5).
+
 ---
 
 ## Locked decisions (Phase 2a)
@@ -71,19 +82,17 @@ Executed per `StudioPlanner_Phase2a_Step2c_KeyingMigration_ClaudeCode_Prompt.md`
 
 ---
 
-## Next action — Phase 2a Step 3: Foxtrot parse
+## Next action — Phase 2a Step 4: Quickstep parse
 
-Mechanical repeat of the Tango process under the Option B keying model. Work order to be drafted at session start.
-- **Clone `parse_bg_tango.js`** (NOT the Waltz parser) — it carries the 5-col Table B handling, NDCC override-with-rename + `priorBgName`, and now writes into `FIGURE_RICH_DATA[dance]`. Cross-dance collision detection is obsolete under Option B; **within-dance** duplicate-key detection stays.
-- Extract Foxtrot NDCC entries from `NDCC_Ballroom_Syllabus.pdf` (pdftoppm rasterize + crop method, as for Tango) → `docs/ndcc_foxtrot_syllabus.json`.
-- Source dir: `sources/ballroomguide/workshop/standard/foxtrot/`. (dancecentral's `slow-foxtrot` alias is a Step 4 merge concern only.)
-- **Expected recurring names (Natural Turn, Reverse Turn, etc.) need NO collision handling** — clean NDCC keys inside the Foxtrot namespace.
-- Integrity check: per-dance counts (`Object.keys(FIGURE_RICH_DATA['Waltz']).length === 34`, `['Tango'] === 30`, + Foxtrot) — Waltz md5 is retired as the check.
-- Victor confirms NDCC matches figure-by-figure; §-checkpoint before commit; data-only (no deploy).
-- Any unmatched figures → `syllabusLevel: null` → they surface automatically in "Needs Review."
+Mechanical repeat under Option B. **Clone `scripts/parse_bg_foxtrot.js`** (the newest, cleanest template — namespaced output, NDCC override-with-rename + `priorBgName`, two-page JOIN support, within-dance dupe check, A/B step-set mismatch detection, empty-row dropping).
+- **VERIFY Quickstep's Table B column set from source FIRST — do NOT assume.** Foxtrot's real Table B (7-col hybrid with `Rhythm` + `Rise & Fall` + `Sway`) contradicted its work order's stated 6-col spec. Also enumerate the rhythm/timing token set from source (Foxtrot surfaced a new `S(S)` token). Adapt the `join()` and `buildNewStep()` to whatever Quickstep actually prints.
+- Extract Quickstep NDCC entries from `docs/NDCC_Ballroom_Syllabus.pdf` (**now in the repo**, column 4 of 4) via the pdftoppm rasterize + crop-and-enlarge method → `docs/ndcc_quickstep_syllabus.json`. NDCC Quickstep = 31 figures (Beginners 1–5, Pre-Bronze 6–13, Bronze 14–20, Silver 21–26, Gold 27–31).
+- Source dir: `sources/ballroomguide/workshop/standard/quickstep/`.
+- Integrity check: per-dance counts (`['Waltz']===34`, `['Tango']===30`, `['Foxtrot']===30`, + Quickstep) — md5 retired.
+- Only EXACT NDCC matches auto-applied; fuzzy/word-order/join decisions → §-checkpoint, Victor confirms figure-by-figure; then populate `NDCC_OVERRIDES`/`JOINS` and re-run. Data-only (no deploy). Unmatched → null-tier "Needs Review."
 
-## After Foxtrot
-Quickstep, then Latin (Jive structural gap **D-3** surfaces there — ballroomguide thin, dancecentral promotion is Victor's call). Then Phase 2b Victor-paced audit, Step 4 dancecentral enrichment merge.
+## After Quickstep
+Latin (Jive structural gap **D-3** surfaces there — ballroomguide thin, dancecentral promotion is Victor's call; `docs/NDCC_Latin_Syllabus.pdf` is restored in the repo). Then Phase 2b Victor-paced audit (Foxtrot's flagged zig-zag misalignment + provisional bar derivation land here), Step 4 dancecentral enrichment merge.
 
 ---
 
@@ -104,19 +113,22 @@ Quickstep, then Latin (Jive structural gap **D-3** surfaces there — ballroomgu
 | File | Purpose |
 |------|---------|
 | `src/App.jsx` | Main app. `getFigure(name, dance)` now dance-aware; "Needs Review" grouping; `rhythm` in `OPTIONAL_COLS`. Ranged reads required. |
-| `src/data.js` | `FIGURES` (dance-keyed) + **`FIGURE_RICH_DATA` (dance-NAMESPACED: Waltz 34 / Tango 30)**. Explicit null-tier guard + null-safe sort in `getFigures`. |
-| `scripts/parse_bg_tango.js` | Template for Foxtrot/Quickstep/Latin — writes into `FIGURE_RICH_DATA[dance]`. |
+| `src/data.js` | `FIGURES` (dance-keyed) + **`FIGURE_RICH_DATA` (dance-NAMESPACED: Waltz 34 / Tango 30 / Foxtrot 30)**. Explicit null-tier guard + null-safe sort in `getFigures`. |
+| `scripts/parse_bg_foxtrot.js` | **Newest / go-forward template for Quickstep/Latin.** Namespaced output, NDCC override-with-rename + `priorBgName`, two-page `JOINS`, within-dance dupe check, A/B step-set mismatch detection, empty-row dropping, 7-col hybrid Table B. |
+| `scripts/parse_bg_tango.js` | Prior template (5-col Table B). Superseded by the Foxtrot parser as the clone source. |
 | `scripts/parse_bg_waltz.js` | Historical (Step 1). Untouched by design. |
 | `scripts/migrate_2c_nesting.js` | Provenance record of the Step 2c nesting migration. |
-| `docs/ndcc_tango_syllabus.json` | Verbatim NDCC Tango tier/number source (27 entries). |
-| `docs/StudioPlanner_Phase2a_Step2_Tango_Anomalies.md` | Step 2 anomaly report — amend: both collision-exception mechanisms superseded 2026-07-18 (Option B); Fallaway "and" spelling is historical. |
+| `docs/ndcc_tango_syllabus.json` · `docs/ndcc_foxtrot_syllabus.json` | Verbatim NDCC tier/number sources (Tango 27, Foxtrot 25). |
+| `docs/StudioPlanner_Phase2a_Step3_Foxtrot_Anomalies.md` | Step 3 anomaly report (blank timings, A/B mismatches, #10 join seam, ISTD-only bucket, provisional bar counts). |
+| `docs/NDCC_Ballroom_Syllabus.pdf` · `docs/NDCC_Latin_Syllabus.pdf` | NDCC source PDFs restored from Trash (untracked — not committed with Step 3). |
 | `sources/` | **Gitignored.** Archives + manifests. |
 
 ---
 
 ## Notes for next session
-- **Resume at Foxtrot (Step 3).** Baseline `bcc703c`; standard pre-flight (clean tree, per-dance counts 34/30, build).
-- First: confirm the Josh-and-Jill legacy Tango item chore is done (fast re-entry #3).
+- **Resume at Quickstep (Step 4).** Baseline `fda1892`; standard pre-flight (clean tree, per-dance counts 34/30/30, build). Clone `parse_bg_foxtrot.js`.
+- **Biggest Foxtrot lesson:** the work order's stated Table B shape was WRONG (said 6-col, real source was 7-col hybrid). Verify Quickstep's columns + token set from source before writing the join. Standing rule held: real source won, flagged the discrepancy, no dreaming.
+- Josh-and-Jill legacy Tango item chore — **resolved** (no longer an open item).
 - NDCC is the syllabus authority, **not CDF**.
 - **KB-lag rule:** check live file state before new work. (This session began with a stale KB `data.js` — the rule earned its keep.)
 - **Canonical-source rule:** Code's memory files are recall, not truth — KB wins on any disagreement. Code has recorded the Step 2c learnings in its memory; this handoff remains the authority.
