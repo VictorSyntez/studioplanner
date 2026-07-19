@@ -1,0 +1,52 @@
+{
+  "_provenance": {
+    "source": "NDCC_Ballroom_Syllabus.pdf",
+    "sourceTitle": "APPENDIX VI – NDCC Ballroom Syllabus Step List, Competitions & Medal Test",
+    "sourceAuthor": "George Pytlik / National Dance Council of Canada",
+    "page": 1,
+    "column": "Foxtrot (column 3 of 4: Waltz · Tango · Foxtrot · Quickstep)",
+    "method": "Verbatim transcription from a 220-DPI rasterization of the page, Foxtrot column crop-and-enlarged for isolation (naive pdftotext cross-contaminates the 4-column layout). Names are exactly as printed; nothing expanded, corrected, or inferred.",
+    "extractedDate": "2026-07-18",
+    "status": "EXTRACTED — pending Victor's confirmation. Not yet audited.",
+    "rules": "Figure-name → tier/number is dance content. This file is the verbatim NDCC side only. Matching these names to ballroomguide figure names is a separate step done by Claude Code, with fuzzy/unmatched pairs flagged for Victor (never guessed).",
+    "notes": [
+      "syllabusNumber is per-dance and cumulative across tiers — Foxtrot runs its own 1..25 sequence, NOT a global number shared with the other dances.",
+      "NO BEGINNERS FIGURES: the Foxtrot Beginners cell is blank in the source (Waltz, Tango, Quickstep all list Beginners figures; Foxtrot does not). Foxtrot's numbering therefore starts at 1 in Pre-Bronze. This confirms the Phase 2 Architecture Roadmap (Section A.2): 0 Beginners / 5 Pre-Bronze / 3 Bronze = 8 Bronze-cumulative.",
+      "'Feather Finish' is NOT a standalone numbered Foxtrot figure. It appears only embedded in #4 'Reverse Turn ( incl. Feather Finish )' and #5 'Closed Impetus and Feather Finish'. (Disambiguation flag from acquisition brief §9 / Step 3 work order §4.4 — surfaced to Victor, not resolved here.)",
+      "'Heel Pull' does NOT appear anywhere in the NDCC Foxtrot column. #3 is printed as plain 'Natural Turn' with no Heel Pull suffix or variant. (Disambiguation flag from acquisition brief §9 / Step 3 work order §4.4 — surfaced to Victor, not resolved here.)",
+      "Figure 4 'Reverse Turn ( incl. Feather Finish )' has spaces inside the parentheses as printed; transcribed verbatim.",
+      "Figures 5, 16, 25 wrap across two printed lines in the source ('Closed Impetus and Feather / Finish'; 'Open Telemark Outside Swivel / and Feather Ending'; 'Bounce Fallaway with Weave / Ending'); each is one figure.",
+      "Gold Star tier lists no individual figures: the source states 'Steps 1– 25 plus Gold Star groups / Fig. 1–25 plus groupes Etoile d'Or'. No Gold Star figure records are emitted.",
+      "Tier labels are bilingual in the source (e.g. 'Pre- Bronze - Pré- Bronze', 'Gold – Or'); syllabusLevel uses the English form (normalized to 'Pre-Bronze') to match existing data.js Waltz/Tango entries."
+    ]
+  },
+  "dance": "Foxtrot",
+  "tierOrder": ["Beginners", "Pre-Bronze", "Bronze", "Silver", "Gold", "Gold Star"],
+  "figures": [
+    { "syllabusNumber": 1,  "syllabusLevel": "Pre-Bronze", "ndccName": "Feather Step" },
+    { "syllabusNumber": 2,  "syllabusLevel": "Pre-Bronze", "ndccName": "Three Step" },
+    { "syllabusNumber": 3,  "syllabusLevel": "Pre-Bronze", "ndccName": "Natural Turn" },
+    { "syllabusNumber": 4,  "syllabusLevel": "Pre-Bronze", "ndccName": "Reverse Turn ( incl. Feather Finish )", "flag": "Parenthetical references Feather Finish, which is not a standalone numbered figure. Confirm intended matching to ballroomguide 'Reverse Turn' / 'Feather Ending'." },
+    { "syllabusNumber": 5,  "syllabusLevel": "Pre-Bronze", "ndccName": "Closed Impetus and Feather Finish", "flag": "References Feather Finish (not a standalone numbered figure)." },
+    { "syllabusNumber": 6,  "syllabusLevel": "Bronze",     "ndccName": "Natural Weave" },
+    { "syllabusNumber": 7,  "syllabusLevel": "Bronze",     "ndccName": "Change of Direction" },
+    { "syllabusNumber": 8,  "syllabusLevel": "Bronze",     "ndccName": "Basic Weave" },
+    { "syllabusNumber": 9,  "syllabusLevel": "Silver",     "ndccName": "Closed Telemark" },
+    { "syllabusNumber": 10, "syllabusLevel": "Silver",     "ndccName": "Open Telemark and Feather Ending" },
+    { "syllabusNumber": 11, "syllabusLevel": "Silver",     "ndccName": "Top Spin Hover" },
+    { "syllabusNumber": 12, "syllabusLevel": "Silver",     "ndccName": "Feather Hover" },
+    { "syllabusNumber": 13, "syllabusLevel": "Silver",     "ndccName": "Telemark Natural" },
+    { "syllabusNumber": 14, "syllabusLevel": "Silver",     "ndccName": "Telemark Hover" },
+    { "syllabusNumber": 15, "syllabusLevel": "Silver",     "ndccName": "Cross" },
+    { "syllabusNumber": 16, "syllabusLevel": "Silver",     "ndccName": "Open Telemark Outside Swivel and Feather Ending" },
+    { "syllabusNumber": 17, "syllabusLevel": "Silver",     "ndccName": "Open Impetus" },
+    { "syllabusNumber": 18, "syllabusLevel": "Silver",     "ndccName": "Weave from PP" },
+    { "syllabusNumber": 19, "syllabusLevel": "Silver",     "ndccName": "Reverse Wave" },
+    { "syllabusNumber": 20, "syllabusLevel": "Gold",       "ndccName": "Natural Twist Turn" },
+    { "syllabusNumber": 21, "syllabusLevel": "Gold",       "ndccName": "Curved Feather to Back Feather" },
+    { "syllabusNumber": 22, "syllabusLevel": "Gold",       "ndccName": "Natural Zig-Zag from PP" },
+    { "syllabusNumber": 23, "syllabusLevel": "Gold",       "ndccName": "Fallaway Reverse and Slip Pivot" },
+    { "syllabusNumber": 24, "syllabusLevel": "Gold",       "ndccName": "Natural Hover Telemark" },
+    { "syllabusNumber": 25, "syllabusLevel": "Gold",       "ndccName": "Bounce Fallaway with Weave Ending" }
+  ]
+}
