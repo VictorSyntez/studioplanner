@@ -1781,7 +1781,8 @@ export const FIGURE_RICH_DATA = {
     'Natural Turn': {
       bars: 3,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 3, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'LF to side', alignment: 'Backing DC', turn: '1/4 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -1938,7 +1939,8 @@ export const FIGURE_RICH_DATA = {
     'Three Step': {
       bars: 1,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 2, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF fwd', alignment: 'Facing DW', turn: '', footwork: 'HT', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF fwd, R side leading', alignment: 'Facing DW', turn: 'Body turns to L', footwork: 'HT', sway: 'L', position: 'Closed', rise: 'Rise e/o 2', cbm: '', notes: '', rhythm: 'Q' },
@@ -2151,7 +2153,8 @@ export const FIGURE_RICH_DATA = {
     'Back Lock': {
       bars: 2,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 11, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF back in CBMP', alignment: 'Backing DW', turn: '', footwork: 'TH', sway: '', position: 'OP', rise: 'Com to rise e/o 1, NFR', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF back', alignment: 'Backing DW', turn: '', footwork: 'T', sway: '', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '', rhythm: 'Q' },
@@ -2292,7 +2295,8 @@ export const FIGURE_RICH_DATA = {
     'Forward Lock': {
       bars: 2,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 4, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd in CBMP', alignment: 'Facing DW', turn: '', footwork: 'HT', sway: '', position: 'OP', rise: 'Com to rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'LF diag fwd', alignment: 'Facing DW', turn: '', footwork: 'T', sway: '', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '', rhythm: 'Q' },
