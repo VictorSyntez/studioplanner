@@ -539,8 +539,37 @@ if (existingCatalogRe.test(src)) {
 }
 
 // 2. FIGURE_RICH_DATA[<dance>] — nested; insert-or-replace the dance block.
-const richEntries = figures.map(f => serializeRichFigure(f.key, f)).join('\n')
-const richEntriesNested = richEntries.split('\n').map(l => l ? '  ' + l : l).join('\n')
+// ── AUDITED-EXCLUSION GUARD (fail-closed) ───────────────────────────────────
+// Any figure at dataStatus:'audited' in the EXISTING data.js is preserved
+// VERBATIM (its exact text block copied byte-for-byte) and never regenerated
+// from source. Protects Victor's Phase 2b audit rulings, bar corrections, and
+// logged `corrections` from being silently overwritten on re-parse. A figure is
+// re-serialized ONLY while still 'parsed'. GO-FORWARD TEMPLATE: Latin parsers
+// cloned from this file inherit the guard — keep it.
+function extractAuditedRichBlocks(existingSrc, dance) {
+  const map = new Map()
+  const danceEsc = dance.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const sec = existingSrc.match(new RegExp(`\\n  '${danceEsc}': \\{\\n([\\s\\S]*?)\\n  \\},\\n`))
+  if (!sec) return map
+  const lines = sec[1].split('\n')
+  for (let i = 0; i < lines.length; i++) {
+    const km = lines[i].match(/^    '(.+?)': \{$/)
+    if (!km) continue
+    let j = i + 1
+    while (j < lines.length && lines[j] !== '    },') j++
+    const block = lines.slice(i, j + 1).join('\n')
+    if (block.includes("dataStatus: 'audited'")) map.set(km[1].replace(/\\'/g, "'"), block)
+    i = j
+  }
+  return map
+}
+const auditedBlocks = extractAuditedRichBlocks(src, THIS_DANCE)
+if (auditedBlocks.size) console.log(`Audited-exclusion guard: preserving ${auditedBlocks.size} audited ${THIS_DANCE} figure(s) verbatim — ${[...auditedBlocks.keys()].join(', ')}`)
+const richEntriesNested = figures
+  .map(f => auditedBlocks.has(f.key)
+    ? auditedBlocks.get(f.key)
+    : serializeRichFigure(f.key, f).split('\n').map(l => l ? '  ' + l : l).join('\n'))
+  .join('\n')
 const danceBlockRe = new RegExp(`  '${THIS_DANCE}':\\s*\\{\\n[\\s\\S]*?\\n  \\},\\n`, 'm')
 let finalSrc
 if (danceBlockRe.test(srcWithFigures)) {

@@ -1665,6 +1665,7 @@ export const FIGURE_RICH_DATA = {
       bars: 1,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 1, syllabusBody: 'NDCC',
       dataStatus: 'audited', auditedDate: '2026-07-24', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing DC', turn: '', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'LF fwd, L side leading', alignment: 'Facing DC', turn: 'Body turns to R', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -1681,6 +1682,10 @@ export const FIGURE_RICH_DATA = {
       bars: 2,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 15, syllabusBody: 'NDCC',
       dataStatus: 'audited', auditedDate: '2026-07-24', sources: ['ballroomguide'],
+      corrections: [
+        { role: 'leader', step: 6, field: 'turn', from: '1/4 to L netweem 5-6, body turns less', to: '1/4 to L between 5-6, body turns less', ruledBy: 'Victor', date: '2026-07-24' },
+        { role: 'follower', step: 7, field: 'turn', from: '1/8 between 6-7, body turns les', to: '1/8 between 6-7, body turns less', ruledBy: 'Victor', date: '2026-07-24' },
+      ],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'LF to side', alignment: 'Backing DC', turn: '1/4 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -1883,6 +1888,7 @@ export const FIGURE_RICH_DATA = {
       bars: 2,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 4, syllabusBody: 'NDCC',
       dataStatus: 'audited', auditedDate: '2026-07-24', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF to side', alignment: 'Backing DW', turn: '1/4 between 1-2', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -2196,6 +2202,9 @@ export const FIGURE_RICH_DATA = {
       bars: 2,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 13, syllabusBody: 'NDCC',
       dataStatus: 'audited', auditedDate: '2026-07-24', sources: ['ballroomguide'],
+      corrections: [
+        { role: 'follower', step: 3, field: 'foot', from: 'RF closes t LF', to: 'RF closes to LF', ruledBy: 'Victor', date: '2026-07-24' },
+      ],
       leader: [
         { bar: 1, timing: '12', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF to side', alignment: 'Backing Wall', turn: '1/8 between 1-2', footwork: 'T', sway: '', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '', rhythm: 'Q' },
@@ -2382,6 +2391,7 @@ export const FIGURE_RICH_DATA = {
       bars: 4,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 23, syllabusBody: 'NDCC',
       dataStatus: 'audited', auditedDate: '2026-07-24', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'LF to side', alignment: 'Backing DC', turn: '1/4 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -2457,6 +2467,7 @@ export const FIGURE_RICH_DATA = {
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 14, syllabusBody: 'NDCC',
       dataStatus: 'audited', auditedDate: '2026-07-24', sources: ['ballroomguide'],
       priorBgName: 'Tipple Chasse to R',
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF back', alignment: 'Backing LOD', turn: 'Com to turn R', footwork: 'TH', sway: '', position: 'Closed', rise: 'Com to rise e/o 1, NFR', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF to side', alignment: 'Pointing DC', turn: '3/8 between 1-2 (Body turns less)', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '', rhythm: 'Q' },
