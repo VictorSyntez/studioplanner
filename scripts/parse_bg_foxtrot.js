@@ -179,13 +179,28 @@ function readSeamLabels(file) {
   return { commenced, ended }
 }
 
-// Bar derivation — inherited Tango heuristic (increment when Timing resets to a
-// bare '1'). PROVISIONAL for Foxtrot (see file header note); flagged for audit.
+// Bar derivation — BEAT ACCUMULATION (Decision B, Victor 2026-07-25). A step's
+// rhythm gives its beat length: S=2, Q=1. Beats accumulate into 4/4 bars (4 beats
+// each); a step belongs to the bar its FIRST beat falls in. Any rhythm token
+// outside {S,Q} — &, S(S), S(SS), S(SSS), the Prep Step '12', blank — is NOT
+// computable, so the WHOLE figure is flagged needs-ruling (every step bar=null,
+// figure bars=null); never guessed. Beat values are Victor-confirmed for Foxtrot
+// & Quickstep ONLY — do not generalize to other dances without a new ruling.
+function rhythmBeats(r) {
+  if (r === 'S') return 2
+  if (r === 'Q') return 1
+  return null
+}
 function assignBars(srcSteps, startBar) {
-  let bar = startBar
-  return srcSteps.map((s, i) => {
-    if (i > 0 && s.timing && /^1(?!\d)/.test(s.timing)) bar += 1
-    return { ...s, bar }
+  if (!srcSteps.every(s => rhythmBeats(s.rhythm) !== null)) {
+    return srcSteps.map(s => ({ ...s, bar: null }))   // uncomputable → needs-ruling
+  }
+  let bar = startBar, beatsInBar = 0
+  return srcSteps.map(s => {
+    const stepBar = bar
+    beatsInBar += rhythmBeats(s.rhythm)
+    if (beatsInBar >= 4) { bar += 1; beatsInBar = 0 }
+    return { ...s, bar: stepBar }
   })
 }
 
@@ -352,7 +367,8 @@ for (const file of files) {
   const ladyBarred = assignBars(page.Lady.rows, 1)
   const leader = buildRoleSteps(manBarred, 'leader', figKey)
   const follower = buildRoleSteps(ladyBarred, 'follower', figKey)
-  const bars = Math.max(...leader.map(s => s.bar), ...follower.map(s => s.bar))
+  const bars = [...leader, ...follower].some(s => s.bar == null) ? null : Math.max(...leader.map(s => s.bar), ...follower.map(s => s.bar))
+  if (bars === null) { leader.forEach(s => { s.bar = null }); follower.forEach(s => { s.bar = null }) }  // uncomputable figure → null BOTH roles
   figures.push({
     key: figKey, file, tier: splitTitle(page.title).tier,
     bars, leader, follower,
@@ -408,7 +424,8 @@ for (const j of JOINS) {
     seam.pages.push({ file, title: page.title, commencedLabel: labels.commenced, endedLabel: labels.ended, leaderSteps: lSteps.length, followerSteps: fSteps.length })
   })
   anomalies.joinSeams.push(seam)
-  const bars = Math.max(...leader.map(s => s.bar), ...follower.map(s => s.bar))
+  const bars = [...leader, ...follower].some(s => s.bar == null) ? null : Math.max(...leader.map(s => s.bar), ...follower.map(s => s.bar))
+  if (bars === null) { leader.forEach(s => { s.bar = null }); follower.forEach(s => { s.bar = null }) }  // uncomputable figure → null BOTH roles
   figures.push({
     key: j.targetKey, file: j.sourceFiles.join(' + '), tier: null,
     bars, leader, follower,
