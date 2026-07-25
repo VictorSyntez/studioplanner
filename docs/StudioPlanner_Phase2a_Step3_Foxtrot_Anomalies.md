@@ -73,6 +73,10 @@ _None._
   - page 1: `open_telemark.html` ("Open Telemark (Silver)") — 3 leader / 3 follower steps · Commenced: `Commenced Facing DC` · Ended: `Ended Moving LOD`
   - page 2: `feather_ending.html` ("Feather Ending (Silver)") — 3 leader / 3 follower steps · Commenced: `Commenced Moving to Centre` · Ended: `Ended Facing DC`
   - ⚠ **SEAM:** page 1 ends `Ended Moving LOD`; page 2 commences `Commenced Moving to Centre` — kept verbatim, NOT reconciled. Step data joins PP→PP / Facing DW→Facing DW (continuous). Confirm the moving-direction phrasing difference is acceptable.
+  - **SEAM-DEDUPE REVIEW — Victor's ruling (2026-07-24): KEEP AS-IS at 6 steps/role. NO dedupe.** During Quickstep Step 4, Victor ruled that a ballroomguide page's step 1 can be the shared *entry* step — a restatement of the preceding figure's step 4 — and deduped the Quickstep #30 (Tipsy) JOIN on that basis (page-2 step 1 dropped → 7 steps/role). This #10 JOIN was re-examined against the same test and **does NOT meet it**, so it is deliberately left unchanged:
+    - **Forward seam** (Open Telemark step 3 → Feather Ending step 1): Alignment + Moving match on both roles, but **foot and Steps differ** — Open Telemark ends on a *side* step (leader LF, follower RF); Feather Ending begins *forward-and-across in CBMP* on the **opposite foot** (leader RF, follower LF). Feather Ending step 1 is a genuine new step, not a restatement.
+    - **Reverse control** (Feather Ending step 3 → Open Telemark step 1): **no field aligns** — foot, Alignment (Facing LOD vs Facing DC; Backing LOD vs Backing DC) and Moving (LOD vs DC) all differ.
+    - The Tipsy dedupe required a **bidirectional foot-exact** overlap (each page's step 1 == the other page's step 4 on foot + alignment + moving). Foxtrot #10 has neither direction. Ruling: **6 steps/role stands** (committed `fda1892`); do not re-open.
 
 ## ⚠ Table A vs Table B step-number SET mismatches (source charts misaligned — NEEDS VICTOR, not auto-resolved)
 
