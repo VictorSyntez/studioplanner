@@ -89,14 +89,14 @@ export const FIGURES = {
     { n: 'Promenade Four Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 19, syllabusBody: 'NDCC' },
     { n: 'Open Promenade', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 10, syllabusBody: 'NDCC' },
     { n: 'Open Reverse Turn, Lady Outside', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 6, syllabusBody: 'NDCC' },
-    { n: 'Outside Swivel', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
+    { n: 'Outside Swivel', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC' },
     { n: 'Oversway', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 22, syllabusBody: 'NDCC' },
     { n: 'Point to Promenade Position', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
     { n: 'Progressive Link', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 3, syllabusBody: 'NDCC' },
     { n: 'Promenade Link', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 14, syllabusBody: 'NDCC' },
     { n: 'Natural Promenade Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 13, syllabusBody: 'NDCC' },
     { n: 'Reverse Outside Swivel', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
-    { n: 'Rock Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
+    { n: 'Rock Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 5, syllabusBody: 'NDCC' },
     { n: 'Progressive Side Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 2, syllabusBody: 'NDCC' },
     { n: 'Progressive Side Step Reverse Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 9, syllabusBody: 'NDCC' },
     { n: 'Natural Twist Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 12, syllabusBody: 'NDCC' },
@@ -115,9 +115,9 @@ export const FIGURES = {
     { n: 'Feather Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 1, syllabusBody: 'NDCC' },
     { n: 'Hover Cross', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 15, syllabusBody: 'NDCC' },
     { n: 'Hover Feather', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 12, syllabusBody: 'NDCC' },
-    { n: 'Hover Telemark', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 14, syllabusBody: 'NDCC' },
+    { n: 'Hover Telemark', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 13, syllabusBody: 'NDCC' },
     { n: 'Natural Hover Telemark', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 24, syllabusBody: 'NDCC' },
-    { n: 'Natural Telemark', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 13, syllabusBody: 'NDCC' },
+    { n: 'Natural Telemark', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 14, syllabusBody: 'NDCC' },
     { n: 'Natural Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 3, syllabusBody: 'NDCC' },
     { n: 'Natural Weave', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 6, syllabusBody: 'NDCC' },
     { n: 'Open Impetus', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC' },
@@ -1255,7 +1255,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Outside Swivel': {
       bars: 1,
-      dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC',
       dataStatus: 'parsed', sources: ['ballroomguide'],
       leader: [
         { bar: 1, timing: '12', foot: 'LF back in CBMP, toe turned in, RF held in front in CBMP', alignment: 'Backing Centre', turn: '1/8 to R before 1', footwork: 'BH', sway: '', position: 'OP', rise: '', cbm: '', notes: '', rhythm: 'S' },
@@ -1370,7 +1370,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Rock Turn': {
       bars: 1,
-      dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Tango', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 5, syllabusBody: 'NDCC',
       dataStatus: 'parsed', sources: ['ballroomguide'],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HF', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
@@ -1738,9 +1738,11 @@ export const FIGURE_RICH_DATA = {
     },
     'Hover Telemark': {
       bars: 1,
-      dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 14, syllabusBody: 'NDCC',
+      dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 13, syllabusBody: 'NDCC',
       dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
-      corrections: [],
+      corrections: [
+        { field: 'syllabusNumber', from: 14, to: 13, ruledBy: 'Victor', date: '2026-07-25', note: 'NDCC line-wrap transcription defect (raster re-verification 2026-07-25): Silver #13/#14 Telemark bindings were swapped. Hover Telemark is #13.' },
+      ],
       leader: [
         { bar: 1, timing: '12', foot: 'LF fwd', alignment: 'Facing DW', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF diag fwd, then LF brush toward RF', alignment: 'Facing LOD', turn: '1/8 between 1-2', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Cont to rise on 2', cbm: '', notes: '', rhythm: 'Q' },
@@ -1781,9 +1783,11 @@ export const FIGURE_RICH_DATA = {
     },
     'Natural Telemark': {
       bars: 2,
-      dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 13, syllabusBody: 'NDCC',
+      dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 14, syllabusBody: 'NDCC',
       dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
-      corrections: [],
+      corrections: [
+        { field: 'syllabusNumber', from: 13, to: 14, ruledBy: 'Victor', date: '2026-07-25', note: 'NDCC line-wrap transcription defect (raster re-verification 2026-07-25): Silver #13/#14 Telemark bindings were swapped. Natural Telemark is #14.' },
+      ],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'LF to side', alignment: 'Backing DC', turn: '1/4 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
