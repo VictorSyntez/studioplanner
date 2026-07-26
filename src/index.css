@@ -727,8 +727,21 @@ h3 { font-size: 1.1rem; }
   cursor: pointer; transition: var(--transition); text-transform: uppercase; letter-spacing: 0.05em;
 }
 .bar-tab:hover { color: var(--light2); background: var(--panel); }
+/* .active == bar is toggled on for this item (i.e. present in item.barsUsed). */
 .bar-tab.active { background: var(--panel); color: var(--brand); border-color: var(--border); }
-.bar-tab.unused { opacity: 0.4; }
+.bar-tabs-label {
+  font-size: 10px; font-family: var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--ink-faint);
+  align-self: center; margin-right: 4px;
+}
+
+/* Bar boundary marker inside the step table (multi-bar figures only). */
+.detail-table .bar-group-row td {
+  font-size: 10px; font-family: var(--font-mono); text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--brand-dk);
+  background: var(--panel3); padding: 3px 8px;
+}
+.detail-table .bar-group-row:hover td { background: var(--panel3); }
 
 .rich-detail-body { padding: 0; }
 .rich-role-section { border-bottom: 1px solid var(--border-lt); }

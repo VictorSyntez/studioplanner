@@ -75,14 +75,13 @@ function VerifyBadge({ dataStatus }) {
 }
 
 // ─── FIGURE DETAIL PANEL ─────────────────────────────
-function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverrides, barsUsed, onAlignmentChange, isEditable }) {
+function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverrides, barsUsed, onAlignmentChange, onBarsUsedChange, isEditable }) {
   // Legacy default: sessions saved before dance-namespacing (Step 2c) don't carry
   // a `dance` on their figure items — all were Waltz-era. This fallback is
   // mandatory and permanent for zero-migration Firestore compatibility.
   const resolvedDance = dance || 'Waltz'
   const rich = FIGURE_RICH_DATA[resolvedDance]?.[figureName]
   const fig = getFigure(figureName, resolvedDance)
-  const [activeBar, setActiveBar] = useState(1)
 
   if (!rich && !fig) return (
     <div className="detail-panel">
@@ -93,18 +92,32 @@ function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverr
   const bars = rich ? rich.bars : 1
   const barNums = rich ? [...new Set(rich.leader.map(s => s.bar))] : [1]
 
-  const leaderSteps = rich ? rich.leader.filter(s => s.bar === activeBar) : []
-  const followerSteps = rich ? rich.follower.filter(s => s.bar === activeBar) : []
+  // Every toggled-on bar renders at once, grouped in sequence — there is no
+  // one-bar-at-a-time view. `barsUsed` IS the toggle state: switching a bar off
+  // drops its steps from the display, which is the figure-splitting mechanism for
+  // connecting figures in routines.
+  //
+  // Legacy default: items saved without `barsUsed` — and any library/detail
+  // context outside a session item, which passes none — resolve to every bar, so
+  // the complete figure prints in full with zero Firestore migration.
+  const activeBars = barsUsed && barsUsed.length
+    ? barNums.filter(b => barsUsed.includes(b))
+    : barNums
 
-  const getAlignment = (role, stepIdx) => {
-    const key = `${role}-${activeBar}-${stepIdx}`
-    return (alignmentOverrides && alignmentOverrides[key]) || (role === 'leader' ? leaderSteps[stepIdx]?.alignment : followerSteps[stepIdx]?.alignment) || '—'
+  const stepsIn = (role, bar) => rich ? rich[role].filter(s => s.bar === bar) : []
+
+  // alignmentOverrides remain keyed role-bar-indexWithinBar, byte-identical to the
+  // single-bar viewer's scheme: the index is always relative to its own bar's step
+  // list, never a running index across bars. Rendering several bars together must
+  // not change what an existing saved key resolves to.
+  const getAlignment = (role, bar, stepIdx, step) => {
+    const key = `${role}-${bar}-${stepIdx}`
+    return (alignmentOverrides && alignmentOverrides[key]) || step?.alignment || '—'
   }
 
-  const handleAlignmentChange = (role, stepIdx, val) => {
+  const handleAlignmentChange = (role, bar, stepIdx, val) => {
     if (!onAlignmentChange) return
-    const key = `${role}-${activeBar}-${stepIdx}`
-    onAlignmentChange(key, val)
+    onAlignmentChange(`${role}-${bar}-${stepIdx}`, val)
   }
 
   const isEmpty = v => !v || v === '--' || v === '---'
@@ -125,39 +138,49 @@ function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverr
     { key: 'rise',      label: 'Rise'      },
   ]
 
-  const renderStepsTable = (steps, role) => {
+  const renderStepsTable = (role) => {
+    const groups = activeBars.map(bar => ({ bar, steps: stepsIn(role, bar) }))
+    const allSteps = groups.flatMap(g => g.steps)
+
+    // Column visibility spans every displayed bar, so one table keeps consistent
+    // columns top to bottom. (Previously scoped to the single active bar, which is
+    // no longer possible with several bars sharing one table.)
     const visibleOptional = OPTIONAL_COLS.filter(col =>
-      steps.some(s => !isEmpty(s[col.key]))
+      allSteps.some(s => !isEmpty(s[col.key]))
     )
     const colCount = 2 + visibleOptional.length // Count + Foot + optionals
 
     // Item 4: keep the Rise column compact unless the last count's Rise value is a
     // full sentence (contains a dot) — only then does it take the remaining width.
     const riseColVisible = visibleOptional.some(col => col.key === 'rise')
-    const lastRise = steps.length ? steps[steps.length - 1].rise : ''
+    const lastRise = allSteps.length ? allSteps[allSteps.length - 1].rise : ''
     const riseCompact = riseColVisible && !String(lastRise || '').includes('.')
 
     // Notes span every column except the trailing Rise column, so coaching text
     // never flows under the Rise cell — Rise stays its own separate last column.
     const noteColSpan = riseColVisible ? colCount - 1 : colCount
 
-    const renderCell = (s, i, key) => {
+    // Single-bar figures (and a single toggled-on bar) render with no heading row,
+    // exactly as before.
+    const showBarHeadings = groups.length > 1
+
+    const renderCell = (s, bar, i, key) => {
       const v = s[key]
       if (key === 'alignment') {
         if (isEditable) {
           return (
             <input
               className="alignment-edit-input"
-              value={getAlignment(role, i)}
-              onChange={e => handleAlignmentChange(role, i, e.target.value)}
+              value={getAlignment(role, bar, i, s)}
+              onChange={e => handleAlignmentChange(role, bar, i, e.target.value)}
               title="Edit alignment for this session"
             />
           )
         }
-        const overridden = alignmentOverrides && alignmentOverrides[`${role}-${activeBar}-${i}`]
+        const overridden = alignmentOverrides && alignmentOverrides[`${role}-${bar}-${i}`]
         return (
           <span style={overridden ? {color:'var(--brand-lt)', fontStyle:'italic'} : {}}>
-            {getAlignment(role, i)}
+            {getAlignment(role, bar, i, s)}
           </span>
         )
       }
@@ -177,25 +200,34 @@ function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverr
               </tr>
             </thead>
             <tbody>
-              {steps.map((s, i) => (
-                <Fragment key={i}>
-                  <tr className="step-row">
-                    <td className="col-count">{s.timing}</td>
-                    <td className="col-foot">{isEmpty(s.foot) ? '--' : s.foot}</td>
-                    {visibleOptional.map(col => (
-                      <td key={col.key} className={`col-${col.key}`}>
-                        {renderCell(s, i, col.key)}
-                      </td>
-                    ))}
-                  </tr>
-                  {!isEmpty(s.notes) && (
-                    <tr className="step-note-row">
-                      <td className="col-note" colSpan={noteColSpan}>
-                        <span className="step-note-bullet">•</span> {s.notes}
-                      </td>
-                      {riseColVisible && <td className="col-rise" />}
+              {groups.map(g => (
+                <Fragment key={g.bar}>
+                  {showBarHeadings && (
+                    <tr className="bar-group-row">
+                      <td colSpan={colCount}>Bar {g.bar}</td>
                     </tr>
                   )}
+                  {g.steps.map((s, i) => (
+                    <Fragment key={i}>
+                      <tr className="step-row">
+                        <td className="col-count">{s.timing}</td>
+                        <td className="col-foot">{isEmpty(s.foot) ? '--' : s.foot}</td>
+                        {visibleOptional.map(col => (
+                          <td key={col.key} className={`col-${col.key}`}>
+                            {renderCell(s, g.bar, i, col.key)}
+                          </td>
+                        ))}
+                      </tr>
+                      {!isEmpty(s.notes) && (
+                        <tr className="step-note-row">
+                          <td className="col-note" colSpan={noteColSpan}>
+                            <span className="step-note-bullet">•</span> {s.notes}
+                          </td>
+                          {riseColVisible && <td className="col-rise" />}
+                        </tr>
+                      )}
+                    </Fragment>
+                  ))}
                 </Fragment>
               ))}
             </tbody>
@@ -215,13 +247,19 @@ function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverr
         {onClose && <button className="icon-btn" onClick={onClose}>✕</button>}
       </div>
 
-      {barNums.length > 1 && (
+      {/* One control, not two: these toggles ARE `item.barsUsed`. Rendered only
+          where they can be changed (the MT editor supplies onBarsUsedChange) — the
+          PS view is read-only and reads which bars it is seeing off the bar
+          headings in the table itself. */}
+      {barNums.length > 1 && onBarsUsedChange && (
         <div className="bar-tabs">
+          <span className="bar-tabs-label">Bars to use</span>
           {barNums.map(b => (
             <button
               key={b}
-              className={`bar-tab${activeBar === b ? ' active' : ''}${barsUsed && !barsUsed.includes(b) ? ' unused' : ''}`}
-              onClick={() => setActiveBar(b)}
+              className={`bar-tab${activeBars.includes(b) ? ' active' : ''}`}
+              onClick={() => onBarsUsedChange(b)}
+              title={activeBars.includes(b) ? `Drop bar ${b} from this item` : `Add bar ${b} to this item`}
             >
               Bar {b}
             </button>
@@ -231,8 +269,8 @@ function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverr
 
       {rich ? (
         <div className="rich-detail-body">
-          {renderStepsTable(leaderSteps, 'leader')}
-          {renderStepsTable(followerSteps, 'follower')}
+          {renderStepsTable('leader')}
+          {renderStepsTable('follower')}
           {rich.techniqueNotes && (
             <div className="detail-notes" style={{marginTop: 8}}>
               <span style={{fontFamily:'var(--font-mono)', fontSize:10, textTransform:'uppercase', letterSpacing:'0.06em', color:'var(--ink-faint)'}}>Technique · </span>
@@ -886,22 +924,8 @@ function ItemEditor({ item, onUpdate }) {
           value={item.minutes || ''} onChange={e => update({ minutes: +e.target.value })} />
       </div>
 
-      {barNums.length > 1 && (
-        <div className="form-group">
-          <label className="form-label">Bars to use</label>
-          <div className="bar-selector">
-            {barNums.map(b => (
-              <button
-                key={b}
-                className={`bar-select-btn${barsUsed.includes(b) ? ' active' : ''}`}
-                onClick={() => handleBarToggle(b)}
-              >
-                Bar {b}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* The former standalone "Bars to use" selector is merged into the detail
+          panel's bar toggles below — one mechanism, driving the same item.barsUsed. */}
 
       <div className="form-group">
         <label className="form-label">MT Notes</label>
@@ -918,6 +942,7 @@ function ItemEditor({ item, onUpdate }) {
             alignmentOverrides={item.alignmentOverrides}
             barsUsed={barsUsed}
             onAlignmentChange={handleAlignmentChange}
+            onBarsUsedChange={handleBarToggle}
             isEditable={true}
           />
         )}
