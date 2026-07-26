@@ -2391,7 +2391,8 @@ export const FIGURE_RICH_DATA = {
     'Quarter Turn to Right': {
       bars: 2,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 1, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'LF to side', alignment: 'Facing Wall', turn: '1/8 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '', rhythm: 'Q' },
@@ -2490,7 +2491,10 @@ export const FIGURE_RICH_DATA = {
     'Natural Spin Turn': {
       bars: 3,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 5, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [
+        { role: 'follower', step: 5, field: 'foot', from: 'LF back & slightly to side, then brush to RF to LF', to: 'LF back & slightly to side, then brush RF to LF', ruledBy: 'Victor', date: '2026-07-25' },
+      ],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'LF to side', alignment: 'Backing DC', turn: '1/4 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -2504,7 +2508,7 @@ export const FIGURE_RICH_DATA = {
         { bar: 1, timing: '3', foot: 'RF to side', alignment: 'Pointing LOD', turn: '3/8 between 1-2, body turns less', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
         { bar: 1, timing: '4', foot: 'LF closes to RF', alignment: 'Facing LOD', turn: 'Body completes turn', footwork: 'TH', sway: 'L', position: 'Closed', rise: 'Up. Lower e/o 3', cbm: '', notes: '', rhythm: 'Q' },
         { bar: 2, timing: '56', foot: 'RF fwd', alignment: 'Facing LOD to backing LOD', turn: '1/2 to R (Pivot)', footwork: 'HT', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
-        { bar: 2, timing: '78', foot: 'LF back & slightly to side, then brush to RF to LF', alignment: 'Backing LOD', turn: 'Cont to turn', footwork: 'T', sway: '', position: 'Closed', rise: 'Rise e/o 5', cbm: '', notes: '', rhythm: 'S' },
+        { bar: 2, timing: '78', foot: 'LF back & slightly to side, then brush RF to LF', alignment: 'Backing LOD', turn: 'Cont to turn', footwork: 'T', sway: '', position: 'Closed', rise: 'Rise e/o 5', cbm: '', notes: '', rhythm: 'S' },
         { bar: 3, timing: '12', foot: 'RF diag fwd', alignment: 'Facing DC', turn: '3/8 between 5-6', footwork: 'TH', sway: '', position: 'Closed', rise: 'Up. Lower e/o 6', cbm: '', notes: '', rhythm: 'S' },
       ],
       techniqueNotes: '',
