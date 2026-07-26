@@ -2231,7 +2231,8 @@ export const FIGURE_RICH_DATA = {
     'Chasse Reverse Turn': {
       bars: 1,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 9, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF to side', alignment: 'Backing DW', turn: '1/4 between 1-2', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -2268,7 +2269,11 @@ export const FIGURE_RICH_DATA = {
     'Closed Impetus': {
       bars: 2,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 10, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      syllabusNotes: 'CDTA: Bronze figure (NDCC: Pre-Bronze #10).',
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [
+        { role: 'follower', step: 2, field: 'foot', from: 'LF to side, then brush to RF to LF', to: 'LF to side, then brush RF to LF', ruledBy: 'Victor', date: '2026-07-25' },
+      ],
       leader: [
         { bar: 1, timing: '12', foot: 'LF back', alignment: 'Backing LOD', turn: 'Com to turn R', footwork: 'TH', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '34', foot: 'RF closes to LF (Heel Turn)', alignment: 'Facing DC', turn: '3/8 between 1-2', footwork: 'HT', sway: 'L', position: 'Closed', rise: 'Rise e/o 2', cbm: '', notes: '', rhythm: 'S' },
@@ -2276,7 +2281,7 @@ export const FIGURE_RICH_DATA = {
       ],
       follower: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing LOD', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
-        { bar: 1, timing: '34', foot: 'LF to side, then brush to RF to LF', alignment: 'Backing DC', turn: '3/8 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Rise e/o 2', cbm: '', notes: '', rhythm: 'S' },
+        { bar: 1, timing: '34', foot: 'LF to side, then brush RF to LF', alignment: 'Backing DC', turn: '3/8 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Rise e/o 2', cbm: '', notes: '', rhythm: 'S' },
         { bar: 2, timing: '56', foot: 'RF diag fwd', alignment: 'Facing DC against LOD', turn: '1/4 between 2-3', footwork: 'TH', sway: '', position: 'Closed', rise: 'Up. Lower e/o 3', cbm: '', notes: '', rhythm: 'S' },
       ],
       techniqueNotes: '',
@@ -2357,7 +2362,8 @@ export const FIGURE_RICH_DATA = {
     'Natural Pivot Turn': {
       bars: 2,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 7, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'LF to side', alignment: 'Backing DC', turn: '1/4 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -2410,7 +2416,9 @@ export const FIGURE_RICH_DATA = {
     'Reverse Pivot': {
       bars: 1,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 12, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      syllabusNotes: 'CDTA: Bronze figure (NDCC: Pre-Bronze #12).',
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'RF back in CBMP, small step with toe turned in', alignment: 'Backing LOD to facing LOD', turn: '1/2 to L', footwork: 'THT', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
       ],
