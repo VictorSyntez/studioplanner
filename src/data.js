@@ -2215,7 +2215,8 @@ export const FIGURE_RICH_DATA = {
     'Change of Direction': {
       bars: 2,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 18, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF fwd', alignment: 'Facing DW', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '34', foot: 'RF diag fwd, R side leading', alignment: 'Pointing LOD', turn: '1/8 between 1-2', footwork: 'i/e of TH', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
@@ -2305,7 +2306,8 @@ export const FIGURE_RICH_DATA = {
     'Cross Chasse': {
       bars: 1,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 17, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF fwd', alignment: 'Facing DW', turn: '', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF to side', alignment: 'Facing DW', turn: '', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -2430,7 +2432,8 @@ export const FIGURE_RICH_DATA = {
     'Running Finish': {
       bars: 1,
       dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 15, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF back in CBMP', alignment: 'Backing DW', turn: 'Com to turn R', footwork: 'TH', sway: '', position: 'OP', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF to side & slightly fwd', alignment: 'Pointing LOD', turn: '3/8 between 1-2, body turns less', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
