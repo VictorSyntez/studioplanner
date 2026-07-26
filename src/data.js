@@ -1513,20 +1513,21 @@ export const FIGURE_RICH_DATA = {
     'Basic Weave': {
       bars: 2,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 8, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
-        { bar: 1, timing: '3', foot: 'LF fwd', alignment: 'Facing DC against LOD', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'Q' },
+        { bar: 1, timing: '3', foot: 'LF fwd', alignment: 'Facing DC against LOD', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: 'After SQQ of Reverse Turn, ending Man BDW, do a check step on \'S\'', rhythm: 'Q' },
         { bar: 1, timing: '4', foot: 'RF to side', alignment: 'Backing LOD', turn: '1/8 between 1-2', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
-        { bar: 1, timing: '1', foot: 'LF back in CBMP', alignment: 'Backing DC', turn: '1/8 between 2-3, body turns less', footwork: 'T', sway: 'L', position: 'OP', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
-        { bar: 1, timing: '2', foot: 'RF back', alignment: 'Backing DC', turn: 'Com to turn L', footwork: 'T', sway: '', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
+        { bar: 2, timing: '1', foot: 'LF back in CBMP', alignment: 'Backing DC', turn: '1/8 between 2-3, body turns less', footwork: 'T', sway: 'L', position: 'OP', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
+        { bar: 2, timing: '2', foot: 'RF back', alignment: 'Backing DC', turn: 'Com to turn L', footwork: 'T', sway: '', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
         { bar: 2, timing: '3', foot: 'LF to side & slightly fwd', alignment: 'Pointing DW', turn: '1/4 between 5-6, body turns less', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
         { bar: 2, timing: '4', foot: 'RF fwd in CBMP', alignment: 'Facing DW', turn: '', footwork: 'TH', sway: 'R', position: 'OP', rise: 'Up. Lower e/o 7', cbm: '', notes: '', rhythm: 'Q' },
       ],
       follower: [
         { bar: 1, timing: '3', foot: 'RF back', alignment: 'Backing DC against LOD', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1, NFR', cbm: '', notes: '', rhythm: 'Q' },
         { bar: 1, timing: '4', foot: 'LF to side', alignment: 'Pointing DC', turn: '1/4 between 1-2, body turns less', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
-        { bar: 1, timing: '1', foot: 'RF fwd in CBMP', alignment: 'Facing DC', turn: '', footwork: 'T', sway: 'R', position: 'OP', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
-        { bar: 1, timing: '2', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'T', sway: '', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
+        { bar: 2, timing: '1', foot: 'RF fwd in CBMP', alignment: 'Facing DC', turn: '', footwork: 'T', sway: 'R', position: 'OP', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
+        { bar: 2, timing: '2', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'T', sway: '', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
         { bar: 2, timing: '3', foot: 'RF to side & slightly back', alignment: 'Backing wall', turn: '1/8 between 5-6', footwork: 'TH', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
         { bar: 2, timing: '4', foot: 'LF back in CBMP', alignment: 'Backing DW', turn: '1/8 between 6-7, body turns less', footwork: 'TH', sway: 'L', position: 'OP', rise: 'Up, NFR. Lower e/o 7', cbm: '', notes: '', rhythm: 'Q' },
       ],
@@ -1561,7 +1562,8 @@ export const FIGURE_RICH_DATA = {
     'Change of Direction': {
       bars: 2,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 7, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF fwd', alignment: 'Facing DW', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '34', foot: 'RF diag fwd, R side leading', alignment: 'Pointing LOD', turn: '1/8 between 1-2', footwork: 'i/e of TH', sway: 'L', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
@@ -1579,7 +1581,8 @@ export const FIGURE_RICH_DATA = {
     'Closed Impetus & Feather Finish': {
       bars: 2,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 5, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF back', alignment: 'Backing LOD', turn: 'Com to turn R', footwork: 'TH', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF closes to LF (Heel Turn)', alignment: 'Facing DC', turn: '3/8 between 1-2', footwork: 'HT', sway: 'L', position: 'Closed', rise: 'Rise e/o 2', cbm: '', notes: '', rhythm: 'Q' },
@@ -1601,7 +1604,8 @@ export const FIGURE_RICH_DATA = {
     'Closed Telemark': {
       bars: 1,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 9, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF to side, then brush LF to RF', alignment: 'Backing DW', turn: '1/4 between 1-2', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -1804,7 +1808,8 @@ export const FIGURE_RICH_DATA = {
     'Natural Weave': {
       bars: 2,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 6, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'LF to side', alignment: 'Backing almost DC', turn: 'Almost 1/4 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
@@ -2127,8 +2132,9 @@ export const FIGURE_RICH_DATA = {
     'Open Telemark & Feather Ending': {
       bars: 2,
       dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 10, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
       priorBgName: 'Open Telemark + Feather Ending',
+      corrections: [],
       leader: [
         { bar: 1, timing: '12', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF to side, then brush LF to RF', alignment: 'Backing DW', turn: '1/4 between 1-2', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '', rhythm: 'Q' },
