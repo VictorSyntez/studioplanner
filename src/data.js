@@ -73,20 +73,20 @@ export const FIGURES = {
     { n: 'Waltz Prep Step', c: '123,12,3', fw: 'i/e of foot to WF,i/e of foot to WF,HT', al: 'FDW,FDW,FDW', sw: '', rise: 'Lower e/o 3', notes: '', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 33, syllabusBody: null },
   ],
   'Tango': [
-    { n: 'Back Open', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 16, syllabusBody: 'NDCC' },
+    { n: 'Back Open Promenade', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 16, syllabusBody: 'NDCC' },
     { n: 'Basic Reverse Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 23, syllabusBody: 'NDCC' },
-    { n: 'Change Brush Tap', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 20, syllabusBody: 'NDCC' },
+    { n: 'Brush Tap', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 20, syllabusBody: 'NDCC' },
     { n: 'The Chase', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 24, syllabusBody: 'NDCC' },
     { n: 'Closed Promenade', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 4, syllabusBody: 'NDCC' },
     { n: 'Contra Check', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 27, syllabusBody: 'NDCC' },
     { n: 'Back Corte', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 7, syllabusBody: 'NDCC' },
     { n: 'Fallaway Four Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 21, syllabusBody: 'NDCC' },
-    { n: 'Promenade Outside', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC' },
+    { n: 'Fallaway Promenade', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 18, syllabusBody: 'NDCC' },
     { n: 'Fallaway Reverse & Slip Pivot', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 25, syllabusBody: 'NDCC' },
     { n: 'Five Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 26, syllabusBody: 'NDCC' },
     { n: 'Overturned Five Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 26, syllabusBody: 'NDCC' },
     { n: 'Four Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 15, syllabusBody: 'NDCC' },
-    { n: 'Promenade Four Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 19, syllabusBody: 'NDCC' },
+    { n: 'Four Step Change', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 19, syllabusBody: 'NDCC' },
     { n: 'Open Promenade', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 10, syllabusBody: 'NDCC' },
     { n: 'Open Reverse Turn, Lady Outside', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 6, syllabusBody: 'NDCC' },
     { n: 'Outside Swivel', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC' },
@@ -941,11 +941,11 @@ export const FIGURE_RICH_DATA = {
     },
   },
   'Tango': {
-    'Back Open': {
+    'Back Open Promenade': {
       bars: 1,
       dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 16, syllabusBody: 'NDCC',
       dataStatus: 'parsed', sources: ['ballroomguide'],
-      priorBgName: 'Back Open Promenade',
+      priorBgName: 'Back Open',
       leader: [
         { bar: 1, timing: '12', foot: 'LF to side', alignment: 'Facing DW', turn: '', footwork: 'HF', sway: '', position: 'PP', rise: '', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF fwd & across in CBMP', alignment: 'Facing DW', turn: '', footwork: 'HF', sway: '', position: 'PP', rise: '', cbm: '', notes: '', rhythm: 'Q' },
@@ -982,10 +982,11 @@ export const FIGURE_RICH_DATA = {
       ],
       techniqueNotes: '',
     },
-    'Change Brush Tap': {
+    'Brush Tap': {
       bars: 1,
       dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 20, syllabusBody: 'NDCC',
       dataStatus: 'parsed', sources: ['ballroomguide'],
+      priorBgName: 'Change Brush Tap',
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd in CBMP', alignment: 'Facing LOD', turn: '1/8 to L before 1', footwork: 'HF', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'Q' },
         { bar: 1, timing: '2', foot: 'RF to side', alignment: 'Facing LOD', turn: '', footwork: 'BH', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'Q' },
@@ -1094,11 +1095,11 @@ export const FIGURE_RICH_DATA = {
       ],
       techniqueNotes: '',
     },
-    'Promenade Outside': {
+    'Fallaway Promenade': {
       bars: 1,
-      dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC',
+      dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 18, syllabusBody: 'NDCC',
       dataStatus: 'parsed', sources: ['ballroomguide'],
-      priorBgName: 'Fallaway Promenade',
+      priorBgName: 'Promenade Outside',
       leader: [
         { bar: 1, timing: '12', foot: 'LF to side', alignment: 'Facing DW', turn: '', footwork: 'HF', sway: '', position: 'PP', rise: '', cbm: '', notes: '', rhythm: 'S' },
         { bar: 1, timing: '3', foot: 'RF fwd & across in CBMP', alignment: 'Facing DW', turn: '', footwork: 'HF', sway: '', position: 'PP', rise: '', cbm: '', notes: '', rhythm: 'Q' },
@@ -1193,11 +1194,11 @@ export const FIGURE_RICH_DATA = {
       ],
       techniqueNotes: '',
     },
-    'Promenade Four Step': {
+    'Four Step Change': {
       bars: 1,
       dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 19, syllabusBody: 'NDCC',
       dataStatus: 'parsed', sources: ['ballroomguide'],
-      priorBgName: 'Four Step Change',
+      priorBgName: 'Promenade Four Step',
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd in CBMP', alignment: 'Facing DW', turn: 'Com to turn L', footwork: 'HF', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'Q' },
         { bar: 1, timing: '2', foot: 'RF to side & slightly back', alignment: 'Backing DW against LOD', turn: '1/4 between 1-2', footwork: 'BH', sway: '', position: 'Closed', rise: '', cbm: '', notes: '', rhythm: 'Q' },
