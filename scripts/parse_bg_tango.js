@@ -39,12 +39,31 @@ const AUDIT_PRIORITY = {
 // `targetKey` — if present, the figure is renamed to that key in storage and
 // the original BG name is recorded as `priorBgName` on the figure record.
 // `note` is a human-readable rationale that goes into the anomaly report.
+//
+// ─── NDCC bindings Victor-ruled 2026-07-25 after wrap-defect correction ────
+// A raster re-verification of the NDCC page proved several long Tango names
+// wrap across printed lines; the original transcription in
+// docs/ndcc_tango_syllabus.json cut at line boundaries, corrupting
+// number→name bindings. The bindings below are the CORRECTED, Victor-ruled
+// pairings — the authority for this parser. DO NOT regenerate this map from
+// ndcc_tango_syllabus.json line order; that ordering was the source of the
+// defect. Corrected figures: #16 Back Open Promenade (key = BG name),
+// #17 Outside Swivels, #18 Fallaway Promenade, #19 Four Step Change,
+// #20 Brush Tap (no rename), #4 Closed Promenade, #5 Rock Turn. The four
+// corrupted-name targetKey renames (Back Open / Promenade Outside /
+// Promenade Four Step / Change Brush Tap) were removed entirely.
+//
+// Intentional shared-number split mappings (NOT duplicates to "fix"):
+//   #1  — Left Foot Walk + Right Foot Walk (one NDCC "Walk" split into the
+//         two BG lead-foot pages; both keep BG names).
+//   #26 — Five Step + Overturned Five Step (base figure + its overturned
+//         variant share the one NDCC number; both keep BG names).
 const NDCC_OVERRIDES = {
   // ── Renames to NDCC name ──────────────────────────────────────────────
-  'Back Open Promenade':            { number: 16, ndccName: 'Back Open',                          tier: 'Silver',     targetKey: 'Back Open' },
+  'Back Open Promenade':            { number: 16, ndccName: 'Back Open Promenade',                tier: 'Silver' },
   'Chase':                          { number: 24, ndccName: 'The Chase',                          tier: 'Gold',       targetKey: 'The Chase' },
-  'Fallaway Promenade':             { number: 17, ndccName: 'Promenade Outside',                  tier: 'Silver',     targetKey: 'Promenade Outside' },
-  'Four Step Change':               { number: 19, ndccName: 'Promenade Four Step',                tier: 'Silver',     targetKey: 'Promenade Four Step' },
+  'Fallaway Promenade':             { number: 18, ndccName: 'Fallaway Promenade',                 tier: 'Silver' },
+  'Four Step Change':               { number: 19, ndccName: 'Four Step Change',                   tier: 'Silver' },
   'Open Reverse Turn':              { number: 6,  ndccName: 'Open Reverse Turn, Lady Outside',    tier: 'Pre-Bronze', targetKey: 'Open Reverse Turn, Lady Outside' },
 
   // ── Closed Promenade: NDCC source name `'Closed'` is truncated; Victor's
@@ -59,7 +78,9 @@ const NDCC_OVERRIDES = {
   'Overturned Five Step':           { number: 26, ndccName: 'Five Step', tier: 'Gold', note: 'BG kept — Tango-Tango collision: shares NDCC #26 with Five Step' },
 
   // ── BG names that already match NDCC name (override included for clarity)
-  'Change Brush Tap':               { number: 20, ndccName: 'Change Brush Tap',                   tier: 'Silver' },
+  'Brush Tap':                      { number: 20, ndccName: 'Brush Tap',                          tier: 'Silver' },
+  'Rock Turn':                      { number: 5,  ndccName: 'Rock Turn',                          tier: 'Beginners' },
+  'Outside Swivel':                 { number: 17, ndccName: 'Outside Swivels',                    tier: 'Silver' },
   'Left Foot and Right Foot Rocks': { number: 11, ndccName: 'Left Foot and Right Foot Rocks',     tier: 'Bronze' },
 
   // ── Documented exception (Tango-Waltz orthographic collision) ─────────
@@ -73,9 +94,10 @@ const NDCC_OVERRIDES = {
     note: 'EXCEPTION 2/2: dance-qualified key — Waltz already keys `Contra Check`; Victor-approved Option A (2026-06-14)' },
 }
 
-// BG title → data.js key rename (Victor's decision: "Change Brush Tap").
+// BG title → data.js key rename. Emptied 2026-07-25: the former
+// 'Brush Tap' → 'Change Brush Tap' rename was a wrap-defect artifact,
+// retired by Victor's ruling (Brush Tap keeps its real BG name).
 const KEY_RENAMES = {
-  'Brush Tap': 'Change Brush Tap',
 }
 
 // Multiple BG pages consolidated into ONE figure with a per-file bar split
