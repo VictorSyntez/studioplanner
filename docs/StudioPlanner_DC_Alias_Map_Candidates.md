@@ -4,33 +4,12 @@
 **Purpose:** Prep for dancecentral description enrichment (Brief Step 4). Establishes an explicit,
 per-figure dancecentral ↔ BG-key ↔ NDCC correspondence **before** any description text is attached.
 **Date compiled:** 2026-07-25
-**Last updated:** 2026-07-25 — Waltz NDCC column added (see below)
+**Last updated:** 2026-07-25 — Tango & Foxtrot regenerated against the corrected (wrap-defect-fixed) NDCC files (`38bec5d`); BG↔NDCC axis now run for all four dances.
 **Applied to `data.js`:** **NOTHING.** This document is a proposal set only.
 
 > **Standing rule #5 — every pairing below is a proposal. Victor confirms figure-by-figure.**
 > Rows marked `candidate` and `dc-only` in particular carry dance-domain judgment that has
 > deliberately **not** been made here.
-
----
-
-## ⚠ STALENESS NOTE — Tango and Foxtrot NDCC columns
-
-**The Tango and Foxtrot NDCC columns in this document are stale and will be regenerated.**
-
-They were read from `docs/ndcc_tango_syllabus.json` and `docs/ndcc_foxtrot_syllabus.json` as those
-files stood on 2026-07-25, i.e. **before** the wrap-defect binding corrections. Victor ruled on
-those corrections on 2026-07-25, but **that ruling is not yet committed**. The affected bands are
-the ones enumerated in the wrap-observations section at the foot of this doc — Foxtrot **#11–#15**
-and Tango **#4–#5** / **#16–#20**. Every NDCC number→name binding in those ranges, and any row in
-this document that cites one, should be treated as provisional until the corrected syllabus files
-land.
-
-Once that commit is in, the Tango and Foxtrot sections of this document are to be regenerated
-against the corrected files rather than hand-patched.
-
-**Not affected:** the **Waltz** column (extracted 2026-07-25 with the wrap check applied, `6b7a4e1`
-— 32 numbers / 32 text lines, no wraps present) and the **Quickstep** column (two-pass blind
-extraction, no wrap defects identified). Those two are current.
 
 ---
 
@@ -75,35 +54,43 @@ throughout; counts below are of distinct pages.
 | Dance | DC figure pages | `exact` | `cosmetic` | `candidate` | `dc-only` | BG keys | `bg-only` |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | Waltz | 32 | 25 | 6 | 1 | 0 | 34 | 1 |
-| Tango | 29 | 18 | 4 | 3 | 4 | 30 | 4 |
+| Tango | 29 | 22 | 4 | 1 | 2 | 30 | 2 |
 | Foxtrot | 32 | 19 | 4 | 2 | 7 | 30 | 5 |
 | Quickstep | 33 | 16 | 3 | 0 | 14 | 20 | 1 |
-| **Total** | **126** | **78** | **17** | **6** | **25** | **114** | **11** |
+| **Total** | **126** | **82** | **17** | **4** | **23** | **114** | **9** |
 
-Reconciliation: 78 + 17 + 6 + 25 = 126 DC figure pages. 101 matched DC rows cover 103 BG keys
-(two `candidate` rows are 1-page→2-key splits); 103 + 11 `bg-only` = 114 BG keys. ✓
+Reconciliation: 82 + 17 + 4 + 23 = 126 DC figure pages. 103 matched DC rows cover 105 BG keys
+(two `candidate` rows are 1-page→2-key splits — Waltz `Closed Changes`, Tango `Walk`); 105 + 9
+`bg-only` = 114 BG keys. ✓
+
+**Tango deltas vs the pre-correction run** (all driven by the wrap-defect key renames in `e7435ab`):
+`exact` 18 → 22, `candidate` 3 → 1, `dc-only` 4 → 2, `bg-only` 4 → 2. The four collapsed puzzles are
+enumerated in the Tango section.
 
 ### Bucket counts — BG key ↔ NDCC
 
-Only **Waltz** has been classified on this axis so far; it is added here because
-`ndcc_waltz_syllabus.json` is new and current. Tango and Foxtrot are deliberately **not** classified
-on this axis yet — their NDCC files are stale pending the wrap-defect correction commit (see the
-staleness note above), so any BG↔NDCC pairing built from them now would have to be thrown away.
-Quickstep's NDCC file is current but has not been run on this axis.
+All four dances are now classified on this axis. The counts below are of **NDCC entries** for
+`exact` / `cosmetic` / `candidate` / `ndcc-only`, and of **BG keys** for `bg-only` (an NDCC entry
+and a BG key on the same `syllabusNumber` whose names disagree substantively is one `candidate`).
+Tango and Foxtrot are read from the corrected (wrap-defect-fixed) syllabus files.
 
 | Dance | NDCC figures | `exact` | `cosmetic` | `candidate` | `ndcc-only` | `bg-only` | Status |
 |---|---:|---:|---:|---:|---:|---:|---|
 | Waltz | 32 | 24 | 6 | 2 | 0 | 1 | classified — see the Waltz section |
-| Tango | 27 | — | — | — | — | — | **deferred — NDCC file stale** |
-| Foxtrot | 25 | — | — | — | — | — | **deferred — NDCC file stale** |
-| Quickstep | 31 | — | — | — | — | — | not yet run |
+| Tango | 27 | 24 | 1 | 1 | 1 | 2 | classified — see the Tango section |
+| Foxtrot | 25 | 20 | 3 | 2 | 0 | 5 | classified — see the Foxtrot section |
+| Quickstep | 31 | 15 | 4 | 0 | 12 | 1 | classified — see the Quickstep section |
+
+NDCC coverage: **Waltz 0 gaps · Tango 1 gap (#8) · Foxtrot 0 gaps · Quickstep 12 gaps.** The one
+Tango `candidate` NDCC entry (#1 Walk → LF/RF Walk) covers **3** BG keys once the shared-number
+variant `Overturned Five Step` (#26) is included; details in the Tango BG↔NDCC sub-section.
 
 ### Bucket definitions
 
 | Bucket | Meaning |
 |---|---|
 | `exact` | DC printed title is character-identical to the BG key. |
-| `cosmetic` | Differs only in punctuation, `&`/`And`, accents, case, whitespace, a trailing `- <Dance>` suffix, or an abbreviation pair (`PP`↔`Promenade Position`, `R`↔`Right`, `LF`↔`Left Foot`). The `Δ` column names which. Still listed for confirmation. |
+| `cosmetic` | Differs only in punctuation, `&`/`And`, accents, case, whitespace, singular/plural, a trailing `- <Dance>` suffix, or an abbreviation pair (`PP`↔`Promenade Position`, `R`↔`Right`, `LF`↔`Left Foot`). The `Δ` column names which. Still listed for confirmation. |
 | `candidate` | Any **substantive** name difference, or a cardinality mismatch (one DC page ↔ two BG keys). **Needs Victor.** |
 | `dc-only` | dancecentral page with no BG key in `FIGURE_RICH_DATA`. |
 | `bg-only` | BG key with no dedicated dancecentral page. |
@@ -286,33 +273,42 @@ call.
 ## Tango
 
 NDCC values quoted verbatim from `docs/ndcc_tango_syllabus.json` (27 figures, status
-`EXTRACTED — pending Victor's confirmation. Not yet audited.`).
+`EXTRACTED — pending Victor's confirmation. Not yet audited.`), **regenerated against the
+corrected file** after the wrap-defect binding fix (`38bec5d`) and the BG-key renames (`e7435ab`).
 
-### exact — 18
+**Four puzzles collapsed as predicted** by the pre-correction wrap note. The three renamed BG keys
+plus the un-renamed `Change Brush Tap → Brush Tap` reconnected DC pages that had been stranded:
+`Back Open Promenade` (was `candidate` vs BG `Back Open`) and `Brush Tap` (was `candidate` vs BG
+`Change Brush Tap`) are now **exact**; `Fallaway Promenade` and `Four Step Change` (both `dc-only`,
+no BG key) are now **exact** against the renamed keys; and the two `bg-only` strays
+(`Promenade Outside`, `Promenade Four Step`) are gone.
+
+### exact — 22
 
 | dancecentral printed title | file | BG key | NDCC # / tier / verbatim name |
 |---|---|---|---|
 | Back Corte | `back-corte.html` | `Back Corte` | 7 / Pre-Bronze / "Back Corte" |
+| Back Open Promenade | `back-open-promenade.html` | `Back Open Promenade` | 16 / Silver / "Back Open Promenade" |
 | Basic Reverse Turn | `basic-reverse-turn.html` | `Basic Reverse Turn` | 23 / Gold / "Basic Reverse Turn" |
-| Closed Promenade | `closed-promenade.html` | `Closed Promenade` | 4 / Beginners / "Closed" ⚠ |
+| Brush Tap | `brush-tap.html` | `Brush Tap` | 20 / Silver / "Brush Tap" |
+| Closed Promenade | `closed-promenade.html` | `Closed Promenade` | 4 / Beginners / "Closed Promenade" |
+| Fallaway Promenade | `fallaway-promenade.html` | `Fallaway Promenade` | 18 / Silver / "Fallaway Promenade" |
 | Five Step | `five-step.html` | `Five Step` | 26 / Gold / "Five Step" |
 | Four Step | `four-step.html` | `Four Step` | 15 / Silver / "Four Step" |
+| Four Step Change | `four-step-change.html` | `Four Step Change` | 19 / Silver / "Four Step Change" |
 | Natural Promenade Turn | `natural-promenade-turn.html` | `Natural Promenade Turn` | 13 / Bronze / "Natural Promenade Turn" |
 | Natural Twist Turn | `natural-twist-turn.html` | `Natural Twist Turn` | 12 / Bronze / "Natural Twist Turn" |
 | Open Promenade | `open-promenade.html` | `Open Promenade` | 10 / Bronze / "Open Promenade" |
 | Open Reverse Turn, Lady Outside | `open-reverse-turn-lady-outside.html` | `Open Reverse Turn, Lady Outside` | 6 / Pre-Bronze / "Open Reverse Turn, Lady Outside" |
-| Outside Swivel | `outside-swivel.html` | `Outside Swivel` | — (BG record is null-tier) |
+| Outside Swivel | `outside-swivel.html` | `Outside Swivel` | 17 / Silver / "Outside Swivels" (NDCC prints the plural — see BG↔NDCC `cosmetic`) |
 | Oversway | `oversway.html` | `Oversway` | 22 / Gold / "Oversway" |
 | Progressive Link | `progressive-link.html` | `Progressive Link` | 3 / Beginners / "Progressive Link" |
 | Progressive Side Step | `progressive-side-step.html` | `Progressive Side Step` | 2 / Beginners / "Progressive Side Step" |
 | Progressive Side Step Reverse Turn | `progressive-side-step-reverse-turn.html` | `Progressive Side Step Reverse Turn` | 9 / Pre-Bronze / "Progressive Side Step Reverse Turn" |
 | Promenade Link | `promenade-link.html` | `Promenade Link` | 14 / Silver / "Promenade Link" |
 | Reverse Outside Swivel | `reverse-outside-swivel.html` | `Reverse Outside Swivel` | — (BG record is null-tier) |
-| Rock Turn | `rock-turn.html` | `Rock Turn` | — (BG record is null-tier; NDCC #5 "Promenade Rock Turn" is unclaimed — see wrap note) |
+| Rock Turn | `rock-turn.html` | `Rock Turn` | 5 / Beginners / "Rock Turn" |
 | The Chase | `the-chase.html` | `The Chase` | 24 / Gold / "The Chase" |
-
-⚠ NDCC #4 prints as bare **"Closed"**; the source JSON's own `_provenance.notes` flags it as an
-apparent truncation and says "CONFIRM intended name". The DC↔BG pairing is unaffected.
 
 ### cosmetic — 4
 
@@ -323,35 +319,91 @@ apparent truncation and says "CONFIRM intended name". The DC↔BG pairing is una
 | Fallaway Reverse and Slip Pivot | `fallaway-reverse-and-slip-pivot.html` | `Fallaway Reverse & Slip Pivot` | `and` vs `&` | 25 / Gold / "Fallaway Reverse & Slip Pivot" |
 | LF and RF Rocks | `lf-and-rf-rocks.html` | `Left Foot and Right Foot Rocks` | abbrev (`LF`/`RF`) | 11 / Bronze / "Left Foot and Right Foot Rocks" |
 
-### candidate — 3 (needs Victor)
+### candidate — 1 (needs Victor)
 
 | dancecentral printed title | file | BG key(s) | NDCC # / verbatim name | Why it needs Victor |
 |---|---|---|---|---|
-| Back Open Promenade | `back-open-promenade.html` | `Back Open` | 16 / Silver / "Back Open" | Substantive word difference. BG key is a verbatim copy of the NDCC string, which is itself wrap-suspect (see wrap note below). |
-| Brush Tap | `brush-tap.html` | `Change Brush Tap` | 20 / Silver / "Change Brush Tap" | Substantive word difference, and entangled with the #19/#20 wrap question and with the DC-only page "Four Step Change". |
 | Walk | `walk.html` | `Left Foot Walk` **and** `Right Foot Walk` | 1 / Beginners / "Walk" | **1 page → 2 BG keys.** Unlike the Waltz Closed Changes page, the DC Walk page does **not** sub-split LF/RF — it has a single "Tango Walk" section. Enrichment cannot mechanically split it. Both BG keys hold `syllabusNumber: 1`. |
 
-### dc-only — 4
+### dc-only — 2
 
 | dancecentral printed title | file | Overlaps an NDCC entry? |
 |---|---|---|
-| Fallaway Promenade | `fallaway-promenade.html` | No NDCC entry of this name. NDCC **#18 "Swivels Fallaway"** (Silver) is unclaimed by any BG key — see wrap note. |
-| Four Step Change | `four-step-change.html` | No NDCC entry of this name. NDCC **#19 "Promenade Four Step"** / **#20 "Change Brush Tap"** are wrap-suspect — see wrap note. |
 | Open/Closed Finish | `open-finish.html` | No NDCC entry. Page carries **two** figures as sub-sections: h2 "Closed Finish" and h2 "Open Finish". |
-| Open Reverse Turn, Lady Inline | `open-reverse-turn-lady-inside.html` | **Yes** — NDCC **#8 / Pre-Bronze / "Open Reverse Turn, Lady in Line"**, an NDCC entry with no BG key. Note DC prints "Inline", NDCC prints "in Line". |
+| Open Reverse Turn, Lady Inline | `open-reverse-turn-lady-inside.html` | **Yes** — NDCC **#8 / Pre-Bronze / "Open Reverse Turn, Lady in Line"**, the sole NDCC entry with no BG key. Note DC prints "Inline", NDCC prints "in Line". |
 
-### bg-only — 4
+### bg-only — 2
 
 | BG key | NDCC # / tier / verbatim name | Note |
 |---|---|---|
-| `Promenade Outside` | 17 / Silver / "Promenade Outside" | No DC page of this name. Wrap-suspect — see note. |
-| `Promenade Four Step` | 19 / Silver / "Promenade Four Step" | No DC page of this name. Wrap-suspect — see note. |
-| `Overturned Five Step` | 26 / Gold (shares #26 with `Five Step`) | No DC page. |
+| `Overturned Five Step` | 26 / Gold (shares #26 with `Five Step`) | No DC page. Intentional shared-number variant. |
 | `Point to Promenade Position` | — (null-tier) | No DC page. |
 
 ### NDCC Tango numbers with no BG key
 
-**3 gaps:** #5 "Promenade Rock Turn", #8 "Open Reverse Turn, Lady in Line", #18 "Swivels Fallaway".
+**1 gap:** #8 "Open Reverse Turn, Lady in Line". (The former #5 and #18 gaps closed: #5 "Rock Turn"
+and #18 "Fallaway Promenade" are now claimed by BG keys of the same name.)
+
+### Tango — BG key ↔ NDCC classification
+
+Same four buckets and rules as the Waltz run: each `data.js` Tango BG key against the corrected
+`docs/ndcc_tango_syllabus.json`, paired on the **`syllabusNumber` already stored on the BG record**.
+Reports whether the *names* agree at that number; does **not** re-derive number bindings.
+
+> **Every non-`exact` row below is a proposal for Victor's figure-by-figure ruling.** Nothing applied.
+
+| Bucket | Count | NDCC entries | BG keys |
+|---|---:|---:|---:|
+| `exact` | 24 | 24 | 24 |
+| `cosmetic` | 1 | 1 | 1 |
+| `candidate` | 2 rows | 1 (#1) + #26 shared | 3 |
+| `ndcc-only` (no BG key) | 1 | 1 | — |
+| `bg-only` (no NDCC entry) | 2 | — | 2 |
+| **Total** | | **27** | **30** |
+
+26 of 27 NDCC Tango numbers are claimed (**1 gap: #8**). BG reconciliation: 24 + 1 + 3 + 2 = 30. ✓
+The `candidate` bucket's #26 row is the extra `Overturned Five Step` key sharing a number whose base
+figure (`Five Step`) is itself `exact`; it adds a BG key, not an NDCC entry.
+
+#### exact — 24
+
+`#2 Progressive Side Step` · `#3 Progressive Link` · `#4 Closed Promenade` · `#5 Rock Turn` ·
+`#6 Open Reverse Turn, Lady Outside` · `#7 Back Corte` · `#9 Progressive Side Step Reverse Turn` ·
+`#10 Open Promenade` · `#11 Left Foot and Right Foot Rocks` · `#12 Natural Twist Turn` ·
+`#13 Natural Promenade Turn` · `#14 Promenade Link` · `#15 Four Step` · `#16 Back Open Promenade` ·
+`#18 Fallaway Promenade` · `#19 Four Step Change` · `#20 Brush Tap` · `#21 Fallaway Four Step` ·
+`#22 Oversway` · `#23 Basic Reverse Turn` · `#24 The Chase` · `#25 Fallaway Reverse & Slip Pivot` ·
+`#26 Five Step` · `#27 Contra Check`
+
+BG key string is character-identical to the NDCC `ndccName` at that number. Note `#4`, `#5`, `#16`,
+`#18`, `#19`, `#20` are exact **only after** the wrap-defect correction — before it they were the
+corrupted strings.
+
+#### cosmetic — 1
+
+| # / tier | BG key | NDCC verbatim name | Δ |
+|---|---|---|---|
+| 17 / Silver | `Outside Swivel` | "Outside Swivels" | singular/plural — NDCC prints the plural. A looser call than punctuation; flagged. |
+
+#### candidate — 2 (needs Victor)
+
+| # / tier | BG key(s) | NDCC verbatim name | Why it needs Victor |
+|---|---|---|---|
+| 1 / Beginners | `Left Foot Walk` **and** `Right Foot Walk` | "Walk" | **1 NDCC entry → 2 BG keys.** Both already hold `syllabusNumber: 1`. Mirrors the DC-side `Walk` split. |
+| 26 / Gold | `Overturned Five Step` (base `Five Step` is `exact`) | "Five Step" | **Shared-number variant.** `Five Step` matches "Five Step" exactly; `Overturned Five Step` is the overturned variant carrying the same #26. Enrichment/tiering ruling is Victor's. |
+
+#### ndcc-only — 1
+
+| # / tier | NDCC verbatim name | Note |
+|---|---|---|
+| 8 / Pre-Bronze | "Open Reverse Turn, Lady in Line" | No BG key. A dancecentral page exists ("Open Reverse Turn, Lady Inline" — see DC `dc-only`). |
+
+#### bg-only — 2
+
+| BG key | Note |
+|---|---|
+| `Point to Promenade Position` | Not an NDCC figure. `data.js` holds `syllabusNumber: null`. |
+| `Reverse Outside Swivel` | Not an NDCC figure. `data.js` holds `syllabusNumber: null`. |
 
 ### Tango notes
 
@@ -379,11 +431,11 @@ NDCC values quoted verbatim from `docs/ndcc_foxtrot_syllabus.json` (25 figures, 
 | Closed Telemark | `closedtelemark.html` | `Closed Telemark` | 9 / Silver / "Closed Telemark" |
 | Curved Feather to Back Feather | `curved-feather-to-back-feather.html` | `Curved Feather to Back Feather` | 21 / Gold / "Curved Feather to Back Feather" |
 | Feather Step | `feather-step.html` | `Feather Step` | 1 / Pre-Bronze / "Feather Step" |
-| Hover Cross | `hover-cross.html` | `Hover Cross` | 15 / Silver / "Cross" ⚠wrap |
-| Hover Feather | `hover-feather.html` | `Hover Feather` | 12 / Silver / "Feather Hover" ⚠wrap |
-| Hover Telemark | `hover-telemark.html` | `Hover Telemark` | 14 / Silver / "Telemark Hover" ⚠wrap |
+| Hover Cross | `hover-cross.html` | `Hover Cross` | 15 / Silver / "Hover Cross" |
+| Hover Feather | `hover-feather.html` | `Hover Feather` | 12 / Silver / "Hover Feather" |
+| Hover Telemark | `hover-telemark.html` | `Hover Telemark` | 13 / Silver / "Hover Telemark" |
 | Natural Hover Telemark | `natural-hover-telemark.html` | `Natural Hover Telemark` | 24 / Gold / "Natural Hover Telemark" |
-| Natural Telemark | `natural-telemark.html` | `Natural Telemark` | 13 / Silver / "Telemark Natural" ⚠wrap |
+| Natural Telemark | `natural-telemark.html` | `Natural Telemark` | 14 / Silver / "Natural Telemark" |
 | Natural Turn | `natural-turn.html` | `Natural Turn` | 3 / Pre-Bronze / "Natural Turn" |
 | Natural Twist Turn | `natural-twist-turn.html` | `Natural Twist Turn` | 20 / Gold / "Natural Twist Turn" |
 | Natural Weave | `natural-weave.html` | `Natural Weave` | 6 / Bronze / "Natural Weave" |
@@ -391,10 +443,12 @@ NDCC values quoted verbatim from `docs/ndcc_foxtrot_syllabus.json` (25 figures, 
 | Open Impetus | `open-impetus.html` | `Open Impetus` | 17 / Silver / "Open Impetus" |
 | Reverse Wave | `reverse-wave.html` | `Reverse Wave` | 19 / Silver / "Reverse Wave" |
 | Three Step | `three-step.html` | `Three Step` | 2 / Pre-Bronze / "Three Step" |
-| Top Spin | `top-spin.html` | `Top Spin` | 11 / Silver / "Top Spin Hover" ⚠wrap |
+| Top Spin | `top-spin.html` | `Top Spin` | 11 / Silver / "Top Spin" |
 
-`⚠wrap` = the DC↔BG pairing is exact and unaffected; the **NDCC string** at that number is
-wrap-suspect. See the wrap note below.
+The former `⚠wrap` markers on #11–#15 are **resolved**: the NDCC strings are now the corrected,
+Victor-ruled names (`38bec5d`), and #13/#14 hold the Telemark bindings in corrected order
+(#13 Hover Telemark, #14 Natural Telemark). Every DC↔BG pairing here was exact throughout;
+only the NDCC citation changed.
 
 ### cosmetic — 4
 
@@ -446,6 +500,65 @@ title-extraction script that assumes an `<h1>` will silently drop it.
 **0 gaps.** All 25 NDCC Foxtrot numbers (1–25) are claimed by a BG key. The Foxtrot column also has
 **no Beginners figures** (blank cell in the source; numbering starts at 1 in Pre-Bronze), per the
 source JSON's `_provenance.notes`.
+
+### Foxtrot — BG key ↔ NDCC classification
+
+Each `data.js` Foxtrot BG key against the corrected `docs/ndcc_foxtrot_syllabus.json`, paired on the
+stored `syllabusNumber`; reports name agreement only.
+
+> **Every non-`exact` row below is a proposal for Victor's figure-by-figure ruling.** Nothing applied.
+
+| Bucket | Count | NDCC entries | BG keys |
+|---|---:|---:|---:|
+| `exact` | 20 | 20 | 20 |
+| `cosmetic` | 3 | 3 | 3 |
+| `candidate` | 2 | 2 | 2 |
+| `ndcc-only` (no BG key) | 0 | 0 | — |
+| `bg-only` (no NDCC entry) | 5 | — | 5 |
+| **Total** | | **25** | **30** |
+
+All 25 NDCC Foxtrot numbers are claimed (**0 gaps**). BG reconciliation: 20 + 3 + 2 + 5 = 30. ✓
+
+#### exact — 20
+
+`#1 Feather Step` · `#2 Three Step` · `#3 Natural Turn` · `#6 Natural Weave` ·
+`#7 Change of Direction` · `#8 Basic Weave` · `#9 Closed Telemark` · `#11 Top Spin` ·
+`#12 Hover Feather` · `#13 Hover Telemark` · `#14 Natural Telemark` · `#15 Hover Cross` ·
+`#17 Open Impetus` · `#18 Weave from PP` · `#19 Reverse Wave` · `#20 Natural Twist Turn` ·
+`#21 Curved Feather to Back Feather` · `#22 Natural Zig-Zag from PP` · `#24 Natural Hover Telemark` ·
+`#25 Bounce Fallaway with Weave Ending`
+
+`#11–#15` are exact **only after** the wrap-defect correction — before it the NDCC strings were the
+corrupted "Top Spin Hover / Feather Hover / Telemark Natural / Telemark Hover / Cross".
+
+#### cosmetic — 3
+
+| # / tier | BG key | NDCC verbatim name | Δ |
+|---|---|---|---|
+| 5 / Pre-Bronze | `Closed Impetus & Feather Finish` | "Closed Impetus and Feather Finish" | `&` vs `and` |
+| 10 / Silver | `Open Telemark & Feather Ending` | "Open Telemark and Feather Ending" | `&` vs `and` |
+| 23 / Gold | `Fallaway Reverse & Slip Pivot` | "Fallaway Reverse and Slip Pivot" | `&` vs `and` |
+
+#### candidate — 2 (needs Victor)
+
+| # / tier | BG key | NDCC verbatim name | Why it needs Victor |
+|---|---|---|---|
+| 4 / Pre-Bronze | `Reverse Turn & Feather Finish` | "Reverse Turn ( incl. Feather Finish )" | Substantive: NDCC binds the Feather Finish in a parenthetical; BG conjoins with `&`. Source JSON flags "Feather Finish" as **not** a standalone numbered figure. |
+| 16 / Silver | `Outside Swivel` | "Open Telemark Outside Swivel and Feather Ending" | Substantive: BG key names only the swivel; NDCC names the whole grouped figure. The verified reference case from the brief; also a `candidate` on the DC↔BG axis. |
+
+#### ndcc-only — 0
+
+Every NDCC Foxtrot number 1–25 is claimed by a BG key.
+
+#### bg-only — 5
+
+| BG key | Note |
+|---|---|
+| `Open Natural Turn` | Not an NDCC figure (`syllabusNumber: null`). Component of the #16 grouped figure. |
+| `Foxtrot Prep Step` | Not an NDCC figure (`syllabusNumber: null`). |
+| `Natural Twist Turn with Closed Impetus & Feather Finish Ending` | Not an NDCC figure (`syllabusNumber: null`). Twist-ending variant. |
+| `Natural Twist Turn with Open Impetus Ending` | Not an NDCC figure (`syllabusNumber: null`). Twist-ending variant. |
+| `Natural Twist Turn with Weave Ending` | Not an NDCC figure (`syllabusNumber: null`). Twist-ending variant. |
 
 ---
 
@@ -519,6 +632,64 @@ No Quickstep DC page differs substantively from a BG key it pairs with.
 
 **12 gaps** — the known figure: #2, #3, #6, #8, #16, #19, #20, #21, #24, #27, #29, #31.
 
+### Quickstep — BG key ↔ NDCC classification
+
+Each `data.js` Quickstep BG key against `docs/ndcc_quickstep_syllabus.json` (current — no wrap
+defect), paired on the stored `syllabusNumber`; reports name agreement only. This axis had not
+previously been run for Quickstep.
+
+> **Every non-`exact` row below is a proposal for Victor's figure-by-figure ruling.** Nothing applied.
+
+| Bucket | Count | NDCC entries | BG keys |
+|---|---:|---:|---:|
+| `exact` | 15 | 15 | 15 |
+| `cosmetic` | 4 | 4 | 4 |
+| `candidate` | 0 | 0 | 0 |
+| `ndcc-only` (no BG key) | 12 | 12 | — |
+| `bg-only` (no NDCC entry) | 1 | — | 1 |
+| **Total** | | **31** | **20** |
+
+19 of 31 NDCC Quickstep numbers are claimed (**12 gaps** — same 12 listed above). BG reconciliation:
+15 + 4 + 0 + 1 = 20. ✓ Quickstep is the only dance where NDCC substantially out-covers the BG store.
+
+#### exact — 15
+
+`#1 Quarter Turn to Right` · `#4 Forward Lock` · `#5 Natural Spin Turn` · `#7 Natural Pivot Turn` ·
+`#10 Closed Impetus` · `#11 Back Lock` · `#12 Reverse Pivot` · `#15 Running Finish` ·
+`#18 Change of Direction` · `#22 Fishtail` · `#23 Running Right Turn` · `#25 V6` ·
+`#26 Closed Telemark` · `#28 Six Quick Run` · `#30 Tipsy to Right & Left`
+
+#### cosmetic — 4
+
+| # / tier | BG key | NDCC verbatim name | Δ |
+|---|---|---|---|
+| 9 / Pre-Bronze | `Chasse Reverse Turn` | "Chassé Reverse Turn" | accent (`Chassé`) |
+| 13 / Pre-Bronze | `Progressive Chasse to Right` | "Progressive Chassé to Right" | accent (`Chassé`) |
+| 14 / Bronze | `Tipple Chasse to Right` | "Tipple Chassé to Right" | accent (`Chassé`) |
+| 17 / Bronze | `Cross Chasse` | "Cross Chassé" | accent (`Chassé`) |
+
+All four are the same `Chassé`-accent difference; the BG store drops the acute throughout.
+
+#### candidate — 0
+
+No Quickstep BG key differs substantively from the NDCC name at its number.
+
+#### ndcc-only — 12
+
+`#2 Heel Pivot ( Quarter Turn to Left )` · `#3 Progressive Chassé` · `#6 Natural Turn` ·
+`#8 Natural Turn with Hesitation` · `#16 Zig-Zag Back Lock & Running Finish` ·
+`#19 Natural Turn and Back Lock` · `#20 Double Reverse Spin` · `#21 Quick Open Reverse` ·
+`#24 Four Quick Run` · `#27 Cross Swivel` · `#29 Rumba Cross` · `#31 Hover Corte`
+
+All 12 have a dedicated dancecentral page (see the DC↔BG `dc-only` bucket and the coverage-gap
+overlap section) — they are the known Quickstep coverage gaps, not new findings.
+
+#### bg-only — 1
+
+| BG key | Note |
+|---|---|
+| `Quickstep Prep Step` | Not an NDCC figure (`syllabusNumber: null`). |
+
 ---
 
 ## NDCC coverage-gap overlap with dancecentral-only pages
@@ -529,7 +700,7 @@ Recorded as evidence for the deferred prose-as-structural-fallback decision (D-3
 | Dance | NDCC gaps (numbers with no BG key) | Gaps covered by a `dc-only` page | Gaps with no DC page | `dc-only` pages outside NDCC |
 |---|---:|---:|---:|---:|
 | Waltz | **0** | 0 | 0 | 0 |
-| Tango | 3 (#5, #8, #18) | **1** (#8 ← "Open Reverse Turn, Lady Inline") | 2 (#5, #18) | 3 |
+| Tango | **1** (#8) | **1** (#8 ← "Open Reverse Turn, Lady Inline") | 0 | 1 |
 | Foxtrot | **0** | 0 | 0 | **7** |
 | Quickstep | 12 (#2,3,6,8,16,19,20,21,24,27,29,31) | **12 — all of them** | 0 | 2 |
 
@@ -544,68 +715,44 @@ Points of fact for the D-3 file:
    are extra-syllabus material (Curved Feather from PP, Curved Three Step, Hover Telemark to PP,
    Quick Natural Weave, Quick Open Reverse, Reverse Pivot, Tumble Turn). This is the opposite
    evidentiary situation to Quickstep and should not be pooled with it.
-3. **Tango: partial.** Of 3 gaps, only #8 has a dancecentral page under a recognisable name. #5 and
-   #18 are both wrap-suspect strings (below), so whether they are "gaps" at all is unresolved.
+3. **Tango: near-complete after the correction.** Only **1 gap** remains (#8 "Open Reverse Turn,
+   Lady in Line"), and it has a dancecentral page under a recognisable name ("…Lady Inline"). The
+   former #5 and #18 "gaps" were wrap-defect artifacts: they are now claimed by the BG keys
+   `Rock Turn` (#5) and `Fallaway Promenade` (#18) of the same name.
 4. **Waltz: nothing to weigh, in either direction.** Now assessable against
    `ndcc_waltz_syllabus.json`. All 32 NDCC Waltz numbers are claimed by a BG key (**0 gaps**), and
    every Waltz dancecentral figure page has a BG key (**0 `dc-only` pages**). Waltz therefore
    contributes no evidence to the D-3 question at all — it is neither a Quickstep-style case nor a
    Foxtrot-style one. Of the four dances, Waltz is the only one where all three sources agree on
    coverage; the open questions there are purely about *naming*, not about missing figures.
-5. **Tango and Foxtrot rows above are provisional** — both rest on NDCC files that predate the
-   wrap-defect correction (see the staleness note at the top). The Waltz and Quickstep rows are not
-   affected.
+5. **All four rows are now current.** Tango and Foxtrot were regenerated against the corrected NDCC
+   files (`38bec5d`); they are no longer provisional. Waltz and Quickstep were never affected.
 
 ---
 
-## NDCC transcription line-wrap observations
+## NDCC transcription line-wrap observations — RESOLVED (2026-07-25)
 
-These are **mechanical string observations** about the NDCC JSON files, surfaced because they
-directly affect how the alias map should be read. They are **not** applied, and no dance-domain
-call is made. All strings below are quoted verbatim from the JSON at write time.
+The line-wrap defect these observations flagged has been confirmed by raster re-verification,
+Victor-ruled, and committed. The corrected number→name bindings are now live in the syllabus JSONs
+and reflected throughout this document. The wrap-suspect readings are retained below only as the
+historical record of what was found.
 
-### Foxtrot #11–#15
+**Resolution commits:** `38bec5d` (NDCC JSON + `data.js` binding corrections), `e7435ab` (Tango
+BG-key renames + #17→#18 renumber), `7fc7d66` (parser `NDCC_MAP` corrected).
 
-The source JSON's `_provenance.notes` already flags line-wrap in figures 5, 16 and 25. Figures
-**11–15 show the same signature but are not flagged**:
-
-| # | verbatim `ndccName` | BG key holding that `syllabusNumber` |
-|---|---|---|
-| 11 | "Top Spin Hover" | `Top Spin` |
-| 12 | "Feather Hover" | `Hover Feather` |
-| 13 | "Telemark Natural" | `Natural Telemark` |
-| 14 | "Telemark Hover" | `Hover Telemark` |
-| 15 | "Cross" | `Hover Cross` |
-
-Read as a single stream, #11–#15 concatenate to
-`Top Spin Hover Feather Hover Telemark Natural Telemark Hover Cross`, which re-splits cleanly into
-five two-word-plus figure names. Each of those five has a dancecentral page and a BG key. **The
-number→name binding for Foxtrot #11–#15 is therefore not trustworthy as transcribed**, and the
-BG records' `syllabusNumber` values in that range rest on it. Note in particular that the stream
-reading and BG's current assignment disagree on the order of #13/#14. **Flagged for Victor — not
-resolved.**
-
-### Tango #4–#5 and #16–#20
-
-| # | verbatim `ndccName` | BG key holding that `syllabusNumber` |
-|---|---|---|
-| 4 | "Closed" | `Closed Promenade` |
-| 5 | "Promenade Rock Turn" | *(none — gap)* |
-| 16 | "Back Open" | `Back Open` |
-| 17 | "Promenade Outside" | `Promenade Outside` |
-| 18 | "Swivels Fallaway" | *(none — gap)* |
-| 19 | "Promenade Four Step" | `Promenade Four Step` |
-| 20 | "Change Brush Tap" | `Change Brush Tap` |
-
-#4–#5 concatenate to `Closed Promenade Rock Turn`; the JSON already flags #4 as an apparent
-truncation. #16–#20 concatenate to
-`Back Open Promenade Outside Swivels Fallaway Promenade Four Step Change Brush Tap`. Every segment
-of a five-way re-split of that stream corresponds to an existing dancecentral page — including all
-four Tango `dc-only` pages and the two `candidate` rows. **Flagged for Victor — not resolved.**
-If this reading is confirmed, four of the six Tango `candidate`/`dc-only` puzzles collapse at once
-and three BG keys (`Back Open`, `Promenade Outside`, `Promenade Four Step`) would need renaming;
-if it is rejected, they stand as listed. Either way the decision is Victor's, and nothing in this
-doc presumes it.
+- **Foxtrot #11–#15** — the wrap stream re-split exactly as predicted:
+  #11 Top Spin · #12 Hover Feather · #13 Hover Telemark · #14 Natural Telemark · #15 Hover Cross.
+  The #13/#14 Telemark order was corrected; both are audited figures, so each swap is logged in that
+  record's `corrections` array. (Pre-correction strings were "Top Spin Hover / Feather Hover /
+  Telemark Natural / Telemark Hover / Cross".)
+- **Tango #4–#5 and #16–#20** — confirmed:
+  #4 Closed Promenade · #5 Rock Turn · #16 Back Open Promenade · #17 Outside Swivels ·
+  #18 Fallaway Promenade · #19 Four Step Change · #20 Brush Tap.
+  **Four of the six** former Tango `candidate`/`dc-only` puzzles collapsed as the note predicted, and
+  three BG keys were renamed — `Back Open`→`Back Open Promenade`, `Promenade Outside`→
+  `Fallaway Promenade`, `Promenade Four Step`→`Four Step Change` — plus the un-renamed
+  `Change Brush Tap`→`Brush Tap`. (Pre-correction strings were "Closed / Promenade Rock Turn /
+  Back Open / Promenade Outside / Swivels Fallaway / Promenade Four Step / Change Brush Tap".)
 
 ---
 
@@ -613,15 +760,15 @@ doc presumes it.
 
 ### dancecentral ↔ BG key
 
-1. Confirm or reject each of the **6 `candidate`** pairings (Waltz 1, Tango 3, Foxtrot 2), figure by
-   figure.
+1. Confirm or reject each of the **4 `candidate`** pairings (Waltz 1, Tango 1, Foxtrot 2), figure by
+   figure. (Tango dropped from 3 to 1 — `Back Open Promenade` and `Brush Tap` are now `exact`.)
 2. Confirm the **17 `cosmetic`** rows are genuinely cosmetic — in particular the 4 abbreviation
    pairs (Waltz `Chassé from PP`, `Progressive Chassé to R`, `Weave from PP`; Tango
    `Left Foot and Right Foot Rocks`), which are a looser call than punctuation.
 3. Rule on the two cardinality splits (Waltz `Closed Changes` → 2 keys, Tango `Walk` → 2 keys):
    how should enrichment attach one page to two records?
 
-### BG key ↔ NDCC (Waltz)
+### BG key ↔ NDCC — Waltz (unchanged; still open)
 
 4. Rule on the **2 Waltz `candidate`** rows: `#1` "Closed Changes" → `Closed Change (LF)` +
    `Closed Change (RF)` (1→2 split, plus singular/plural), and `#6` "Chassé from Promenade" vs
@@ -633,17 +780,30 @@ doc presumes it.
 6. Decide whether to follow the NDCC source's internal `and`/`&` inconsistency within the Silver
    band (#19/#20 print "and", #22/#23 print "&") or normalise it in `data.js`.
 
+### BG key ↔ NDCC — Tango, Foxtrot, Quickstep (newly classified this regen)
+
+7. **Tango** — 1 `cosmetic` (#17 `Outside Swivel` vs "Outside Swivels", singular/plural) and 2
+   `candidate` (#1 "Walk" → `Left Foot Walk` + `Right Foot Walk`, 1→2 split; #26 `Overturned Five
+   Step` sharing #26 with the `exact` `Five Step`). All proposals.
+8. **Foxtrot** — 3 `cosmetic` (`&`/`and` at #5, #10, #23) and 2 `candidate` (#4 `Reverse Turn &
+   Feather Finish` vs the parenthetical "Reverse Turn ( incl. Feather Finish )"; #16 `Outside Swivel`
+   vs the grouped "Open Telemark Outside Swivel and Feather Ending"). All proposals.
+9. **Quickstep** — 4 `cosmetic`, all the same `Chassé`-accent drop (#9, #13, #14, #17); no
+   `candidate` rows. Separately: **12 NDCC coverage gaps** (#2,3,6,8,16,19,20,21,24,27,29,31), each
+   with a dancecentral page — feeds the deferred D-3 gap-fill decision, not a naming ruling.
+
 ### Cross-cutting
 
-7. Rule on the **Foxtrot #11–#15** and **Tango #4–5 / #16–20** wrap observations above, and land the
-   correction commit so the Tango and Foxtrot sections of this doc can be regenerated.
-8. Rule on overlapping DC source content: Tango `outside-swivel.html` vs `reverse-outside-swivel.html`
-   share method sections; Foxtrot `natural-twist-turn.html` hosts four ending variants against three
-   BG keys (with one name mismatch: DC "…with **Natural** Weave Ending" vs BG "…with Weave Ending",
-   and one DC variant "…with Hover Feather Ending" having no BG key at all).
-9. Rule on the `curved-three-step.html` printed-name ambiguity (`<h2>` "Foxtrot Curved Three Step (*)"
-   vs `<title>` "Curved Three Step"; no `<h1>`).
-10. Decide whether `quickstep-hopping-figures.html` is in or out of scope as a figure page.
+10. ✓ **RESOLVED** — the **Foxtrot #11–#15** and **Tango #4–5 / #16–20** wrap observations were
+    ruled and committed (`38bec5d`, `e7435ab`, `7fc7d66`); the Tango and Foxtrot sections of this doc
+    have been regenerated against the corrected files.
+11. Rule on overlapping DC source content: Tango `outside-swivel.html` vs `reverse-outside-swivel.html`
+    share method sections; Foxtrot `natural-twist-turn.html` hosts four ending variants against three
+    BG keys (with one name mismatch: DC "…with **Natural** Weave Ending" vs BG "…with Weave Ending",
+    and one DC variant "…with Hover Feather Ending" having no BG key at all).
+12. Rule on the `curved-three-step.html` printed-name ambiguity (`<h2>` "Foxtrot Curved Three Step (*)"
+    vs `<title>` "Curved Three Step"; no `<h1>`).
+13. Decide whether `quickstep-hopping-figures.html` is in or out of scope as a figure page.
 
 ---
 
