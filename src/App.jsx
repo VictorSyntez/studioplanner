@@ -63,6 +63,17 @@ function useIsMobile() {
   return isMobile
 }
 
+// ─── VERIFICATION BADGE ──────────────────────────────
+// "Not yet verified" pill for any figure whose rich-data dataStatus is not
+// 'audited'. Absence of the badge means the figure is audited (verified) — no
+// clutter on the 49. Single presentational component, reused in the Library
+// rows, the FigureDetailPanel header, and the session ItemEditor header, so the
+// status reaches the PS at execution time. No filtering/sorting/gating.
+function VerifyBadge({ dataStatus }) {
+  if (dataStatus === 'audited') return null
+  return <span className="verify-badge" title="Step data not yet verified against source">Not yet verified</span>
+}
+
 // ─── FIGURE DETAIL PANEL ─────────────────────────────
 function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverrides, barsUsed, onAlignmentChange, isEditable }) {
   // Legacy default: sessions saved before dance-namespacing (Step 2c) don't carry
@@ -199,7 +210,7 @@ function FigureDetailPanel({ figureName, dance, mtNotes, onClose, alignmentOverr
       <div className="detail-panel-header">
         <div>
           <div className="detail-panel-type">FIGURE · {resolvedDance}</div>
-          <div className="detail-panel-name">{figureName}</div>
+          <div className="detail-panel-name">{figureName}<VerifyBadge dataStatus={rich?.dataStatus} /></div>
         </div>
         {onClose && <button className="icon-btn" onClick={onClose}>✕</button>}
       </div>
@@ -574,7 +585,7 @@ function LibraryPanel({ isMobile, onAddItem, session }) {
                       >
                         <span className="lib-icon">▶</span>
                         <div className="lib-text">
-                          <div className="lib-name">{fig.n}</div>
+                          <div className="lib-name">{fig.n}<VerifyBadge dataStatus={FIGURE_RICH_DATA[fig.dance || 'Waltz']?.[fig.n]?.dataStatus} /></div>
                           <div className="lib-sub">{fig.c} · {fig.fw}</div>
                         </div>
                         {isMobile && (
@@ -864,7 +875,7 @@ function ItemEditor({ item, onUpdate }) {
     <div className="item-editor">
       <div className="item-editor-header">
         <span className={`editor-kind-badge kind-${item.kind}`}>{item.kind === 'figure' ? '▶ Figure' : '◆ TEC'}</span>
-        <div className="editor-item-name">{item.name}</div>
+        <div className="editor-item-name">{item.name}{item.kind === 'figure' && <VerifyBadge dataStatus={rich?.dataStatus} />}</div>
         {tec && <div className="editor-item-sub">{tec.category} · {tec.summary}</div>}
         {fig && rich && <div className="editor-item-sub">{item.dance || 'Waltz'} · {rich.bars} bar{rich.bars > 1 ? 's' : ''}</div>}
       </div>
