@@ -5,6 +5,28 @@ export function levelIndex(level) {
   return LEVEL_ORDER.indexOf(level)
 }
 
+// Effective level = studioLevel ?? syllabusLevel (Victor-ruled 2026-07-26,
+// locked decision #28, null-tier schema option c). The NDCC fields stay
+// verbatim-or-null forever and are never repurposed; the studio's own
+// placement rides in the independent, optional `studioLevel` field.
+//
+// The field is introduced LAZILY: no record carries it yet and no values are
+// assigned (those are Victor's rulings, gathered in a dedicated sitting), so
+// today this resolves to syllabusLevel for all 115 figures and nothing moves.
+//
+// A figure with NEITHER field resolves to null and stays in the "Needs Review"
+// bucket exactly as before — that guard is explicit here, not an artifact of
+// indexOf returning -1 (see the note on getFigures below).
+export function effectiveLevel(f) {
+  const lvl = f.studioLevel ?? f.syllabusLevel ?? null
+  // A studioLevel outside LEVEL_ORDER is not orderable, so it cannot be
+  // compared or sorted. Treat it as unknown — same handling as null — rather
+  // than letting indexOf's -1 sort it above Beginners and slip past maxLevel.
+  // The studioLevel value domain is a future Victor ruling; nothing is
+  // pre-encoded here beyond "a level I don't recognise isn't orderable".
+  return lvl != null && levelIndex(lvl) === -1 ? null : lvl
+}
+
 // NOTE: FIGURES is still keyed by dance ({ 'Waltz': [...] }) in this pass, so we
 // flatten its values rather than calling FIGURES.filter directly (see §4.3).
 // Null-tier figures (syllabusLevel == null) are the "Needs Review" queue —
@@ -12,12 +34,15 @@ export function levelIndex(level) {
 // of each dance in the library grouping. The filter and sort below encode that
 // explicitly; do not rely on the indexOf(-1) coincidence.
 export function getFigures({ dance, maxLevel, category } = {}) {
-  const sortKey = f => f.syllabusLevel == null ? Infinity : levelIndex(f.syllabusLevel)
+  // Ordering and the cumulative filter both read the EFFECTIVE level
+  // (studioLevel ?? syllabusLevel), not the NDCC field directly.
+  const sortKey = f => effectiveLevel(f) == null ? Infinity : levelIndex(effectiveLevel(f))
   return Object.values(FIGURES).flat().filter(f => {
     if (dance && f.dance !== dance) return false
     if (category && f.category !== category) return false
     // Null tier passes: it's the review queue, must remain visible at every maxLevel.
-    if (maxLevel && f.syllabusLevel != null && levelIndex(f.syllabusLevel) > levelIndex(maxLevel)) return false
+    const lvl = effectiveLevel(f)
+    if (maxLevel && lvl != null && levelIndex(lvl) > levelIndex(maxLevel)) return false
     return true
   }).sort((a, b) =>
     sortKey(a) - sortKey(b) ||

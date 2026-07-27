@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, Fragment } from 'react'
-import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY, FIGURE_RICH_DATA, LEVEL_ORDER, getFiguresForSession } from './data.js'
+import { DANCE_COLORS, FIGURES, TEC_LIBRARY, GLOSSARY, FIGURE_RICH_DATA, LEVEL_ORDER, getFiguresForSession, effectiveLevel } from './data.js'
 import { SEED_SESSIONS } from './seedData.js'
 import AuthGate from './components/AuthGate.jsx'
 import InviteManager from './components/InviteManager.jsx'
@@ -556,11 +556,14 @@ function groupFigures(figures) {
     let dance = danceMap.get(danceKey)
     if (!dance) { dance = { dance: f.dance || 'Other', tiers: [] }; danceMap.set(danceKey, dance); cat.dances.push(dance) }
 
-    // Null-tier figures land in a "Needs Review" bucket per dance — sorted last
-    // by getFigures (see data.js) so this group always renders at the bottom.
-    const tierKey = `${danceKey}|${f.syllabusLevel || 'Needs Review'}`
+    // Tier grouping reads the EFFECTIVE level (studioLevel ?? syllabusLevel —
+    // locked decision #28). Figures with neither field land in a "Needs Review"
+    // bucket per dance — sorted last by getFigures (see data.js) so this group
+    // always renders at the bottom.
+    const level = effectiveLevel(f)
+    const tierKey = `${danceKey}|${level || 'Needs Review'}`
     let tier = tierMap.get(tierKey)
-    if (!tier) { tier = { tier: f.syllabusLevel || 'Needs Review', figures: [] }; tierMap.set(tierKey, tier); dance.tiers.push(tier) }
+    if (!tier) { tier = { tier: level || 'Needs Review', figures: [] }; tierMap.set(tierKey, tier); dance.tiers.push(tier) }
 
     tier.figures.push(f)
   }
