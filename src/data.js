@@ -95,7 +95,7 @@ export const FIGURES = {
     { n: 'Reverse Pivot',          c: '&',           fw: 'THT',                 al: 'DC',                   sw: 'S',           rise: 'Up',                                   notes: 'Single pivot on &. Foot turned in.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 14, syllabusBody: 'NDCC' },
     { n: 'Turning Lock to Right',  c: '1-&-2-3',     fw: 'TH,T,T,TH',          al: 'BDC,BDC,FDW,FDW',     sw: 'S,S,S,S',     rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'Turning lock rotating to right.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 29, syllabusBody: 'NDCC' },
     { n: 'Weave from PP',          c: '1-2-3,1-2-3,1', fw: 'HT,HT,TH,TH,T,TH,H', al: 'FDC,FC,BLOD,BDC,BDC,PDW,FDW', sw: 'S,S,S,S,S,S,S', rise: 'Rise e/o 1, top 2&5, lower e/o 3/6', notes: 'From PP. 3 bars. Ends OP.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC' },
-    { n: 'Waltz Prep Step', c: '123,12,3', fw: 'i/e of foot to WF,i/e of foot to WF,HT', al: 'FDW,FDW,FDW', sw: '', rise: 'Lower e/o 3', notes: '', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 33, syllabusBody: null },
+    { n: 'Waltz Prep Step', c: '123,12,3', fw: 'i/e of foot to WF,i/e of foot to WF,HT', al: 'FDW,FDW,FDW', sw: '', rise: 'Lower e/o 3', notes: '', dance: 'Waltz', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
   ],
   'Tango': [
     { n: 'Back Open Promenade', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 16, syllabusBody: 'NDCC' },
@@ -339,7 +339,10 @@ export const FIGURE_RICH_DATA = {
     'Back Lock': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 15, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [
+        { role: 'follower', step: null, field: 'structure', from: '5 steps (source Lady Table A row 4 carries a BLANK step number while Table B row 4 is "4"; merge-by-step-number split one real step into two: a step with the foot and no timing, then a step with the timing and no foot)', to: '4 steps', ruledBy: 'Victor', date: '2026-07-26', note: 'Rebuilt to match the source and the leader\'s 4-step shape: Table-A row (LF diag fwd, Facing DW) re-paired with Table-B row 4 (timing 3, Closed, Up. Lower e/o 4, TH). Same defect class as the Foxtrot Natural Zig-Zag from PP follower rebuild. Leader unchanged (4 steps).' },
+      ],
       auditPriority: 'high', // step-count mismatch (follower 4→5); note placement may be misaligned
       leader: [
         { bar: 1, timing: '1', foot: 'LF back in CBMP', alignment: 'Backing DW', turn: '', footwork: 'TH', sway: '', position: 'OP', rise: 'Com to rise e/o 1, NFR', cbm: 'CBM', notes: '[migrated-from-rise: start to rise e/o 1, NFR]' },
@@ -351,15 +354,15 @@ export const FIGURE_RICH_DATA = {
         { bar: 1, timing: '1', foot: 'RF fwd in CBMP', alignment: 'Facing DW', turn: '', footwork: 'HT', sway: '', position: 'OP', rise: 'Com to rise e/o 1', cbm: 'CBM', notes: 'All steps: push, drive big steps. Keep pressure on floor. When in outside partner position: hips turned but it is still quite "up" to the partner, shoulder square with partner, then, even more rotation to get momentum for next step. Travels DW, body should be facing between wall and DW. Feel slight inclination and stretch up through the R side of the body/rib cage. Lengthen R side, counter balance from head through the body. Don\'t drop R shoulder. keep R shoulder flat. Lady\'s left shoulder is quite forward. Pretend you are going between 2 glass panes. Keep head left. [migrated-from-rise: start to rise e/o 1 Avoid jutting foot out before body moves]' },
         { bar: 1, timing: '2', foot: 'LF diag fwd', alignment: 'Facing DW', turn: '', footwork: 'T', sway: '', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '[migrated-from-rise: cont to rise on 2 and 3 keep feet parallel FDW]' },
         { bar: 1, timing: '&', foot: 'RF crosses behind LF', alignment: 'Facing DW', turn: '', footwork: 'T', sway: '', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '[migrated-from-rise: -- Lock is lead by moving more toward LOD relative to step 2]' },
-        { bar: 1, timing: '', foot: 'LF diag fwd', alignment: 'Facing DW', turn: '', footwork: '', sway: '', position: '', rise: '', cbm: '', notes: '[migrated-from-rise: Up, lower e/o 4 next step, starts CBMP]' },
-        { bar: 1, timing: '3', foot: '', alignment: '', turn: '', footwork: 'TH', sway: '', position: 'Closed', rise: 'Up. Lower e/o 4', cbm: '', notes: '' },
+        { bar: 1, timing: '3', foot: 'LF diag fwd', alignment: 'Facing DW', turn: '', footwork: 'TH', sway: '', position: 'Closed', rise: 'Up. Lower e/o 4', cbm: '', notes: '[migrated-from-rise: Up, lower e/o 4 next step, starts CBMP]' },
       ],
       techniqueNotes: '',
     },
     'Back Whisk': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 11, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF back', alignment: 'Backing DC against LOD', turn: '', footwork: 'TH', sway: '', position: 'Closed', rise: 'Com to rise e/o 1, NFR', cbm: 'CBM', notes: '[migrated-from-rise: start to rise e/o 1, NFR Lower through R leg and hip to R using CBMP, allowing lady to step OP.]' },
         { bar: 1, timing: '2', foot: 'RF diag back', alignment: 'Backing DC against LOD', turn: '', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: 'Point the foot in the finishing direction [migrated-from-rise: continue to rise on 2 Rotate upper body to right, leaving hip in same place. Isolate the upper body.]' },
@@ -375,7 +378,8 @@ export const FIGURE_RICH_DATA = {
     'Basic Weave': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 12, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'RF back', alignment: 'Backing DW', turn: '', footwork: 'TH', sway: '', position: 'Closed', rise: '', cbm: 'CBM', notes: '' },
         { bar: 1, timing: '2', foot: 'LF fwd', alignment: 'Facing DC against LOD', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 2', cbm: 'CBM', notes: '' },
@@ -397,7 +401,8 @@ export const FIGURE_RICH_DATA = {
     'Chasse from PP': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 6, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       priorBgName: 'Chassé from PP',
       leader: [
         { bar: 1, timing: '1', foot: 'RF fwd in CBMP', alignment: 'Facing DW', turn: '', footwork: 'HT', sway: '', position: 'PP', rise: 'Com to rise e/o 1', cbm: 'CBM', notes: '[migrated-from-rise: Start to rise at end of 1]' },
@@ -416,7 +421,8 @@ export const FIGURE_RICH_DATA = {
     'Closed Change (LF)': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 1, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd', alignment: 'Facing DW', turn: '', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: '', notes: '[migrated-from-rise: Start to rise at end of 1]' },
         { bar: 1, timing: '2', foot: 'RF to side & slightly fwd', alignment: 'Facing DW', turn: '', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '' },
@@ -432,7 +438,8 @@ export const FIGURE_RICH_DATA = {
     'Closed Change (RF)': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 1, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'RF fwd', alignment: 'Facing DC', turn: '', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: '', notes: 'When stepping forward, body naturally lowers to its lowest. When moving the other foot, body starts to rise. [migrated-from-rise: Start to rise at end of 1]' },
         { bar: 1, timing: '2', foot: 'LF to side & slightly fwd', alignment: 'Facing DC', turn: '', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: 'LF should keep contact with floor all the time Start by point LF to side, then push off RF. At the end of 2, you are on slightly bent knees to allow for more rise and balance.' },
@@ -448,7 +455,8 @@ export const FIGURE_RICH_DATA = {
     'Closed Impetus': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 7, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF back', alignment: 'Backing LOD', turn: 'Com to turn R', footwork: 'TH', sway: '', position: 'Closed', rise: '', cbm: 'CBM', notes: '[migrated-from-rise: -- This step can be OP, depending on previous figure.]' },
         { bar: 1, timing: '2', foot: 'RF closes to LF (Heel Turn)', alignment: 'Facing DC', turn: '3/8 between 1-2', footwork: 'HT', sway: 'L', position: 'Closed', rise: 'Rise e/o 2', cbm: '', notes: 'Legs should straighten as RF comes in, creating late rise. Late rise is required to allow lady to pass the man.Too early a rise will stop her. See note below. Need to drag heel on the closed impetus. Feet should not come together until weight is committed to RF. That’s going to provide the signal for the lady to commit her weight on her left foot. Turn continues on the ball of the foot through the 3rd step [migrated-from-rise: Rise e/o 2 Man\'s heel turn.]' },
@@ -464,7 +472,8 @@ export const FIGURE_RICH_DATA = {
     'Closed Telemark': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 18, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'TH', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: 'CBM', notes: '[migrated-from-rise: rise e/o 1 Use CBM and rise a bit early to lead heel turn.]' },
         { bar: 1, timing: '2', foot: 'RF to side', alignment: 'Backing LOD', turn: 'Just under 3/8 between 1-2', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '[migrated-from-rise: Up Get strong rotation through the feet, do not come off RF too early, which will allow Lady to turn. A little hover helps to keep Lady in front of Man.]' },
@@ -480,7 +489,8 @@ export const FIGURE_RICH_DATA = {
     'Closed Wing': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 28, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'RF fwd in CBMP', alignment: 'Facing LOD', turn: '', footwork: 'HT', sway: '', position: 'OP', rise: '', cbm: '', notes: '' },
         { bar: 1, timing: '2', foot: 'Draw LF toward RF', alignment: 'Facing LOD', turn: 'Com to turn body to L', footwork: 'Flat', sway: 'R', position: 'Closed', rise: 'Slight rise, NFR', cbm: '', notes: '[migrated-from-rise: Slight rise on 2 and 3 NFR]' },
@@ -496,7 +506,8 @@ export const FIGURE_RICH_DATA = {
     'Contra Check': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 27, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd in CBMP, split weight', alignment: 'Facing LOD', turn: '1/8 to L, body turns more', footwork: 'HF', sway: '', position: 'Closed', rise: 'Down with flexed knees', cbm: 'CBM', notes: '[migrated-from-rise: Down with knees slightly flexed If preferred, could be LF fwd with foot flat.]' },
         { bar: 1, timing: '2', foot: 'Transfer weight to RF, then brush LF to RF', alignment: 'Backing DC against LOD', turn: '1/8 to R, body turns more', footwork: 'T', sway: '', position: 'Closed', rise: 'Rise e/o 2', cbm: '', notes: '' },
@@ -512,7 +523,8 @@ export const FIGURE_RICH_DATA = {
     'Double Reverse Spin': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 13, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       auditPriority: 'high', // step-count mismatch (leader 3→4); note placement may be misaligned
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: 'CBM', notes: 'Early rise is to lead Lady into closing her feet into a heel turn. [migrated-from-rise: Start to rise at end of 1 Important to do CBM. Give Lady the indication of left by lowering.]' },
@@ -531,7 +543,8 @@ export const FIGURE_RICH_DATA = {
     'Drag Hesitation': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 21, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd', alignment: 'Facing LOD', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: '', cbm: 'CBM', notes: '[migrated-from-rise: - Sending lady to inside of turn.]' },
         { bar: 1, timing: '2', foot: 'RF to side', alignment: 'Backing Wall', turn: '1/4 between 1-2', footwork: 'T', sway: '', position: 'Closed', rise: 'Rise e/o 2', cbm: '', notes: 'Could add Sway, then level off at 3. [migrated-from-rise: rise e/o 2 Left side is axis point. Staying down at the beginning, rise takes place when R leg passes the body.]' },
@@ -547,7 +560,8 @@ export const FIGURE_RICH_DATA = {
     'Fallaway Reverse & Slip Pivot': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 30, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: 'CBM', notes: '' },
         { bar: 1, timing: '&', foot: 'RF back, R side leading', alignment: 'Backing LOD', turn: '3/8 between 1-2, body turns less', footwork: 'T', sway: '', position: 'Fallaway', rise: 'Cont to rise', cbm: '', notes: '[migrated-from-rise: Up]' },
@@ -565,23 +579,29 @@ export const FIGURE_RICH_DATA = {
     'Fallaway Whisk': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 31, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['dancecentral'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['dancecentral'],
+      corrections: [
+        { role: 'leader', step: 2, field: 'rise/notes', from: 'rise ended \'...on 2 Using "T" footwork is also correct.\', notes empty', to: 'rise \'Continue to rise on 2\', notes \'Using "T" footwork is also correct.\'', ruledBy: 'dancecentral', date: '2026-07-26', note: 'Field-merge defect: the source step note was concatenated onto the rise value instead of populating notes. De-merged to the dancecentral source split.' },
+        { role: 'follower', step: 2, field: 'rise/notes', from: 'rise carried the trailing note text, notes empty', to: 'rise \'Continue to rise on 2\', notes = the source note', ruledBy: 'dancecentral', date: '2026-07-26', note: 'Same field-merge defect as leader step 2.' },
+        { role: 'follower', step: 3, field: 'rise/notes', from: 'rise carried the leading sentence of the source note; notes held only the remainder', to: 'rise \'Lower on 3\', notes = the full source note', ruledBy: 'dancecentral', date: '2026-07-26', note: 'Same field-merge defect; the source note had been split across rise and notes. Reunited per dancecentral.' },
+      ],
       leader: [
         { bar: 1, timing: '1', foot: 'LF back', alignment: 'Backing LOD', turn: 'Start to turn R', footwork: 'TH', sway: 'Sway(S)', position: '', rise: 'Start to rise e/o 1, NFR', cbm: 'CBM', notes: '' },
-        { bar: 1, timing: '2', foot: 'RF to side and slightly back', alignment: 'Pointing DC', turn: '3/8 btwn 1-2, body turns less', footwork: 'TH', sway: 'Sway(S)', position: '', rise: 'Continue to rise on 2 Using "T" footwork is also correct.', cbm: '', notes: '' },
+        { bar: 1, timing: '2', foot: 'RF to side and slightly back', alignment: 'Pointing DC', turn: '3/8 btwn 1-2, body turns less', footwork: 'TH', sway: 'Sway(S)', position: '', rise: 'Continue to rise on 2', cbm: '', notes: 'Using "T" footwork is also correct.' },
         { bar: 1, timing: '3', foot: 'LF crosses loosely behind RF in Fallaway', alignment: 'Facing DC', turn: 'Body continues to turn R', footwork: 'TH', sway: 'Sway(R)', position: '', rise: 'Lower on 3', cbm: '', notes: '' },
       ],
       follower: [
         { bar: 1, timing: '1', foot: 'RF fwd', alignment: 'Facing LOD', turn: 'Start to turn R', footwork: 'HT', sway: 'Sway(S)', position: '', rise: 'Start to rise e/o 1', cbm: 'CBM', notes: '' },
-        { bar: 1, timing: '2', foot: 'LF to side', alignment: 'Backing DC', turn: '3/8 btwn 1-3', footwork: 'TH', sway: 'Sway(S)', position: '', rise: 'Continue to rise on 2 Even when footwork is "to side", still feel the body is traveling forward toward your partner.', cbm: '', notes: '' },
-        { bar: 1, timing: '3', foot: 'RF crosses loosely behind LF in Fallaway', alignment: 'Facing DC against LOD', turn: '1/4 btwn 2-3, body continues to turn R', footwork: 'TH', sway: 'Sway (L)', position: '', rise: 'Lower on 3 Whisking action, keep body forward. upper body, arms belong to Man.', cbm: '', notes: 'Do not allow shoulder blade to collapse down Lady\'s head may be turned to L or R. Both are ok.' },
+        { bar: 1, timing: '2', foot: 'LF to side', alignment: 'Backing DC', turn: '3/8 btwn 1-3', footwork: 'TH', sway: 'Sway(S)', position: '', rise: 'Continue to rise on 2', cbm: '', notes: 'Even when footwork is "to side", still feel the body is traveling forward toward your partner.' },
+        { bar: 1, timing: '3', foot: 'RF crosses loosely behind LF in Fallaway', alignment: 'Facing DC against LOD', turn: '1/4 btwn 2-3, body continues to turn R', footwork: 'TH', sway: 'Sway (L)', position: '', rise: 'Lower on 3', cbm: '', notes: 'Whisking action, keep body forward. upper body, arms belong to Man. Do not allow shoulder blade to collapse down Lady\'s head may be turned to L or R. Both are ok.' },
       ],
       techniqueNotes: '',
     },
     'Hesitation Change': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 8, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       auditPriority: 'high', // blank rise & fall on steps 4-6 (both roles) in source
       leader: [
         { bar: 1, timing: '1', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: 'CBM', notes: '[migrated-from-rise: Start to rise e/o 1]' },
@@ -604,7 +624,8 @@ export const FIGURE_RICH_DATA = {
     'Hover Corte': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 32, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       priorBgName: 'Hover Corté',
       leader: [
         { bar: 1, timing: '1', foot: 'RF back', alignment: 'Backing LOD', turn: 'Com to turn L', footwork: 'TH', sway: '', position: 'Closed', rise: 'Com to rise, NFR', cbm: 'CBM', notes: '[migrated-from-rise: Start to rise e/o 1, NFR]' },
@@ -621,7 +642,8 @@ export const FIGURE_RICH_DATA = {
     'Left Whisk': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 26, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       auditPriority: 'high', // step-count mismatch (3→7) AND all rise & fall cells blank in source
       leader: [
         { bar: 1, timing: '1', foot: 'RF back', alignment: 'Backing LOD', turn: 'Com to turn L', footwork: 'TH', sway: '', position: 'Closed', rise: '', cbm: '', notes: '' },
@@ -646,7 +668,8 @@ export const FIGURE_RICH_DATA = {
     'Natural Spin Turn': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 4, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: 'CBM', notes: 'Don\'t lean to the right, when getting into the turn; struggle against that and put left side more forward. Spine tilted left, hip to Lady, so it won\'t gap. Do not turn feet when rotating/twisting the frame (CBM). Think about stepping forward through step 2, don\'t start turning too soon. Start turning as you come out of your first step, not as you go into it. In Natural turning figures, Man achieves the turn more through position. [migrated-from-rise: Start to rise at end of 1 Need to "lower and drive forward".]' },
         { bar: 1, timing: '2', foot: 'LF to side', alignment: 'Backing DC', turn: '1/4 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: 'Have continuous swing of the leg through the step. [migrated-from-rise: Cont to rise on 2 and 3 Rise on toes, it will help to bring the feet together on 3rd step.]' },
@@ -668,7 +691,8 @@ export const FIGURE_RICH_DATA = {
     'Natural Turn': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 2, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'RF fwd', alignment: 'Facing DW', turn: 'Com to turn R', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: 'CBM', notes: 'Man drives, big step, to get through partner. [migrated-from-rise: Start to rise at end of 1 Man starts to turn frame (CBM) as step begins, "opening the door" to allow him to pass the follower. (i.e. rotate frame 1/8 to the right.) 1/8 is about the max that is comfortable.]' },
         { bar: 1, timing: '2', foot: 'LF to side', alignment: 'Backing DC', turn: '1/4 between 1-2', footwork: 'T', sway: 'R', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '[migrated-from-rise: Cont to rise on 2 and 3 Though written as side step, Man actually starts by pointing LF straight forward, then as you push off RF, turning the body as well, it ends up being a side step. Continue turning on next step to end BLOD.]' },
@@ -690,7 +714,8 @@ export const FIGURE_RICH_DATA = {
     'Open Impetus & Cross Hesitation': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 22, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       priorBgName: 'Open Impetus and Cross Hesitation',
       leader: [
         { bar: 1, timing: '1', foot: 'LF back', alignment: 'Backing LOD', turn: 'Com to turn R', footwork: 'TH', sway: '', position: 'Closed', rise: '', cbm: 'CBM', notes: 'Main the sway from previous Natural Turn and transition into PP. See Open Impetus to Wing Notes [migrated-from-rise: - This is "Open Impetus".]' },
@@ -713,7 +738,8 @@ export const FIGURE_RICH_DATA = {
     'Open Impetus & Wing': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 23, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       priorBgName: 'Open Impetus and Wing',
       leader: [
         { bar: 1, timing: '1', foot: 'LF back', alignment: 'Backing LOD', turn: 'Com to turn R', footwork: 'TH', sway: '', position: 'Closed', rise: '', cbm: 'CBM', notes: 'Do not dissolve the sway from previous Natural Turn. Maintain the sway through the heel turn (longer than you normally would.)' },
@@ -736,7 +762,8 @@ export const FIGURE_RICH_DATA = {
     'Open Telemark and Cross Hesitation': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 19, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'TH', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: 'CBM', notes: '[migrated-from-rise: rise e/o 1 This is "Open Telemark"]' },
         { bar: 1, timing: '2', foot: 'RF to side', alignment: 'Backing LOD', turn: 'Just under 3/8 between 1-2', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '[migrated-from-rise: up Has strong swivel action in the base area.]' },
@@ -758,7 +785,8 @@ export const FIGURE_RICH_DATA = {
     'Open Telemark and Wing': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 20, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'TH', sway: '', position: 'Closed', rise: 'Rise e/o 1', cbm: 'CBM', notes: 'Left side is axis point, stretch diagonal. See " Closed Telemark " for leading Lady to do heel turn. [migrated-from-rise: rise e/o 1 This is "Open Telemark".]' },
         { bar: 1, timing: '2', foot: 'RF to side', alignment: 'Backing LOD', turn: 'Just under 3/8 between 1-2', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Up', cbm: '', notes: '' },
@@ -780,7 +808,8 @@ export const FIGURE_RICH_DATA = {
     'Outside Change': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 9, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF back in CBMP', alignment: 'Backing DC', turn: '', footwork: 'TH', sway: '', position: 'OP', rise: 'Com to rise e/o 1, NFR', cbm: '', notes: '' },
         { bar: 1, timing: '2', foot: 'RF back', alignment: 'Backing DC', turn: 'Com to turn L', footwork: 'T', sway: '', position: 'Closed', rise: 'Cont to rise', cbm: 'CBM', notes: '[migrated-from-rise: continue to rise on 2 Watch lady\'s position, do not turn hips without lady. Keep lady in front to the R side.]' },
@@ -796,7 +825,8 @@ export const FIGURE_RICH_DATA = {
     'Outside Spin': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 24, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF back in CBMP, small step with toe turned in', alignment: 'Backing LOD to facing DW against LOD', turn: '3/8 to R on 1 (Pivot)', footwork: 'THT', sway: '', position: 'OP', rise: '', cbm: 'CBM', notes: 'Start by turning right from the knees up. Upper body is twisting right much faster than feet. This is a very small step. Then just swivel the left foot. Rotation is much more in the base area (waist down to feet), leaving right side through diagonal. Do not over turn upper body. Keep head on your own left. [migrated-from-rise: - This is outside partner. Leave RF back in CBMP, to give lady room to get by.]' },
         { bar: 1, timing: '2', foot: 'RF fwd in CBMP', alignment: 'Facing DW against LOD', turn: 'Body turn to R', footwork: 'HT', sway: '', position: 'OP', rise: 'Rise e/o 2', cbm: 'CBM', notes: 'Really drive deep. Sharper rise to make Lady close her feet. [migrated-from-rise: rise e/o 2 Maintain CBMP stepping forward on RF, step behind the lady (step outside the lady, otherwise the leg is going to block lady and knock her off balance), give lady a chance to come around and close before stepping back and pivoting on the LF. This feels like a rock turn to the man.]' },
@@ -812,7 +842,8 @@ export const FIGURE_RICH_DATA = {
     'Progressive Chasse to Right': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 16, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       priorBgName: 'Progressive Chassé to R',
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: 'CBM', notes: '[migrated-from-rise: start to rise e/o 1]' },
@@ -831,7 +862,8 @@ export const FIGURE_RICH_DATA = {
     'Reverse Corte': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 10, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       priorBgName: 'Reverse Corté',
       leader: [
         { bar: 1, timing: '1', foot: 'RF back', alignment: 'Backing LOD', turn: 'Com to turn L', footwork: 'TH', sway: '', position: 'Closed', rise: '', cbm: 'CBM', notes: '[migrated-from-rise: -- Do not step side ways, straight back, use CBM]' },
@@ -848,7 +880,8 @@ export const FIGURE_RICH_DATA = {
     'Reverse Pivot': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 14, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '&', foot: 'RF back in CBMP, small step with toe turned in', alignment: 'Backing LOD to facing LOD', turn: '1/2 to L', footwork: 'THT', sway: '', position: 'Closed', rise: '', cbm: 'CBM', notes: 'Small step. Straight back. Keep head weight on your left. Watch Lady\'s position, don\'t pivot too much too early, which will peel off from lady. [migrated-from-rise: -- RF should track under the body. Body begins turning at the beginning of this step.]' },
       ],
@@ -860,7 +893,8 @@ export const FIGURE_RICH_DATA = {
     'Reverse Turn': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 3, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd', alignment: 'Facing DC', turn: 'Com to turn L', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: 'CBM', notes: '[migrated-from-rise: Start to rise at end of 1 In Reverse turning figures, Man should maintain the frame orientation. The turn is achieved through movement (than position).]' },
         { bar: 1, timing: '2', foot: 'RF to side', alignment: 'Backing DW', turn: '1/4 between 1-2', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '[migrated-from-rise: Cont to rise on 2 and 3 Track and brush feet. No ronde.]' },
@@ -882,7 +916,8 @@ export const FIGURE_RICH_DATA = {
     'Turning Lock': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 25, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'RF back, R side leading', alignment: 'Backing DC', turn: '', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Com to rise e/o 1', cbm: '', notes: 'Angle through diagonal, head stretch leftward. Poised diagonally forward. Do not pull back. [migrated-from-rise: start to rise e/o 1 Thigh and hips are 1/8 to R. (not turning feet)]' },
         { bar: 1, timing: '&', foot: 'LF crosses in front of RF', alignment: 'Backing DC', turn: '', footwork: 'T', sway: 'L', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: '[migrated-from-rise: rise on 2 and 3]' },
@@ -900,7 +935,8 @@ export const FIGURE_RICH_DATA = {
     'Turning Lock to Right': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 29, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       auditPriority: 'high', // step-count mismatch (3→4 both roles); note placement may be misaligned
       priorBgName: 'Turning Lock to R',
       leader: [
@@ -920,7 +956,8 @@ export const FIGURE_RICH_DATA = {
     'Weave from PP': {
       bars: 2,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       auditPriority: 'high', // step-count mismatch (leader 7→6, follower 8→6); note placement may be misaligned
       leader: [
         { bar: 1, timing: '1', foot: 'RF fwd & across in CBMP', alignment: 'Pointing DC', turn: '1/8 to L before 1 (RF)', footwork: 'HT', sway: '', position: 'PP', rise: 'Com to rise e/o 1', cbm: '', notes: '3 different points in PP: base: waist area down to feet, rotate slightly to left belly button: low center, slightly different angle. sternum: high center 3 different points enables you to stay parallel to Lady. Do not turn hips and feet too much to the Lady (makes position awkward). For this left turning figure, keep the differential consistent while moving in a curve, maintain upper body toward to Lady. Don\'t let upper body rotate further than feet, which will pull the lady to your left. [migrated-from-rise: Start to rise at end of 1]' },
@@ -943,7 +980,8 @@ export const FIGURE_RICH_DATA = {
     'Whisk': {
       bars: 1,
       dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 5, syllabusBody: 'NDCC',
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [],
       leader: [
         { bar: 1, timing: '1', foot: 'LF fwd', alignment: 'Facing DW', turn: '', footwork: 'HT', sway: '', position: 'Closed', rise: 'Com to rise e/o 1', cbm: '', notes: '[migrated-from-rise-prefix: slight] [migrated-from-rise: Start to rise at end of 1]' },
         { bar: 1, timing: '2', foot: 'RF to side & slightly fwd', alignment: 'Facing DW', turn: '', footwork: 'T', sway: '', position: 'Closed', rise: 'Cont to rise', cbm: '', notes: 'This is not a side step (which will be abrupt change of direction), it\'s a forward step (smoother) When pushing LF, allow RF to slide on the floor, so the weight doesn\'t pass the foot (otherwise, momentum carries weight to right which causes balance issue). Rotate upper body to right to lead lady to whisk [migrated-from-rise: Cont to rise on 2 and 3 Position of this step is consistent with step 2 of LF Closed Change .]' },
@@ -958,8 +996,11 @@ export const FIGURE_RICH_DATA = {
     },
     'Waltz Prep Step': {
       bars: 2,
-      dance: 'Waltz', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 33, syllabusBody: null,
-      dataStatus: 'parsed', sources: ['ballroomguide'],
+      dance: 'Waltz', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
+      corrections: [
+        { role: null, step: null, field: 'syllabusLevel/syllabusNumber', from: 'Beginners / 33', to: 'null / null', ruledBy: 'Victor', date: '2026-07-26', note: 'Non-syllabus prep step, null-tiered to match the Foxtrot and Quickstep Prep Steps. docs/ndcc_waltz_syllabus.json runs #1-32 only, so #33 had no NDCC referent. Applied in both peer stores. Bars confirmed at 2 under Decision #29 reading the compound tokens as beat-ranges (123 = 3 beats, 12 = 2, 3 = 1 -> 6 beats = 2 bars, per-step 1,2,2); no bar change.' },
+      ],
       leader: [
         { bar: 1, timing: '123', foot: 'LF to side, wide step', alignment: 'Facing DW', turn: 'Body turns to R', footwork: 'i/e of foot to WF', sway: '', position: 'Closed', rise: '', cbm: '', notes: '' },
         { bar: 2, timing: '12', foot: 'RF to side, wide step, then brush LF to RF', alignment: 'Facing DW', turn: 'Body turns to L', footwork: 'i/e of foot to WF', sway: '', position: 'Closed', rise: '', cbm: '', notes: '' },
