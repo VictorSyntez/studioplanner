@@ -1,40 +1,37 @@
 # StudioPlanner — Handoff Document
 
-**Date:** 2026-07-26 **rev 5** (supersedes rev 4, same date — rev 4 closed session 1 of 2026-07-26; this revision closes session 2, a rulings-only sitting)
-**This revision:** produced in the planning layer at close of the 2026-07-26 **session 2** (PS-view verification · Waltz reconciliation sitting · Foxtrot #16 compound ruling · null-tier schema ruling · Waltz bar parameterization ruling). No code was written and nothing was committed this session — all outputs are rulings + three work orders + this handoff.
-**Current branch:** `main` at `429dfc1` (**`v0.3.2-ui`**), unchanged since rev 4. Deployed and live at https://dancepraktika-studioplanner.web.app/ (bundle-verified). Badge-over-gate active: 59 audited / 55 parsed, 114 figures (Waltz 34 / Tango 30 / Foxtrot 30 / Quickstep 20).
+**Date:** 2026-07-26 **rev 6** (supersedes rev 5, same date — rev 5 closed the rulings sitting (session 2); this revision closes **session 3**, the execution session that ran the three WOs)
+**This revision:** produced in the planning layer after Claude Code executed all three work orders and after Victor's post-deploy verifications. All rulings of rev 5 are now applied and live.
+**Current branch:** `main` at **`8c8bd38`**, tagged **`v0.4.0-data`**, pushed, **DEPLOYED** at https://dancepraktika-studioplanner.web.app/. **115 figures** (Waltz 34 / Tango 30 / **Foxtrot 31** / Quickstep 20), **60 audited / 55 parsed**. Badge-over-gate active.
 **Repo:** https://github.com/VictorSyntez/studioplanner
+
+**Tag chain (restored — every deploy reachable from a tag):**
+| Tag | Commit | State |
+|---|---|---|
+| `v0.3.0-data` | `ef3b0fd` | Foxtrot+Quickstep audit + badge |
+| `v0.3.1-data` | `c811da1` | Tango routine block (59/55) |
+| `v0.3.2-ui` | `429dfc1` | all-bars rendering |
+| **`v0.4.0-data`** | **`8c8bd38`** | **current — 115 figures, 60 audited, `studioLevel`** (minor bump = data-model change) |
 
 ---
 
-## Session outcomes (2026-07-26, session 2)
+## Session outcomes (2026-07-26, session 3 — execution)
 
-1. **PS-view verification (queue item 3) CLOSED** — Victor ran the on-device pass (all-bars rendering, badge state, live Firestore `barsUsed` round-trip, phone layout) and verified it.
-2. **Waltz reconciliation sitting COMPLETE** (queue item: resumed at ruling 1, ran to the end). Eight rulings, all Victor, 2026-07-26:
-   - #10 → rename `Reverse Corte` (NDCC verbatim)
-   - #16 → rename `Progressive Chasse to Right` (full word; **accent stripped by explicit scoped ruling** — deviation from NDCC print)
-   - #22/#23 → rename `Open Impetus & Cross Hesitation` / `Open Impetus & Wing` (NDCC verbatim `&`; #19/#20 untouched — NDCC prints "and" there)
-   - #29 → rename `Turning Lock to Right` (NDCC verbatim)
-   - #32 → rename `Hover Corte` (NDCC verbatim)
-   - #1 → **2-key split KEPT** (`Closed Change (LF)` + `(RF)`, both `syllabusNumber: 1`; key names stand)
-   - #6 → rename `Chasse from PP` (BG/PP form kept; **accent stripped by explicit scoped ruling** — deviation from all three source prints; NDCC prints "Chassé from Promenade", DC "Chassé from Promenade Position")
-   - Singular/plural **CONFIRMED as `cosmetic`** (alias-map classification rule stands)
-   - **Net: SEVEN key renames** (planning-layer ledger in-session said "six" — corrected in the WO and here). **No accent policy exists** — the two accent-strips are individually scoped. Observed outcome: Waltz key set becomes fully ASCII.
-   - WO: `StudioPlanner_WO_Waltz_Key_Renames.md` (produced this session, in KB).
-3. **Foxtrot #16 compound JOIN RULED** (queue item 4): **option (a) — construct the compound**, from four BG components (Open Telemark 3 + Open Natural Turn 3 + Outside Swivel 1 + Feather Ending 3 = 10 steps/role). Sub-rulings: compound key named **`Open Telemark, Natural Turn to Outside Swivel and Feather Ending`** (dancecentral's form; NDCC verbatim "Open Telemark Outside Swivel and Feather Ending" carried via `syllabusNotes`); standalone `Outside Swivel` → **null-tier standalone** (chart retained, stays `parsed`). **Binding execution condition (Victor's dance-domain note):** all three seams presented to Victor for review pre-commit, showing commencing/ending positions + alignments for both roles at each connected point — his stated reason: the Natural Turn is danced from PP inside this grouped figure, unlike its usual closed-position context. WO: `StudioPlanner_WO_Foxtrot16_Compound_JOIN.md`.
-4. **Null-tier schema RULED** (queue item 5): Victor first ruled (a), then **revised to (c) — separate `studioLevel` field** in the same sitting; (c) is binding. NDCC fields stay verbatim-or-null; effective level = `studioLevel ?? syllabusLevel`; no values assigned yet (dedicated future sitting); Needs-Review visual treatment stays a 4.5a item. WO: `StudioPlanner_WO_StudioLevel_Schema.md`.
-5. **Waltz bar parameterization RULED** (the gate for the remainder audit; Decision #22 series, evidence-then-options pattern with web corroboration as directed by rev 4 conduct notes): **option (a) — 3 beats/bar; counts 1/2/3 = 1 beat each; `&` = zero-beat subdivision within its host count; bar advances at 3 accumulated beats; tokens outside {1, 2, 3, &} flag `bars: null`** for hand-ruling. Known flag case: Waltz `Turning Lock` timing token `4` (`c: '1-2-3,4'`). **The 54-figure Waltz + Tango remainder audit is now unblocked.**
-6. **Conduct item for the record:** the in-session ledger miscounted the renames (six vs seven — #22/#23 tallied as one because they were one *ruling*). Caught at WO-writing time by recount against the ruling list. Counter-behavior: ledger counts are recounted against the itemized list before being stated.
+1. **WO 1 — Waltz key renames EXECUTED.** Seven renames applied in both peer stores with `priorBgName` recorded: `Reverse Corte` · `Progressive Chasse to Right` · `Open Impetus & Cross Hesitation` · `Open Impetus & Wing` · `Turning Lock to Right` · `Hover Corte` · `Chasse from PP`. **Firestore session-plan sweep: verified no-op** — evidence-based (read-only deep-walk counter over `users/*/sessions/*` under a temporary admin service-account key), not assumed. Glossary prose referencing old names followed up per Victor's in-session ruling.
+2. **WO 2 — Foxtrot #16 compound EXECUTED.** `Open Telemark, Natural Turn to Outside Swivel and Feather Ending` assembled from the four BG components (10 steps/role); **Victor's three seam rulings applied at the mandatory pre-commit review**; **audit clean — 20 steps / 0 deviations**; `dataStatus: 'audited'`. Standalone `Outside Swivel` → null-tier (chart retained, stays `parsed`, renders in Needs Review). Figure count 114 → **115** (Foxtrot 31).
+3. **WO 3 — `studioLevel` schema EXECUTED.** Lazy option: resolution logic `studioLevel ?? syllabusLevel` in App.jsx; **no record carries the field yet**; library rendering byte-identical.
+4. **Push + deploy approved by Victor**; deployed as `v0.4.0-data`.
+5. **Post-deploy verifications (Victor):** compound located in the library (initial "missing figure" report was a lookup miss, withdrawn — no defect; the stale-PWA-cache hypothesis was not needed, but the missing update-prompt gap remains real and tracked under 4.5a). **Admin service-account key REVOKED and local file deleted** — sweep security loop closed.
+6. **Two future-ruling flags recorded by Code in commit messages (open, tracked below):**
+   - `studioLevel` **unrecognised-vocabulary handling** — Code made a defensive, reversible choice; the value vocabulary itself is unruled (belongs to the value-assignment sitting).
+   - `scripts/parse_bg_waltz.js` **still hardcodes the seven old Waltz keys** — a landmine if any Waltz re-parse runs before the script is updated (exactly the WO 1 §7 hazard class). **No Waltz re-parse until fixed.**
 
 ## Fast re-entry — state on resume
 
-1. **Pre-flight (standard):** clean tree at `429dfc1` (`v0.3.2-ui`), counts 34/30/30/20 (114), 59 audited / 55 parsed, build. Nothing committed since.
-2. **Three WOs are ready for the execution layer**, in this order:
-   1. **Waltz key renames** (7 renames; peer stores + `priorBgName` + session-plan sweep with hit-count report; one commit)
-   2. **Foxtrot #16 compound JOIN** (assemble → seam-dedupe → **PAUSE for Victor's three-seam review** → apply + `Outside Swivel` null-tier → audit → commit). Lands figure count 115 (Foxtrot 31).
-   3. **`studioLevel` schema** (lazy field + resolution logic `studioLevel ?? syllabusLevel`; no values; no visual redesign)
-3. **Then queue item: Waltz + Tango remainder audit (54 figures)** — gate discharged (Waltz parameterization ruled, outcome 5 above); method carries over unchanged; Tango uses Decision #22, Waltz uses the new #29-series ruling below.
-4. Deploy workflow: Firebase throughout; one deploy per logical unit (renames + compound + schema could ship as one deploy after all three commits pass review — Victor's call at the time).
+1. **Pre-flight (standard):** clean tree at `8c8bd38` (`v0.4.0-data`), counts 34/30/31/20 (115), 60 audited / 55 parsed, build.
+2. **Queue head: the 54-figure Waltz + Tango remainder audit** (Waltz 34 + Tango 20; NDCC-tiered figures — the null-tier `Outside Swivel` is outside this count). **Both bar-parameterization gates discharged:** Tango = Decision #22 (S=2/Q=1/4 beats), Waltz = Decision #29 (3 beats/bar; 1/2/3 = 1 beat; `&` = 0-beat subdivision; out-of-set tokens flag `bars: null` — known flag case: Waltz `Turning Lock` token `4`). Method carries over unchanged (against-source side-by-side, Decision A corrections schema, audited-exclusion guard). **Awaiting Victor's explicit direction to Code — not started.** Expect escalations back to the planning layer for `bars: null` flags and any source conflicts.
+3. **KB refresh still pending (Victor):** `src/data.js` + `src/App.jsx` at `8c8bd38`, plus this rev 6.
+4. Deploy workflow: Firebase throughout; one deploy per logical unit.
 
 ---
 
@@ -48,58 +45,53 @@ React (Vite) · Firebase Auth / Firestore / Hosting · vite-plugin-pwa (Workbox)
 
 ## Current State (cumulative)
 
-- **Phase 1** complete (`v0.2.0`). **Phase 2a Steps 0–4** complete: unified pipeline, 114 figures, dance-namespaced keying (Option B), "Needs Review" bucket, rhythm column.
-- **Phase 2b (Foxtrot + Quickstep)** complete + deployed `v0.3.0-data` (`ef3b0fd`): 49 audited, 26 corrections, Decisions A/B, NDCC wrap-defect repair, Waltz NDCC JSON (32 figures, clean), DC alias map, badge-over-gate.
-- **Tango routine audit** complete + deployed `v0.3.1-data` (`c811da1`): 59 audited / 55 parsed.
-- **All-bars rendering** complete + deployed `v0.3.2-ui` (`429dfc1`).
-- **Session 2 of 2026-07-26:** PS-view verified; all rulings in Session outcomes above; three WOs pending execution.
+- **Phase 1** complete (`v0.2.0`). **Phase 2a Steps 0–4** complete (unified pipeline, dance-namespaced keying, Needs Review bucket, rhythm column).
+- **Phase 2b (Foxtrot + Quickstep)** complete (`v0.3.0-data`). **Tango routine audit** complete (`v0.3.1-data`). **All-bars rendering** complete (`v0.3.2-ui`).
+- **Session 2 (2026-07-26):** all rulings — Waltz reconciliation (decision #26), Foxtrot #16 compound (#27), null-tier schema = `studioLevel` (#28), Waltz bar parameterization (#29). PS-view verified.
+- **Session 3 (2026-07-26):** the three WOs executed, deployed as **`v0.4.0-data`** — the current state summarized in the header.
 
 ---
 
 ## Locked decisions
-1–25. As recorded in rev 3/rev 4 (no-dreaming #5; citation rule #12; peer-store rule #10; keying Option B; workstream sequence 2b→4.5→Latin; Decision A corrections+guard; Decision B heuristic; badge-over-gate; no unaudited Tango in PS plans; Tango bar parameterization #22; all-bars rendering design #23; corrections attribution #24; dancecentral merge slot #25; etc. Rev 3 is the reference text for 1–21).
-26. **Waltz reconciliation rulings (Victor, 2026-07-26):** the eight rulings of Session outcome 2, including the seven renames, the #1 split retention, the singular/plural cosmetic confirmation, and the two *scoped* accent-strips (#16, #6 — explicitly not a policy). ← NEW
-27. **Foxtrot #16 compound (Victor, 2026-07-26):** construct compound (option a); key = DC form `Open Telemark, Natural Turn to Outside Swivel and Feather Ending`; `Outside Swivel` → null-tier standalone; **mandatory pre-commit three-seam review by Victor** with both roles' positions/alignments at each connected point (PP-context Natural Turn is the stated concern). ← NEW
-28. **Null-tier schema (Victor, 2026-07-26): option (c) `studioLevel`** — revised from an initial (a) ruling in the same sitting; (c) binding. NDCC fields verbatim-or-null forever; effective level = `studioLevel ?? syllabusLevel`; values are future Victor rulings. ← NEW
-29. **Waltz bar parameterization (Victor, 2026-07-26): option (a)** — 3 beats/bar; 1/2/3 = 1 beat; `&` = 0-beat subdivision; out-of-set tokens flag `bars: null`. Per-dance ruling in the #22 series; Waltz gate discharged. ← NEW
+1–25. As recorded in rev 3/rev 4 (no-dreaming #5; citation rule #12; peer-store rule #10; Decision A; Decision B; Tango parameterization #22; all-bars design #23; attribution #24; DC merge slot #25; etc.).
+26–29. As recorded in rev 5 (Waltz reconciliation rulings incl. the two *scoped* accent-strips — **no accent policy exists**; Foxtrot #16 compound + mandatory seam review — discharged this session; `studioLevel` schema option (c); Waltz bar parameterization option (a)).
+All of #26–#29 are now **applied and live**; the seam-review condition of #27 was honored and is discharged.
 
 ---
 
 ## Next action — queue (updated)
-1. **Execute WO: Waltz key renames** (Claude Code; diff review; commit)
-2. **Execute WO: Foxtrot #16 compound JOIN** (Claude Code; **seam-review pause is mandatory**; audit; commit) → figure count 115
-3. **Execute WO: `studioLevel` schema** (Claude Code; diff review; commit) — deploy grouping per Victor at the time
-4. **Waltz + Tango remainder audit** (54 figures; both gates discharged — Decisions #22 + #29)
-5. **Latin parse** — prerequisites: mid-bar heuristic upgrade; Latin pre-flight list (Status Overview §3.2); PDF tracking decision
-6. **Option C gap-fill** (Quickstep 12 + Jive D-3)
-7. **Auth QoL:** "Forgot password?" in AuthGate — pre-commercial requirement
-After-queue workstreams unchanged: **Step 4.5** (4.5a CSS pass — carries: orphaned `.bar-selector` CSS removal; dead `const bars` App.jsx ~92; optional-column design revisit; **Needs-Review/non-syllabus visual treatment** (now shaped by Decision #28); PWA update prompt; 4.5b PS notes/D-1) → **dancecentral enrichment merge** (Decision #25) → **Latin**.
+1. **Waltz + Tango remainder audit (54 figures)** — gates discharged; awaiting Victor's go to Code. Prerequisite note inside it: any Waltz *re-parse* (not audit) is blocked by the `parse_bg_waltz.js` old-keys flag; audits don't run the parser, so the audit itself is NOT blocked.
+2. **`studioLevel` value-assignment sitting** (planning layer; includes ruling the value vocabulary — resolves Code's unrecognised-vocabulary flag). Slot at Victor's choice, any time after now.
+3. **Latin parse** — prerequisites: mid-bar heuristic upgrade; Latin pre-flight list (Status Overview §3.2); PDF tracking decision.
+4. **Option C gap-fill** (Quickstep 12 + Jive D-3).
+5. **Auth QoL:** "Forgot password?" in AuthGate — pre-commercial requirement.
+After-queue workstreams unchanged: **Step 4.5** (4.5a CSS pass — carries: orphaned `.bar-selector` CSS; dead `const bars` App.jsx ~92; optional-column design revisit; Needs-Review/non-syllabus visual treatment (shaped by #28); **PWA update prompt** (gap re-confirmed relevant this session); 4.5b PS notes/D-1) → **dancecentral enrichment merge** (Decision #25) → **Latin**.
 
 ---
 
-## Deferred / tracked issues (delta vs rev 4)
-- ~~PS-view verification~~ — **closed 2026-07-26 session 2** (Victor on-device pass).
-- ~~Waltz reconciliation sitting~~ / ~~Foxtrot #16 ruling~~ / ~~null-tier schema decision~~ — **all ruled; moved to WOs** (see queue 1–3).
-- **`studioLevel` value-assignment sitting** — NEW, unscheduled; after the schema WO lands, before or during Step 4.5 at Victor's choice.
-- **Standalone Foxtrot `Outside Swivel` audit** — NEW: stays `parsed` after its null-tier move; joins the general unaudited pool (not the 54-figure remainder count, which is NDCC-tiered figures).
-- All other rev 4 items stand: Option C gap-fill; Step 4.5 blockers; null-tier guard; Silver swivel cluster; Tango #8 gap; security pre-commercial items; licensing review; D-1; Firebase CLI housekeeping; Data Acquisition Brief retirement candidate; `handleBarToggle` lexicographic sort note.
+## Deferred / tracked issues (delta vs rev 5)
+- ~~WO 1 / WO 2 / WO 3 execution~~ — **closed 2026-07-26 session 3** (all committed, deployed, tag-verified).
+- ~~Firestore sweep~~ — closed (verified no-op). ~~Admin key~~ — closed (revoked + file deleted).
+- **NEW: `parse_bg_waltz.js` hardcodes the seven old Waltz keys** — must be updated before any Waltz re-parse (recorded in commit message). Blocks re-parse only, not audit.
+- **NEW: `studioLevel` unrecognised-vocabulary handling** — defensive interim in code; superseded once the value vocabulary is ruled (queue item 2).
+- All other standing items unchanged: Option C gap-fill; Step 4.5 blockers; Silver swivel cluster; Tango #8 gap; standalone Foxtrot `Outside Swivel` audit (parsed, unscheduled); security pre-commercial items; licensing review; D-1; Firebase CLI housekeeping; Data Acquisition Brief retirement candidate; `handleBarToggle` lexicographic sort note.
 
 ---
 
-## Key Files (delta vs rev 4)
+## Key Files (delta vs rev 5)
 | File | Status |
 |---|---|
-| `src/App.jsx`, `src/index.css`, `src/data.js` | Unchanged this session; KB staleness flags from rev 4 still apply (refresh to `429dfc1` / `c811da1`). |
-| `StudioPlanner_WO_Waltz_Key_Renames.md` | **NEW in KB** — pending execution (queue 1). |
-| `StudioPlanner_WO_Foxtrot16_Compound_JOIN.md` | **NEW in KB** — pending execution (queue 2). |
-| `StudioPlanner_WO_StudioLevel_Schema.md` | **NEW in KB** — pending execution (queue 3). |
-| `StudioPlanner_Handoff.md` | This file (rev 5). Repo `docs/` copy at rev 3 — update at next doc commit. |
-| Everything else | As rev 4. |
+| `src/data.js` | Changed by session 3 (renames + compound + null-tier edit). **KB copy stale — refresh to `8c8bd38`.** |
+| `src/App.jsx` | Changed by session 3 (`studioLevel` resolution logic). **KB copy stale — refresh to `8c8bd38`.** |
+| `src/index.css` | Unchanged this session (KB copy should already be at `429dfc1` per rev 4/5 flags). |
+| Three WOs (`Waltz_Key_Renames` / `Foxtrot16_Compound_JOIN` / `StudioLevel_Schema`) | Executed; retained in KB as ruling/execution records. |
+| `StudioPlanner_Handoff.md` | This file (rev 6). Repo `docs/` copy lags — update at next doc commit. |
+| Everything else | As rev 5. |
 
 ---
 
 ## Notes for next session
-- **Read at session start:** this handoff (rev 5) + `StudioPlanner_Session_Conduct_Review.md`.
-- **Order:** standard pre-flight → execute the three WOs in queue order (the #16 seam-review pause is a hard stop for Victor) → remainder audit.
-- **NDCC is the syllabus authority.** KB-lag rule and canonical-source rule stand. Two-environment split stands. No accent policy exists — do not generalize the two scoped accent-strips.
-- **Upload at session close:** rev 5 + the three WOs (this session's set).
+- **Read at session start:** this handoff (rev 6) + `StudioPlanner_Session_Conduct_Review.md`.
+- **Order:** standard pre-flight → Victor's go on the 54-figure remainder audit (Code) — or the `studioLevel` value sitting (planning layer) if Victor prefers it first.
+- **NDCC is the syllabus authority.** KB-lag rule and canonical-source rule stand. No accent policy exists — the two accent-strips (#16, #6) are individually scoped; do not generalize. No Waltz re-parse until `parse_bg_waltz.js` is updated.
+- **Upload at session close:** this rev 6 + refreshed `data.js` and `App.jsx`.
