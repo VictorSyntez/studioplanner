@@ -183,7 +183,7 @@ export const TEC_LIBRARY = [
     name: 'Ballroom Positions',
     category: 'Standard',
     summary: 'Closed position, Promenade Position (PP), Counter PP, and Outside Partner.',
-    detail: `Closed Position: Partners face each other, offset slightly to the right. Man's right hand on lady's back, left hand joined.\n\nPromenade Position (PP): Both partners open to a V-shape, both facing LOD. Lady's right side and man's left side are open. Used in Whisk, Chassé from PP, etc.\n\nCounter Promenade Position (CPP): Opposite of PP — open to the other V-shape.\n\nOutside Partner (OP): Man steps outside lady on her right side. Used in Outside Change, Feather Step (Foxtrot), etc. Always with CBMP.`,
+    detail: `Closed Position: Partners face each other, offset slightly to the right. Man's right hand on lady's back, left hand joined.\n\nPromenade Position (PP): Both partners open to a V-shape, both facing LOD. Lady's right side and man's left side are open. Used in Whisk, Chasse from PP, etc.\n\nCounter Promenade Position (CPP): Opposite of PP — open to the other V-shape.\n\nOutside Partner (OP): Man steps outside lady on her right side. Used in Outside Change, Feather Step (Foxtrot), etc. Always with CBMP.`,
   },
   {
     id: 'tec-turns',
