@@ -2,7 +2,9 @@
 
 **Date:** 2026-07-26 **rev 7** (supersedes rev 6, same date — rev 6 closed session 3, the WO-execution session; this revision closes **session 4**, the remainder-audit session)
 **This revision:** produced by Claude Code at Victor's instruction after the Waltz + Tango remainder audit was executed, reviewed, deployed and tagged. **Phase 2b is COMPLETE.**
-**Current branch:** `main` at **`88b48ea`**, tagged **`v0.5.0-data`**, pushed, **DEPLOYED** at https://dancepraktika-studioplanner.web.app/ (bundle byte-verified against the local build). **115 figures** (Waltz 34 / Tango 30 / Foxtrot 31 / Quickstep 20), **114 audited / 1 parsed**. Badge-over-gate active.
+**Current branch:** `main` at **`b864e9b`**, tagged **`v0.6.0-data`**, pushed, **DEPLOYED** at https://dancepraktika-studioplanner.web.app/. **115 figures** (Waltz 34 / Tango 30 / Foxtrot 31 / Quickstep 20), **114 audited / 1 parsed**. Badge-over-gate active.
+
+> **Post-rev-7 corrections applied 2026-07-27** (scoped edits, not a full revision): the `studioLevel` value-assignment sitting closed out (queue item 1, decision #31, `v0.6.0-data`), and **Victor's correction of a conflation in Code's report — queue item 4 is the standalone `Foxtrot/Outside Swivel` *audit*, NOT the Foxtrot #16 compound JOIN, which was discharged at `v0.4.0-data`.** A full **rev 8** is still outstanding.
 **Repo:** https://github.com/VictorSyntez/studioplanner
 
 **Tag chain (every deploy reachable from a tag):**
@@ -11,8 +13,9 @@
 | `v0.3.0-data` | `ef3b0fd` | Foxtrot+Quickstep audit + badge |
 | `v0.3.1-data` | `c811da1` | Tango routine block (59/55) |
 | `v0.3.2-ui` | `429dfc1` | all-bars rendering |
-| `v0.4.0-data` | `8c8bd38` | 115 figures, 60 audited, `studioLevel` |
-| **`v0.5.0-data`** | **`88b48ea`** | **current — Phase 2b complete, 114 audited / 1 parsed** |
+| `v0.4.0-data` | `8c8bd38` | 115 figures, 60 audited, `studioLevel` schema + **Foxtrot #16 compound JOIN (discharged here)** |
+| `v0.5.0-data` | `88b48ea` | Phase 2b complete, 114 audited / 1 parsed |
+| **`v0.6.0-data`** | **`b864e9b`** | **current — `studioLevel` values assigned (10 figures); Needs Review bucket empty** |
 
 ---
 
@@ -66,10 +69,10 @@ React (Vite) · Firebase Auth / Firestore / Hosting · vite-plugin-pwa (Workbox)
 ---
 
 ## Next action — queue (updated)
-1. **`studioLevel` value-assignment sitting** (planning layer) — rule the value vocabulary and per-figure placements; resolves Code's unrecognised-vocabulary flag.
+1. ~~**`studioLevel` value-assignment sitting**~~ — **DONE 2026-07-27** (`b864e9b`, `v0.6.0-data`, deployed). Decision **#31**: values drawn only from `LEVEL_ORDER`. All 10 null-tier figures placed (Bronze 4 / Silver 3 / Gold 3); Standard **Needs Review bucket is now empty**. Code kept the unrecognised-vocabulary guard, re-purposed as a typo net (rationale at diff review); flag resolved.
 2. **Latin parse** — prerequisites: mid-bar heuristic upgrade; Latin pre-flight list (Status Overview §3.2); PDF tracking decision. **Read the gzip note below before writing any new source reader.**
 3. **Option C gap-fill** (Quickstep 12 + Jive D-3).
-4. **Standalone `Foxtrot/Outside Swivel` audit** — the last `parsed` figure; null-tier, unscheduled.
+4. **Standalone `Foxtrot/Outside Swivel` audit** — the last `parsed` figure; null-tier, unscheduled. **It is an audit, not a JOIN.** ⚠ Two distinct figures share the words "Outside Swivel" and must not be conflated (Victor-corrected 2026-07-27, after Code's `v0.6.0-data` report merged them into a phantom "Outside Swivel compound JOIN"): the **Foxtrot #16 compound JOIN** is a *different figure*, shipped at `v0.4.0-data` as `Open Telemark, Natural Turn to Outside Swivel and Feather Ending` and **discharged** in decisions 26–29 — do not re-open it. This item is an ordinary against-source audit of the standalone 1-step `Outside Swivel` figure. It carries `studioLevel: 'Silver'` since `b864e9b`, which is a studio placement and **not** an audit.
 5. **Auth QoL:** "Forgot password?" in AuthGate — pre-commercial requirement.
 After-queue workstreams unchanged: **Step 4.5** (4.5a CSS pass — carries: orphaned `.bar-selector` CSS; dead `const bars` App.jsx ~92; optional-column design revisit; Needs-Review/non-syllabus visual treatment (shaped by #28); PWA update prompt; 4.5b PS notes/D-1) → **dancecentral enrichment merge** (Decision #25) → **Latin**.
 
@@ -80,7 +83,7 @@ After-queue workstreams unchanged: **Step 4.5** (4.5a CSS pass — carries: orph
 - **NEW — gzip hazard in the source mirror.** `sources/.../waltz/closed_impetus.html` is gzip-compressed on disk, as are **18 of 21 Quickstep pages**. A reader that opens these as UTF-8 gets **zero tables and silently skips the figure** — it does not error. The shipped parsers gunzip (`readPage` checks for the `1f 8b` magic); any ad-hoc harness must too. This bit once during session 4 and was caught only because the page count didn't reconcile. **Relevant to Latin, which will need new readers.**
 - **NEW — `ruledBy: 'dancecentral'`** introduced on the three `Fallaway Whisk` corrections, as the source-authority analogue of `'ballroomguide'`. Flagged to Victor at diff review and left standing; revisit if a single attribution convention is wanted.
 - **`parse_bg_waltz.js` hardcodes the seven old Waltz keys** — must be updated before any Waltz **re-parse**. Blocks re-parse only, not audits. Still open.
-- **`studioLevel` unrecognised-vocabulary handling** — defensive interim in code; superseded once the value vocabulary is ruled (queue item 1).
+- ~~**`studioLevel` unrecognised-vocabulary handling**~~ — **resolved 2026-07-27** by decision #31. The guard was **kept**, not retired: `levelIndex` returns `-1` for an unknown value, which sorts above Beginners and passes every `maxLevel` filter, so a typo would silently promote a Gold figure into a beginner session. Now a typo net rather than a schema unknown — don't delete it as dead defensive code. Note the Needs Review predicate is `effectiveLevel == null`, **not** `syllabusLevel == null`; those diverged for the 10 placed figures.
 - All other standing items unchanged: Option C gap-fill; Step 4.5 blockers; Silver swivel cluster; Tango #8 gap (`Open Reverse Turn, Lady in Line` — no BG page, no catalog entry); security pre-commercial items; licensing review; D-1; Firebase CLI housekeeping (**note: the CLI login expired mid-session 4 and needed `firebase login --reauth`**); Data Acquisition Brief retirement candidate; `handleBarToggle` lexicographic sort note.
 
 ---
