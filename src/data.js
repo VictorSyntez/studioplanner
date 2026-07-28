@@ -10,9 +10,10 @@ export function levelIndex(level) {
 // verbatim-or-null forever and are never repurposed; the studio's own
 // placement rides in the independent, optional `studioLevel` field.
 //
-// The field is introduced LAZILY: no record carries it yet and no values are
-// assigned (those are Victor's rulings, gathered in a dedicated sitting), so
-// today this resolves to syllabusLevel for all 115 figures and nothing moves.
+// Values are drawn ONLY from LEVEL_ORDER — no studio-specific level names, no
+// parallel ordering (Victor-ruled 2026-07-27, locked decision #31). Ten figures
+// carry one, all of them previously null-tier; every other figure still resolves
+// to its syllabusLevel.
 //
 // A figure with NEITHER field resolves to null and stays in the "Needs Review"
 // bucket exactly as before — that guard is explicit here, not an artifact of
@@ -22,14 +23,17 @@ export function effectiveLevel(f) {
   // A studioLevel outside LEVEL_ORDER is not orderable, so it cannot be
   // compared or sorted. Treat it as unknown — same handling as null — rather
   // than letting indexOf's -1 sort it above Beginners and slip past maxLevel.
-  // The studioLevel value domain is a future Victor ruling; nothing is
-  // pre-encoded here beyond "a level I don't recognise isn't orderable".
+  // Decision #31 makes an out-of-vocabulary value a data error rather than an
+  // expected state, so this is now a typo net, not a schema unknown: a
+  // misspelled 'Siver' lands in Needs Review instead of silently outranking
+  // Beginners and passing every maxLevel filter.
   return lvl != null && levelIndex(lvl) === -1 ? null : lvl
 }
 
 // NOTE: FIGURES is still keyed by dance ({ 'Waltz': [...] }) in this pass, so we
 // flatten its values rather than calling FIGURES.filter directly (see §4.3).
-// Null-tier figures (syllabusLevel == null) are the "Needs Review" queue —
+// Null-tier figures (effectiveLevel == null — NOT syllabusLevel == null, which
+// is now true of ten studioLevel-placed figures) are the "Needs Review" queue —
 // they intentionally pass every maxLevel filter and are surfaced at the bottom
 // of each dance in the library grouping. The filter and sort below encode that
 // explicitly; do not rely on the indexOf(-1) coincidence.
@@ -95,7 +99,7 @@ export const FIGURES = {
     { n: 'Reverse Pivot',          c: '&',           fw: 'THT',                 al: 'DC',                   sw: 'S',           rise: 'Up',                                   notes: 'Single pivot on &. Foot turned in.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 14, syllabusBody: 'NDCC' },
     { n: 'Turning Lock to Right',  c: '1-&-2-3',     fw: 'TH,T,T,TH',          al: 'BDC,BDC,FDW,FDW',     sw: 'S,S,S,S',     rise: 'Rise e/o 1, top 2&3, lower e/o 3',    notes: 'Turning lock rotating to right.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 29, syllabusBody: 'NDCC' },
     { n: 'Weave from PP',          c: '1-2-3,1-2-3,1', fw: 'HT,HT,TH,TH,T,TH,H', al: 'FDC,FC,BLOD,BDC,BDC,PDW,FDW', sw: 'S,S,S,S,S,S,S', rise: 'Rise e/o 1, top 2&5, lower e/o 3/6', notes: 'From PP. 3 bars. Ends OP.', dance: 'Waltz', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC' },
-    { n: 'Waltz Prep Step', c: '123,12,3', fw: 'i/e of foot to WF,i/e of foot to WF,HT', al: 'FDW,FDW,FDW', sw: '', rise: 'Lower e/o 3', notes: '', dance: 'Waltz', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
+    { n: 'Waltz Prep Step', c: '123,12,3', fw: 'i/e of foot to WF,i/e of foot to WF,HT', al: 'FDW,FDW,FDW', sw: '', rise: 'Lower e/o 3', notes: '', dance: 'Waltz', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Bronze' },
   ],
   'Tango': [
     { n: 'Back Open Promenade', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 16, syllabusBody: 'NDCC' },
@@ -116,11 +120,11 @@ export const FIGURES = {
     { n: 'Open Reverse Turn, Lady Outside', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 6, syllabusBody: 'NDCC' },
     { n: 'Outside Swivel', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC' },
     { n: 'Oversway', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 22, syllabusBody: 'NDCC' },
-    { n: 'Point to Promenade Position', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
+    { n: 'Point to Promenade Position', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Bronze' },
     { n: 'Progressive Link', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 3, syllabusBody: 'NDCC' },
     { n: 'Promenade Link', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 14, syllabusBody: 'NDCC' },
     { n: 'Natural Promenade Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 13, syllabusBody: 'NDCC' },
-    { n: 'Reverse Outside Swivel', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
+    { n: 'Reverse Outside Swivel', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Silver' },
     { n: 'Rock Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 5, syllabusBody: 'NDCC' },
     { n: 'Progressive Side Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 2, syllabusBody: 'NDCC' },
     { n: 'Progressive Side Step Reverse Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Tango', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 9, syllabusBody: 'NDCC' },
@@ -146,18 +150,18 @@ export const FIGURES = {
     { n: 'Natural Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 3, syllabusBody: 'NDCC' },
     { n: 'Natural Weave', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 6, syllabusBody: 'NDCC' },
     { n: 'Open Impetus', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 17, syllabusBody: 'NDCC' },
-    { n: 'Open Natural Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
-    { n: 'Outside Swivel', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
+    { n: 'Open Natural Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Silver' },
+    { n: 'Outside Swivel', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Silver' },
     { n: 'Open Telemark, Natural Turn to Outside Swivel and Feather Ending', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 16, syllabusBody: 'NDCC' },
-    { n: 'Foxtrot Prep Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
+    { n: 'Foxtrot Prep Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Bronze' },
     { n: 'Reverse Turn & Feather Finish', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 4, syllabusBody: 'NDCC' },
     { n: 'Reverse Wave', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 19, syllabusBody: 'NDCC' },
     { n: 'Three Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 2, syllabusBody: 'NDCC' },
     { n: 'Top Spin', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 11, syllabusBody: 'NDCC' },
     { n: 'Natural Twist Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 20, syllabusBody: 'NDCC' },
-    { n: 'Natural Twist Turn with Closed Impetus & Feather Finish Ending', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
-    { n: 'Natural Twist Turn with Open Impetus Ending', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
-    { n: 'Natural Twist Turn with Weave Ending', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
+    { n: 'Natural Twist Turn with Closed Impetus & Feather Finish Ending', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Gold' },
+    { n: 'Natural Twist Turn with Open Impetus Ending', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Gold' },
+    { n: 'Natural Twist Turn with Weave Ending', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Gold' },
     { n: 'Weave from PP', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 18, syllabusBody: 'NDCC' },
     { n: 'Natural Zig-Zag from PP', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Gold', syllabusNumber: 22, syllabusBody: 'NDCC' },
     { n: 'Open Telemark & Feather Ending', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Foxtrot', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 10, syllabusBody: 'NDCC' },
@@ -173,7 +177,7 @@ export const FIGURES = {
     { n: 'Fishtail', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Silver', syllabusNumber: 22, syllabusBody: 'NDCC' },
     { n: 'Forward Lock', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 4, syllabusBody: 'NDCC' },
     { n: 'Natural Pivot Turn', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 7, syllabusBody: 'NDCC' },
-    { n: 'Quickstep Prep Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Quickstep', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null },
+    { n: 'Quickstep Prep Step', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Quickstep', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Bronze' },
     { n: 'Quarter Turn to Right', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Beginners', syllabusNumber: 1, syllabusBody: 'NDCC' },
     { n: 'Reverse Pivot', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Pre-Bronze', syllabusNumber: 12, syllabusBody: 'NDCC' },
     { n: 'Running Finish', c: '', fw: '', al: '', sw: '', rise: '', notes: '', dance: 'Quickstep', category: 'Standard', syllabusLevel: 'Bronze', syllabusNumber: 15, syllabusBody: 'NDCC' },
@@ -996,7 +1000,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Waltz Prep Step': {
       bars: 2,
-      dance: 'Waltz', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Waltz', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Bronze',
       dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
       corrections: [
         { role: null, step: null, field: 'syllabusLevel/syllabusNumber', from: 'Beginners / 33', to: 'null / null', ruledBy: 'Victor', date: '2026-07-26', note: 'Non-syllabus prep step, null-tiered to match the Foxtrot and Quickstep Prep Steps. docs/ndcc_waltz_syllabus.json runs #1-32 only, so #33 had no NDCC referent. Applied in both peer stores. Bars confirmed at 2 under Decision #29 reading the compound tokens as beat-ranges (123 = 3 beats, 12 = 2, 3 = 1 -> 6 beats = 2 bars, per-step 1,2,2); no bar change.' },
@@ -1407,7 +1411,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Point to Promenade Position': {
       bars: 1,
-      dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Bronze',
       dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
       corrections: [],
       leader: [
@@ -1473,7 +1477,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Reverse Outside Swivel': {
       bars: 2,
-      dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Tango', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Silver',
       dataStatus: 'audited', auditedDate: '2026-07-26', sources: ['ballroomguide'],
       corrections: [
         { role: null, step: null, field: 'bars', from: 1, to: 2, ruledBy: 'Victor', date: '2026-07-26', note: 'Provisional Step-2 parse value. The original parse advanced the bar only on a timing reset to a bare "1", so figures whose timing runs 12,3,4,56 never advanced past bar 1. Re-derived from the source Timing column under the Tango parameterization (Decision #22: S = 2 beats, Q = 1 beat, 4 beats/bar). Per-step bar is 1,1,1,2,2 for both roles. Step data unchanged.' },
@@ -2010,7 +2014,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Open Natural Turn': {
       bars: 1,
-      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Silver',
       dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
       corrections: [],
       leader: [
@@ -2027,7 +2031,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Outside Swivel': {
       bars: 1,
-      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Silver',
       dataStatus: 'parsed', sources: ['ballroomguide'],
       leader: [
         { bar: 1, timing: '12', foot: 'LF back in CBMP, small step, toe turned in', alignment: 'Backing DW to facing LOD', turn: '3/8 to R', footwork: 'TH', sway: '', position: 'OP to PP', rise: '', cbm: '', notes: '', rhythm: 'S' },
@@ -2071,7 +2075,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Foxtrot Prep Step': {
       bars: 2,
-      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Bronze',
       dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
       corrections: [],
       leader: [
@@ -2203,7 +2207,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Natural Twist Turn with Closed Impetus & Feather Finish Ending': {
       bars: 3,
-      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Gold',
       dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
       corrections: [
         { role: 'follower', step: 6, field: 'turn', from: '1/4 between 2-3', to: '1/4 between 5-6', ruledBy: 'Victor', date: '2026-07-25' },
@@ -2235,7 +2239,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Natural Twist Turn with Open Impetus Ending': {
       bars: 2,
-      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Gold',
       dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
       corrections: [
         { role: 'follower', step: 6, field: 'turn', from: '3/8 between 2-3, body turns less', to: '3/8 between 5-6, body turns less', ruledBy: 'Victor', date: '2026-07-25' },
@@ -2260,7 +2264,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Natural Twist Turn with Weave Ending': {
       bars: 3,
-      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Foxtrot', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Gold',
       dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
       corrections: [],
       leader: [
@@ -2565,7 +2569,7 @@ export const FIGURE_RICH_DATA = {
     },
     'Quickstep Prep Step': {
       bars: 4,
-      dance: 'Quickstep', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null,
+      dance: 'Quickstep', category: 'Standard', syllabusLevel: null, syllabusNumber: null, syllabusBody: null, studioLevel: 'Bronze',
       dataStatus: 'audited', auditedDate: '2026-07-25', sources: ['ballroomguide'],
       corrections: [
         { role: 'leader', step: 3, field: 'columns', from: 'rhythm=12, position=S, rise=Closed, sway=Lower e/o 3, footwork=(blank)', to: 'rhythm=S, position=Closed, rise=Lower e/o 3, sway=(blank), footwork=HT', ruledBy: 'Victor', date: '2026-07-25', note: 'Source Table B step 3 was column-shifted (a spurious extra "12" cell pushed every field right and dropped the real footwork). De-shifted to match the Foxtrot Prep Step step 3.' },
