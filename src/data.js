@@ -22,11 +22,19 @@ export function effectiveLevel(f) {
   const lvl = f.studioLevel ?? f.syllabusLevel ?? null
   // A studioLevel outside LEVEL_ORDER is not orderable, so it cannot be
   // compared or sorted. Treat it as unknown — same handling as null — rather
-  // than letting indexOf's -1 sort it above Beginners and slip past maxLevel.
-  // Decision #31 makes an out-of-vocabulary value a data error rather than an
-  // expected state, so this is now a typo net, not a schema unknown: a
-  // misspelled 'Siver' lands in Needs Review instead of silently outranking
-  // Beginners and passing every maxLevel filter.
+  // than letting indexOf's -1 through.
+  //
+  // RETAINED under the #31 rider (Victor, 2026-07-27). #31 changes WHY this
+  // exists, not whether it is needed. The failure it prevents, precisely:
+  // levelIndex returns -1, which is BELOW Beginners (0), so the value sorts
+  // FIRST — ahead of everything — and `levelIndex(lvl) > levelIndex(maxLevel)`
+  // is never true, so it is filtered out at NO target level. It fails toward
+  // "shown to everyone", not "hidden": a misspelled 'Siver' on a Gold figure
+  // would surface it in a Beginners session. The guard routes it to Needs
+  // Review instead, where it is visible as a defect.
+  //
+  // This defends against future drift — hand-edits, Latin parse output — NOT
+  // against #31-compliant data. Do not delete it as dead defensive code.
   return lvl != null && levelIndex(lvl) === -1 ? null : lvl
 }
 
