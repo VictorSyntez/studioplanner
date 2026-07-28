@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-27 **rev 8** (supersedes rev 7, 2026-07-26 — rev 7 closed session 4, the remainder-audit session; this revision closes **session 5**, the `studioLevel` value-assignment session)
 **This revision:** produced by the planning layer (Claude-in-chat) at Victor's instruction after the `studioLevel` value sitting was ruled, executed by Claude Code, reviewed, deployed and tagged. **Phase 2b remains complete; the null-tier placement question is now closed.**
-**Current branch:** `main` at **`3102bc5`** (`git describe`: `v0.6.0-data-2-g3102bc5` — **two docs-only commits past the tag**), pushed. Last **data/code** commit is **`b864e9b`**, tagged **`v0.6.0-data`**, **DEPLOYED** at https://dancepraktika-studioplanner.web.app/. The two commits since (`2e5be73`, `3102bc5`) touch `docs/` only, so the live bundle is unchanged and **no new tag is warranted** — tag-every-deploy applies to deploys, and docs commits are not deploys. **115 figures** (Waltz 34 / Tango 30 / Foxtrot 31 / Quickstep 20), **114 audited / 1 parsed**. Badge-over-gate active. **Standard "Needs Review" bucket is now empty.**
+**Current branch:** `main` at **`aabfb18`** (`git describe`: `v0.6.0-data-4-gaabfb18` — **four commits past the tag**), pushed. Last **shippable** commit is **`b864e9b`**, tagged **`v0.6.0-data`**, **DEPLOYED** at https://dancepraktika-studioplanner.web.app/. Of the four commits since, three are docs-only (`2e5be73`, `aafc306`, `aabfb18`) and **`3102bc5` also touched `src/data.js` — comment-only**, verified: the `v0.6.0-data..HEAD` diff for `src/data.js` contains no non-comment line, and the bundle hash is `index-D7Ke58jM.js` before and after. The live deployment is therefore still exactly `v0.6.0-data` content and **no new tag or deploy is warranted** — but note that "docs-only since the tag" is *not* literally true, and do not restate it that way when auditing the tag. **115 figures** (Waltz 34 / Tango 30 / Foxtrot 31 / Quickstep 20), **114 audited / 1 parsed**. Badge-over-gate active. **Standard "Needs Review" bucket is now empty.**
 **Repo:** https://github.com/VictorSyntez/studioplanner
 
 **Tag chain (every deploy reachable from a tag):**
@@ -143,7 +143,7 @@ After-queue workstreams unchanged: **Step 4.5** (4.5a CSS pass — carries: orph
 
 | File | Status |
 |---|---|
-| `src/data.js` | Changed by session 5 (10 `studioLevel` values × 2 peer stores). **KB copy stale — refresh to `b864e9b`.** |
+| `src/data.js` | Changed by session 5 (10 `studioLevel` values × 2 peer stores at `b864e9b`; comment-only `effectiveLevel` rider text added at `3102bc5`). **KB copy stale — refresh from HEAD (`aabfb18`), not from the tag.** |
 | `src/App.jsx` | Unchanged this session per Code's report (no code change was required for #31). |
 | `src/index.css` | Unchanged since `429dfc1`. |
 | `package.json` / `package-lock.json` | **Unchanged — #34 not yet executed** (verified at `3102bc5`: no `firebase-tools` entry). Will change when it is. |
