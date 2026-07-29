@@ -31,7 +31,7 @@ Gap found at 1.4: Stage 2 clones from GitHub, but the repo carries only the rev 
 
 ## Stage 2 — Laptop 5500 setup (Victor; verify BEFORE departure if at all possible)
 
-**2.1 Tooling.** Install: git, Node.js (match desktop's major version — **desktop runs Node `v22.23.1` (major 22)**, npm `10.9.8`, git `2.43.0`; recorded by Code at the 1.5 commit), Claude Code.
+**2.1 Tooling.** Install: git, Node.js (match desktop's **major 22** (desktop: Node v22.23.1, npm 10.9.8, git 2.43.0)), Claude Code.
 
 **2.2 GitHub auth.** New machine needs push access — SSH key or credential login for `github.com/VictorSyntez/studioplanner`; verify with a test `git fetch`.
 
@@ -73,6 +73,6 @@ Gap found at 1.4: Stage 2 clones from GitHub, but the repo carries only the rev 
 - [x] 1.2 #34: commit `a5c87a7` (route B+), pushed; bundle byte-identical
 - [x] 1.3 KB `data.js` refreshed (content identity `3102bc5`)
 - [x] 1.4 X6 mirror created; `sources.tar.gz` verified 737/737; clone-from-drive proven at `a5c87a7`
-- [ ] 1.5 docs-tracking commit (rev 9 handoff + this rev 3) committed and pushed: ______
-- [x] Desktop Node major version recorded: **22** (`v22.23.1`; npm `10.9.8`, git `2.43.0`) — see 2.1
+- [x] 1.5 docs-tracking commit (rev 9 handoff + this rev 3): commit `8e9cee8`, pushed; X6 re-synced to `8e9cee8`, clone-from-drive re-proven
+- [x] Desktop tooling recorded: Node v22.23.1 (major 22), npm 10.9.8, git 2.43.0
 - [ ] Stage 2 complete on laptop 5500 (2.1–2.7)
