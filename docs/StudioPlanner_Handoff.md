@@ -1,8 +1,8 @@
 # StudioPlanner — Handoff Document
 
-**Date:** 2026-07-27 **rev 8** (supersedes rev 7, 2026-07-26 — rev 7 closed session 4, the remainder-audit session; this revision closes **session 5**, the `studioLevel` value-assignment session)
-**This revision:** produced by the planning layer (Claude-in-chat) at Victor's instruction after the `studioLevel` value sitting was ruled, executed by Claude Code, reviewed, deployed and tagged. **Phase 2b remains complete; the null-tier placement question is now closed.**
-**Current branch:** `main` at **`aabfb18`** (`git describe`: `v0.6.0-data-4-gaabfb18` — **four commits past the tag**), pushed. Last **shippable** commit is **`b864e9b`**, tagged **`v0.6.0-data`**, **DEPLOYED** at https://dancepraktika-studioplanner.web.app/. Of the four commits since, three are docs-only (`2e5be73`, `aafc306`, `aabfb18`) and **`3102bc5` also touched `src/data.js` — comment-only**, verified: the `v0.6.0-data..HEAD` diff for `src/data.js` contains no non-comment line, and the bundle hash is `index-D7Ke58jM.js` before and after. The live deployment is therefore still exactly `v0.6.0-data` content and **no new tag or deploy is warranted** — but note that "docs-only since the tag" is *not* literally true, and do not restate it that way when auditing the tag. **115 figures** (Waltz 34 / Tango 30 / Foxtrot 31 / Quickstep 20), **114 audited / 1 parsed**. Badge-over-gate active. **Standard "Needs Review" bucket is now empty.**
+**Date:** 2026-07-28 **rev 9** (supersedes rev 8, 2026-07-27 — rev 8 closed session 5, the `studioLevel` value sitting; this revision closes **session 6**, the travel-preparation session)
+**This revision:** produced by the planning layer at Victor's instruction after Stage 1 of the travel work order (items 1.1–1.3) was executed by Claude Code, reviewed and pushed. Victor travels ~2–3 weeks (Brazil) starting on/after this date; work continues from **laptop 5500** with the **Crucial X6** drive as backup/transport.
+**Current branch:** `main` == `origin/main` at **`a5c87a7`**, pushed, clean apart from untracked `files.zip`. Last **shippable** commit remains **`b864e9b`**, tagged **`v0.6.0-data`**, **DEPLOYED** at https://dancepraktika-studioplanner.web.app/. The two session-6 commits (`944c9dd` docs/inventory, `a5c87a7` deps) are **bundle-neutral — verified byte-for-byte**: a temp-outDir `vite build` at `a5c87a7` is md5-identical per file to the deployed `dist/`. **No new tag or deploy is warranted.** **115 figures** (Waltz 34 / Tango 30 / Foxtrot 31 / Quickstep 20), **114 audited / 1 parsed** (sole `parsed` = `Foxtrot / Outside Swivel`). Badge-over-gate active. Standard "Needs Review" bucket empty.
 **Repo:** https://github.com/VictorSyntez/studioplanner
 
 **Tag chain (every deploy reachable from a tag):**
@@ -17,38 +17,43 @@
 
 ---
 
-## Session outcomes (2026-07-27, session 5 — `studioLevel` value assignment)
+## Session outcomes (2026-07-28, session 6 — travel preparation)
 
-1. **Stale-file check at session open — KB verified current.** The rev 7 flag on `data.js` ("KB copy stale — refresh to `88b48ea`") had already been discharged: the KB copy matched the `88b48ea` end state exactly (115 figures, 114 audited / 1 parsed, 114 `corrections` blocks, sole `parsed` = `Foxtrot/Outside Swivel`). `App.jsx` and `index.css` consistent with rev 7, including the two expected tracked artifacts (orphaned `.bar-selector` at `index.css:749`; dead `const bars` at `App.jsx` ~92).
-2. **`studioLevel` value-assignment sitting COMPLETED** — the deferred half of `StudioPlanner_WO_StudioLevel_Schema.md` is discharged. Four rulings, all Victor's, all 2026-07-27. Captured in `StudioPlanner_WO_StudioLevel_Values.md`.
-3. **Executed by Claude Code** at `b864e9b`, deployed, tagged `v0.6.0-data`. All ten `syllabusLevel: null` figures now carry a `studioLevel` in **both peer stores**. Everything else held: counts unchanged, `dataStatus` unchanged, corrections totals unchanged, no dance-content byte moved.
-4. **Record error found and corrected.** Code's execution report described queue item 4 as "the Outside Swivel compound JOIN," conflating two distinct items. **Corrected:** queue item 4 is the *standalone `Foxtrot/Outside Swivel` **audit***; the **compound JOIN was Foxtrot #16**, shipped at `v0.4.0-data` and **discharged** (locked decisions 26–29). The pending Outside Swivel work is a source audit with no JOIN component.
+1. **Travel working model ruled (Victor): option (a)** — repo cloned to laptop 5500's **internal disk**; Crucial X6 is **backup and transport only**, never the working copy. Governing document: `StudioPlanner_WO_Travel_Prep.md` (Stage 1 desktop close-out, Stage 2 laptop setup).
+2. **1.1 repo-completeness inventory → commit `944c9dd`** (pushed). Committed: repo-handoff one-line amendment; `StudioPlanner_Project_Status_Overview_2026-07-24.md`; both NDCC syllabus PDFs (originals of the tracked `ndcc_*_syllabus.json` extracts; file mode corrected 755→644 before add); the two session records previously at repo root (Conduct Review, Session Report 2026-07-25 — placement ruled by Victor to Code directly; `944c9dd`'s diff is the authoritative record of the committed paths). **Not committed:** `files.zip` (superseded KB export — all content already in git history), `.env`, `reference/`, `sources/`, `.firebase/`, `dist/`, `.claude/` (local-only → X6, see travel section).
+3. **Decision #34 EXECUTED — as amended — at `a5c87a7`** (pushed). See the #34 amendment under Locked decisions.
+4. **KB `data.js` stale flag DISCHARGED.** KB copy refreshed from HEAD (`a5c87a7`); the file's **content identity is `3102bc5`** — the last commit that touched `src/data.js`; everything after is docs/deps. Fingerprint of the correct vintage: 114 `dataStatus: 'audited'` / 1 `'parsed'` (`Foxtrot / Outside Swivel`), 230 `syllabusLevel` fields (20 null), 114 `corrections` arrays; sha256 `b4c5e632…9eef67`, 387,004 bytes.
+5. **Record correction (planning layer):** rev 8-era statements that the ballroomguide source mirror "comes with any clone" were **wrong**. `reference/` (8.6 M) and `sources/` (143 M) are **gitignored** — only 4 small manifest/log files under `sources/` are tracked. A fresh clone does **not** contain the source mirror. Consequence recorded in the travel section below.
 
 ---
 
-## Locked decisions — additions this session
+## Locked decisions — session 6 delta
 
-**31. `studioLevel` value vocabulary mirrors NDCC (Victor, 2026-07-27).** `studioLevel` values are drawn **only** from the existing `LEVEL_ORDER` = `['Beginners', 'Pre-Bronze', 'Bronze', 'Silver', 'Gold', 'Gold Star']`. No studio-specific level names; no extension of `LEVEL_ORDER`; no parallel ordering. Every assigned value is therefore already orderable, so tier grouping and the cumulative `targetLevel` filter absorbed the assignment **with no code change**. NDCC fields (`syllabusLevel`, `syllabusNumber`, `syllabusBody`) remain verbatim-or-null forever. Resolution logic unchanged: `effectiveLevel(f) = studioLevel ?? syllabusLevel` (decision #28).
+**35. Travel working model, option (a) (Victor, 2026-07-28).** Laptop-internal working copy; X6 read-only fallback. If the X6 is ever used to restore, restore *to the internal disk*, then `git pull`.
 
-> **#31 rider — the unrecognised-vocabulary guard is RETAINED. Do not delete it as dead defensive code.**
-> #31 changed *why* the guard exists, not *whether* it is needed. `levelIndex` is `LEVEL_ORDER.indexOf(level)`, which returns **`-1`** for an out-of-vocabulary value — sorting it *below* `Beginners` (index 0) so it passes **every** cumulative `targetLevel` filter. The failure direction is therefore "shown to everyone, including beginners," not "hidden." The guard defends against future drift (hand-edits, Latin parse output, a future executor unaware of #31) — not against #31-compliant data, which by ruling cannot trigger it. **The Latin parse is the next process that will emit `studioLevel`-adjacent values, so this defence is live, not hypothetical.**
->
-> **Empirical basis, not inference.** The direction was verified by Code at `3102bc5` by testing an out-of-vocabulary value against **all six** `targetLevel` settings: it was filtered out at **none** of them. It was not reasoned from the index comparison alone.
->
-> **⚠️ `b864e9b`'s commit message states the mechanism BACKWARDS and is immutable.** `b864e9b` is the commit `v0.6.0-data` points at, so anyone reaching the guard by the natural route — tag → commit → message — reads the inverted mechanism with no signal that it is wrong. The **wrong** phrasings to recognise and discard are **"sorts above `Beginners`"** and **"outranking `Beginners`"**. The correct statement is the one in this rider. `3102bc5` is the commit that names and corrects them.
->
-> *This rationale is recorded here because Code also wrote it to its internal memory, and per the KB-lag rule Code's memory is not canonical. This handoff is. The full rider text additionally lives in the `effectiveLevel` comment in `src/data.js`, which no handoff overwrite touches.*
+**#34 amendment — executed at `a5c87a7` via route B+ (Victor, 2026-07-28).** Execution hit a **pre-existing blocker**: root declares `vite: ^8.0.4` while `vite-plugin-pwa@1.2.0`'s peer range tops out at `^7` — so **plain `npm install` was already failing on the committed tree** (verified independently of #34; existing `node_modules` predated the vite 8 bump or was built with a bypass). **Ruled route: B+** — install with `--legacy-peer-deps` and commit an **`.npmrc`** containing `legacy-peer-deps=true`, restoring "plain `npm install` works" (essential for the laptop clone). Verified: `package.json` shows bare `"firebase-tools": "15.24.0"` (no caret/tilde); `./node_modules/.bin/firebase --version` → 15.24.0; plain `npm install` succeeds; bundle byte-identical to deployed. Deploys now resolve the CLI locally via `npx firebase deploy --only hosting` — no per-deploy download. **No `"deploy"` script was added** (out of 1.2 scope; separate call, optional). The Firebase **login** credential is unaffected — machine-local, see travel section.
 
-**32. CDTA divergences ride in `syllabusNotes` (Victor, 2026-07-27).** Any cross-body (CDTA) tier divergence is recorded as free text in the figure's `syllabusNotes`. It never enters `syllabusLevel` and never enters `studioLevel`. Confirmed against existing precedent, quoted from `data.js` (`Quickstep / Closed Impetus`): `syllabusNotes: 'CDTA: Bronze figure (NDCC: Pre-Bronze #10).'` **No CDTA values assigned yet** — Victor's CDTA review is open.
+> **#34 rider — the `.npmrc` is TEMPORARY.** `legacy-peer-deps=true` silences **all future** peer-conflict signals, not just this one. It exists only to bridge the vite-8 / plugin-pwa peer gap until Route A lands. See the Route A tracked issue: **delete `.npmrc` at that same sitting.**
 
-**33. `Quickstep / Quickstep Prep Step` bars confirmed at 4 (Victor, 2026-07-27).** Surfaced at the sitting as an anomaly: the Waltz and Foxtrot Prep Steps are `bars: 2` with the same 3-steps-per-role shape, while Quickstep is `bars: 4`. **Victor ruled the stored value correct.** No data change, no `corrections[]` entry. Anomaly closed, not tracked forward.
+Decisions **1–33** as recorded in rev 8 — unchanged. (No-dreaming #5; peer-store #10; citation #12; corrections schema + audited-exclusion guard; Tango parameterization #22; all-bars #23; attribution #24; DC merge slot #25; Waltz reconciliation rulings and the two *scoped* accent-strips — **no accent policy exists**; Foxtrot #16 compound + seam review, discharged; `studioLevel` schema option (c) #28; Waltz bar parameterization option (a); Tango `&` = 0-beat subdivision #30; `studioLevel` vocabulary #31 **including its retained-guard rider, reproduced below**; CDTA-in-`syllabusNotes` #32; Quickstep Prep Step bars=4 #33.)
 
-**34. `firebase-tools` pinned as an exact devDependency (Victor, 2026-07-27) — PENDING EXECUTION.** Deploys had been running through `npx --yes firebase-tools@latest`, which re-downloads the CLI every time and — the substantive problem — places an unpinned, silently-changing tool in the deploy path, so deploys are not reproducible and a CLI change between two deploys is invisible in the repo. **Ruling:** install **`firebase-tools@15.24.0`** exact-pinned. Command: `npm i -D -E firebase-tools@15.24.0`. Verify `package.json` shows a bare `"15.24.0"` — no caret, no tilde. Commit `package.json` **and** `package-lock.json`. Deploys then run `npx firebase deploy --only hosting` (resolves to `./node_modules/.bin/firebase`, downloads nothing); optionally add a `"deploy"` script. Upgrades become deliberate and reviewable. **Note: this does not affect the Firebase CLI login** — credentials live in user config, not `node_modules`, so the session-4 re-auth issue is unchanged.
-> **Status verified 2026-07-27 at `3102bc5`: NOT executed.** `grep firebase-tools package.json` returned no match, so the package is absent and deploys still run `npx --yes firebase-tools@latest`. Nothing is broken by this — the ruling is a reproducibility improvement, not a fix. Optional `npm pkg set scripts.deploy="firebase deploy --only hosting"` is a convenience shortcut only, and requires the local install first (no local `firebase` binary otherwise).
+**#31 rider (reproduced verbatim in substance — load-bearing, do not lose):** the `studioLevel` unrecognised-vocabulary guard is **RETAINED — do not delete it as dead defensive code.** `levelIndex` = `LEVEL_ORDER.indexOf(level)` returns **`-1`** for an out-of-vocabulary value, sorting it *below* `Beginners` so it passes **every** cumulative `targetLevel` filter — failure direction "shown to everyone," not "hidden." Empirically verified by Code at `3102bc5` against all six `targetLevel` settings. The Latin parse is the next process that will emit `studioLevel`-adjacent values — the defence is live. **⚠️ `b864e9b`'s immutable commit message states the mechanism BACKWARDS** ("sorts above `Beginners`" / "outranking `Beginners`" are the wrong phrasings to discard); `3102bc5` names and corrects them. Full rider text also lives in the `effectiveLevel` comment in `src/data.js`.
 
-Decisions **1–30** as recorded in rev 3/4/5/7 — unchanged. (No-dreaming #5; peer-store #10; citation #12; corrections schema + audited-exclusion guard; Tango parameterization #22; all-bars #23; attribution #24; DC merge slot #25; Waltz reconciliation rulings and the two *scoped* accent-strips — **no accent policy exists**; Foxtrot #16 compound + seam review, **discharged**; `studioLevel` schema option (c) #28; Waltz bar parameterization option (a); Tango `&` = 0-beat subdivision #30.)
+**Bar-derivation rule, validated across all four dances** — per-step `bar` derives from the **absolute timing beat number**, not naive cumulative accumulation. Cumulative-only breaks on mid-bar commencement (Foxtrot `Basic Weave`, starts on beat 3) and on resets not landing on a bar boundary. Always self-test any proposed bar rule against already-audited vectors before applying it to new figures.
 
-**Bar-derivation rule, validated across all four dances** — per-step `bar` derives from the **absolute timing beat number**, not naive cumulative accumulation. Cumulative-only breaks on mid-bar commencement (Foxtrot `Basic Weave`, starts on beat 3) and on resets that do not land on a bar boundary. Always self-test any proposed bar rule against the already-audited vectors before applying it to new figures.
+---
+
+## Travel period (governing: `StudioPlanner_WO_Travel_Prep.md`)
+
+**Stage 1 (desktop) status at rev 9 write time:** 1.1 ✅ (`944c9dd`) · 1.2 ✅ (`a5c87a7`) · 1.3 ✅ (KB `data.js` refreshed) · **1.4 (X6 copy) pending** — copy `~/studioplanner` to the X6 excluding `node_modules/` only; `.git`, `.env`, `reference/`, `sources/`, `dist/`, `.firebase/`, `.claude/` and `files.zip` all carried.
+
+**Stage 2 (laptop 5500), verify before departure if possible:** git + Node (match desktop major) + Claude Code → GitHub auth + test fetch → clone to **internal disk** → plain `npm install` (works post-`a5c87a7`) → **`firebase login`** (machine-local credential; **cannot** be carried on the drive — same mechanism as the session-4 re-auth) → `npm run dev` smoke test → confirm claude.ai KB access.
+
+**Stage 2 addendum (from session-outcome 5):** after cloning, **copy `reference/`, `sources/`, and `.env` from the X6 into the laptop working copy at the same relative paths.** Without `sources/` there is no against-source audit capability on the laptop, and the gzip hazard note applies to it wherever it lives.
+
+**While traveling:** laptop is the working copy; push to `origin/main` as usual; deploys work anywhere after `firebase login`. KB workflow unchanged (cloud-hosted): session-open handoff read, session-close KB upload.
+
+**On return:** desktop `git pull`; refresh or retire the X6 mirror; reconcile any laptop-only edits via git, never via the drive. `files.zip` at repo root is a deletion candidate.
 
 ---
 
@@ -71,20 +76,21 @@ All ten figures that carried `syllabusLevel: null`. No other figure carries a `s
 
 **Distribution: Bronze 4 · Silver 3 · Gold 3.**
 
-> **Needs Review predicate — read carefully.** The bucket is defined by **`effectiveLevel(f) == null`**, *not* by `syllabusLevel == null`. Since `b864e9b` these two predicates **diverge** for exactly these ten figures: all ten still carry `syllabusLevel: null` and always will (NDCC fields are verbatim-or-null forever), yet none is in Needs Review, because `studioLevel` now satisfies `effectiveLevel`. Any future filter, report, or parser that reaches for `syllabusLevel == null` as a proxy for "unplaced" will be wrong by ten figures.
+> **Needs Review predicate — read carefully.** The bucket is defined by **`effectiveLevel(f) == null`**, *not* by `syllabusLevel == null`. Since `b864e9b` these predicates **diverge** for exactly these ten figures: all ten still carry `syllabusLevel: null` and always will (NDCC fields are verbatim-or-null forever), yet none is in Needs Review. Any future filter, report, or parser reaching for `syllabusLevel == null` as a proxy for "unplaced" will be wrong by ten figures.
 
 - All three Prep Steps → Bronze (ruled individually; consistent result).
-- All three Natural Twist Turn ending-variants → Gold. Corroborating context quoted from `ndcc_foxtrot_syllabus.json`: the base figure `Natural Twist Turn` is **NDCC Gold #20**. Observed consistency, *not* the basis of the ruling.
-- `Foxtrot / Outside Swivel` is placed at **Silver** but remains **`dataStatus: 'parsed'`** and still displays its "Not yet verified" badge, as ruled. Placement is independent of audit status.
+- All three Natural Twist Turn ending-variants → Gold. Corroborating context quoted from `ndcc_foxtrot_syllabus.json`: base figure `Natural Twist Turn` is **NDCC Gold #20**. Observed consistency, *not* the basis of the ruling.
+- `Foxtrot / Outside Swivel` is placed at **Silver** but remains **`dataStatus: 'parsed'`** with its "Not yet verified" badge, as ruled. Placement is independent of audit status.
 
 ---
 
 ## Fast re-entry — state on resume
 
-1. **Pre-flight (standard):** clean tree at `b864e9b` (`v0.6.0-data`), counts 34/30/31/20 (115), **114 audited / 1 parsed**, `studioLevel` present on exactly 10 figures × 2 peer stores, build. *The working tree normally carries uncommitted planning-layer docs at session start — usual state, not a defect; commit them first.*
-2. **Phase 2b is closed** and the null-tier placement question is closed. No audit work remains in the Standard dances apart from the single tracked `Foxtrot/Outside Swivel` standalone.
-3. **Queue head: Ellever competitive capture** (see queue below) — it is *due now*, its scheduling condition having been met.
-4. Deploy workflow: Firebase throughout; one deploy per logical unit; tag every deploy. **See decision #34 before the next deploy.**
+1. **Pre-flight (standard):** clean tree at `a5c87a7` (== `origin/main`; deployed content = `v0.6.0-data`/`b864e9b`), counts 34/30/31/20 (115), **114 audited / 1 parsed**, `studioLevel` present on exactly 10 figures × 2 peer stores, build. *Working tree normally carries uncommitted planning-layer docs at session start — usual state, not a defect; commit them first.*
+2. **If resuming on laptop 5500:** run Stage 2 verification first (clone at `a5c87a7`+, plain `npm install` clean, `firebase login` done, `sources/`+`reference/`+`.env` copied from X6). Only then normal queue work.
+3. **Phase 2b closed; null-tier placement closed.** No Standard audit work remains apart from the tracked `Foxtrot/Outside Swivel` standalone.
+4. **Queue head: Ellever competitive capture** — *due now*, scheduling condition met.
+5. Deploy workflow: Firebase throughout; one deploy per logical unit; tag every deploy; CLI now local and pinned (`a5c87a7`).
 
 ---
 
@@ -101,66 +107,71 @@ React (Vite) · Firebase Auth / Firestore / Hosting · vite-plugin-pwa (Workbox)
 - **Phase 1** complete (`v0.2.0`). **Phase 2a Steps 0–4** complete (unified pipeline, dance-namespaced keying, Needs Review bucket, rhythm column).
 - **Phase 2b (Foxtrot + Quickstep)** complete (`v0.3.0-data`). **Tango routine audit** (`v0.3.1-data`). **All-bars rendering** (`v0.3.2-ui`). **Renames + Foxtrot #16 compound + `studioLevel` schema** (`v0.4.0-data`).
 - **Session 4 (2026-07-26): PHASE 2B COMPLETE** (`v0.5.0-data`) — all four Standard dances audited against source. **114 audited / 1 parsed.**
-- **Session 5 (2026-07-27): `studioLevel` VALUES ASSIGNED** (`v0.6.0-data`) — 10 placements, **Standard Needs Review bucket empty**.
-- **Corrections logged to date (in `corrections[]`), unchanged this session:** Tango 18 across 16 figures · Foxtrot 17 across 10 · Quickstep 11 across 7 · Waltz 5 across 3.
+- **Session 5 (2026-07-27): `studioLevel` VALUES ASSIGNED** (`v0.6.0-data`) — 10 placements, Standard Needs Review bucket empty.
+- **Session 6 (2026-07-28): TRAVEL PREP** — inventory commit `944c9dd`; #34 executed-as-amended `a5c87a7` (B+); KB `data.js` refreshed; no data change, no deploy.
+- **Corrections logged to date (unchanged):** Tango 18 across 16 figures · Foxtrot 17 across 10 · Quickstep 11 across 7 · Waltz 5 across 3.
 
 ---
 
 ## Next action — queue (updated)
 
-1. **Ellever competitive capture** — **due now.** Scheduled by the 2026-07-25 Session Overview for week 1 of the three-week no-class window (opened 2026-07-25), *contingent on Phase 2b completing*; Phase 2b closed 2026-07-26, so the condition is met. Capture free material first: ellever.com UI screenshots, **the plan-sharing / assistant-side view specifically** (highest value — direct analogue of PS Live and the input to the Step 4.5b notes-scope ruling), pricing + trial terms, YouTube walkthroughs. Subscription go/no-go immediately after: buy only if the assistant-side view remains invisible from free material; one month max, cancel after the screenshot session. Dance Vision full capture stays deferred to the Phase 3 gate.
-2. **`firebase-tools` pin** (decision #34) — small engineering task; `package.json` + `package-lock.json` diff review.
-3. **Latin parse** — prerequisites: mid-bar heuristic upgrade; Latin pre-flight list (Status Overview §3.2); PDF tracking decision. **Read the gzip note below before writing any new source reader.**
+1. **Ellever competitive capture** — **due now.** Scheduled for week 1 of the three-week no-class window (opened 2026-07-25), contingent on Phase 2b completing — condition met 2026-07-26. Capture free material first: ellever.com UI screenshots, **the plan-sharing / assistant-side view specifically** (highest value — direct analogue of PS Live and input to the Step 4.5b notes-scope ruling), pricing + trial terms, YouTube walkthroughs. Subscription go/no-go after: buy only if the assistant-side view stays invisible from free material; one month max, cancel after the screenshot session. Dance Vision full capture stays deferred to the Phase 3 gate. *(Travel-compatible — needs only a browser.)*
+2. ~~`firebase-tools` pin (#34)~~ — **executed** `a5c87a7`.
+3. **Latin parse** — prerequisites: mid-bar heuristic upgrade; Latin pre-flight list (Status Overview §3.2); PDF tracking decision. **Read the gzip note before writing any new source reader; `sources/` must be present on the working machine (see Stage 2 addendum).**
 4. **Option C gap-fill** (Quickstep 12 + Jive D-3).
-5. **Standalone `Foxtrot/Outside Swivel` audit** — the last `parsed` figure; null-tier (now `studioLevel: 'Silver'`); unscheduled. **This is an audit, not a JOIN** (see session outcome 4).
+5. **Standalone `Foxtrot/Outside Swivel` audit** — last `parsed` figure; null-tier (now `studioLevel: 'Silver'`); unscheduled. **An audit, not a JOIN** (rev 8 session outcome 4).
 6. **Auth QoL:** "Forgot password?" in AuthGate — pre-commercial requirement.
 
-After-queue workstreams unchanged: **Step 4.5** (4.5a CSS pass — carries: orphaned `.bar-selector` CSS; dead `const bars` App.jsx ~92; optional-column design revisit; **Needs-Review visual treatment — now a design question about an *empty* bucket rather than a populated one**; PWA update prompt; 4.5b PS notes/D-1) → **dancecentral enrichment merge** (Decision #25) → **Latin**.
+After-queue workstreams unchanged: **Step 4.5** (4.5a CSS pass — carries: orphaned `.bar-selector` CSS; dead `const bars` App.jsx ~92; optional-column design revisit; Needs-Review visual treatment — now a design question about an *empty* bucket; PWA update prompt; 4.5b PS notes/D-1) → **dancecentral enrichment merge** (Decision #25) → **Latin**.
 
 ---
 
 ## Open items on Victor's side
 
+- **Stage 1.4** (X6 copy) and **Stage 2** (laptop setup) of the travel work order.
 - **CDTA review** — results land as `syllabusNotes` per decision #32. Open, unscheduled, non-blocking.
 
 ---
 
-## Deferred / tracked issues (delta vs rev 7)
+## Deferred / tracked issues (delta vs rev 8)
 
-- ~~`studioLevel` value-assignment sitting~~ — **closed 2026-07-27 session 5** (ruled, executed, deployed, tagged `v0.6.0-data`).
-- ~~`studioLevel` unrecognised-vocabulary handling~~ — **resolved by decision #31 + rider**: guard retained deliberately, rationale recorded above.
-- ~~**`firebase-tools` unpinned in the deploy path**~~ — ruled (#34), **executed 2026-07-28 (this commit)**: `firebase-tools` pinned bare at `15.24.0` in `devDependencies`; `./node_modules/.bin/firebase --version` reports `15.24.0`. No `deploy` script was added. No tag, no deploy — the bundle was verified unchanged (see below).
-- **NEW — Route A deferred: `vite-plugin-pwa` peer conflict, papered over by `.npmrc`.** Executing #34 surfaced a **pre-existing** break: `vite-plugin-pwa@1.2.0` declares peer `vite ^3 || ^4 || ^5 || ^6 || ^7`, while the project is on `vite ^8.0.4` (tree at `8.0.8`). **Plain `npm install` already failed with `ERESOLVE` on a clean clone before `firebase-tools` was ever involved** — verified independently at `944c9dd`. Builds and deploys were unaffected because the objection is npm's resolver, not runtime. **Route B+ taken** (ruled 2026-07-28): install under `--legacy-peer-deps` and commit an `.npmrc` carrying `legacy-peer-deps=true`, so plain `npm install` works on the laptop. Cost: 8 pre-existing transitive packages moved version (`protobufjs 7.5.4 → 7.6.5`, `js-yaml 4.1.1 → 4.3.0`, `hasown`, `side-channel`, four `@protobufjs/*`) and `@protobufjs/inquire` dropped; a temp-dir `vite build` was compared against the deployed `dist/` and came out **byte-for-byte identical**, so this is not a bundle change. **Route A — deferred to post-travel:** bump `vite-plugin-pwa` to `^1.3.0` (its peer range includes `^8.0.0`), which churns ~149 packages including the workbox service-worker toolchain — so it needs a build, a smoke test and a deploy. **Delete `.npmrc` at that same sitting**, so the resolver signal comes back instead of staying suppressed indefinitely.
-- **NEW — repo `docs/` handoff has diverged from this file.** Claude Code committed two independent handoff edits (`2e5be73` "post-rev-7 corrections — queue item 4 disambiguated", `3102bc5` "#31 rider — unrecognised-vocabulary guard RETAINED, failure direction corrected") while the planning layer was writing rev 8 separately. **Reconciled 2026-07-27:** Code read `3102bc5` and raised five load-bearing items; rev 8 was checked against all five and amended where it fell short — the immutable-`b864e9b`-message warning, the empirical basis (all six `targetLevel` settings), the "live not hypothetical" scope note, and the `effectiveLevel == null` predicate divergence were **added**; `#31` in the locked-decisions list was already present. **Resolution: this KB rev 8 is canonical** (KB-lag rule) — overwrite `docs/StudioPlanner_Handoff.md` wholesale, no merge, docs-only commit, no tag, no deploy. *Record correction: `3102bc5` was Code correcting its own inverted claim using the direction supplied in the planning-layer rider — not a refinement of Code's reasoning, as rev 8 initially supposed.*
-- **gzip hazard in the source mirror.** `sources/.../waltz/closed_impetus.html` is gzip-compressed on disk, as are **18 of 21 Quickstep pages**. A reader that opens these as UTF-8 gets **zero tables and silently skips the figure** — it does not error. The shipped parsers gunzip (`readPage` checks for the `1f 8b` magic); any ad-hoc harness must too. **Relevant to Latin, which will need new readers.**
-- **`ruledBy: 'dancecentral'`** introduced on the three `Fallaway Whisk` corrections, as the source-authority analogue of `'ballroomguide'`. Left standing; revisit if a single attribution convention is wanted.
-- **`parse_bg_waltz.js` hardcodes the seven old Waltz keys** — must be updated before any Waltz **re-parse**. Blocks re-parse only, not audits. Still open.
-- **No structured entry/exit ("preceding figure") data exists.** Surfaced this session: the `FIGURE_RICH_DATA` schema has no preceding/following field (`priorBgName` is *rename provenance*, not a preceding-figure field). Preceding-figure information exists only incidentally, inside three free-text follower `notes` in Waltz. Adding it would be a schema change and a separate ruling — **raised, not opened.** Whether the ballroomguide source pages carry such information unparsed is unverified (source mirror lives in the repo, not the KB).
-- All other standing items unchanged: Option C gap-fill; Step 4.5 blockers; Silver swivel cluster; Tango #8 gap (`Open Reverse Turn, Lady in Line` — no BG page, no catalog entry); security pre-commercial items; licensing review; D-1; **Firebase CLI login expiry** (needed `firebase login --reauth` in session 4; *not* addressed by #34); Data Acquisition Brief retirement candidate; `handleBarToggle` lexicographic sort note.
+- ~~`firebase-tools` unpinned in the deploy path (#34)~~ — **executed 2026-07-28 at `a5c87a7`**, route B+ (see amendment).
+- ~~KB `data.js` stale~~ — **discharged 2026-07-28** (refreshed from HEAD; content identity `3102bc5`).
+- **NEW — Route A deferred (post-travel):** bump `vite-plugin-pwa` `^1.2.0`→`^1.3.0` (1.3.0 adds vite `^8` to its peer range) — the root-cause fix for the peer conflict. Churns ~149 packages including the workbox service-worker toolchain → **bundle change**: requires build + smoke test + deploy + tag as one logical unit. **Delete `.npmrc` at that same sitting** (#34 rider). Do not do this on travel wifi.
+- **NEW — `npm audit` noise, no action:** the firebase-tools tree brings 36 findings (1 critical, 31 high). Normal for this CLI; devDependency — nothing ships to users. **Do not run `npm audit fix --force`** (tree churn), on desktop or laptop.
+- **NEW — source mirror is NOT in a clone** (session-outcome 5): `reference/` + `sources/` are gitignored; any new working copy needs them copied in (X6 during travel). Supersedes the rev 8 parenthetical "source mirror lives in the repo, not the KB" *as a statement about clones* — it lives in the repo *folder*, outside git.
+- **`files.zip`** at repo root: untracked, superseded (all content in git history), carried to X6, deletion candidate on return.
+- **Repo `docs/StudioPlanner_Handoff.md`:** carries the two #34 amendments (committed this session) but not the rest of rev 9. Per KB-lag rule this KB rev 9 is canonical — **overwrite the repo copy wholesale with rev 9**, docs-only commit, no tag, no deploy, at the next Code sitting.
+- **gzip hazard in the source mirror.** `sources/.../waltz/closed_impetus.html` and **18 of 21 Quickstep pages** are gzip-compressed on disk. A reader opening these as UTF-8 gets **zero tables and silently skips the figure**. Shipped parsers gunzip (`readPage` checks the `1f 8b` magic); any ad-hoc harness must too. **Relevant to Latin.**
+- **`ruledBy: 'dancecentral'`** on the three `Fallaway Whisk` corrections — source-authority analogue of `'ballroomguide'`; left standing; revisit if a single attribution convention is wanted.
+- **`parse_bg_waltz.js` hardcodes the seven old Waltz keys** — must be updated before any Waltz **re-parse**. Blocks re-parse only, not audits.
+- **No structured entry/exit ("preceding figure") data exists** — raised rev 8, not opened. Schema change + separate ruling if pursued. Whether BG source pages carry it unparsed is unverified.
+- All other standing items unchanged: Option C gap-fill; Step 4.5 blockers; Silver swivel cluster; Tango #8 gap (`Open Reverse Turn, Lady in Line` — no BG page, no catalog entry); security pre-commercial items; licensing review; D-1; **Firebase CLI login is per-machine** (laptop needs its own `firebase login`; desktop re-auth from session 4 unaffected by #34); Data Acquisition Brief retirement candidate; `handleBarToggle` lexicographic sort note.
 
 ---
 
-## Key Files (delta vs rev 7)
+## Key Files (delta vs rev 8)
 
 | File | Status |
 |---|---|
-| `src/data.js` | Changed by session 5 (10 `studioLevel` values × 2 peer stores at `b864e9b`; comment-only `effectiveLevel` rider text added at `3102bc5`). **KB copy stale — refresh from HEAD (`aabfb18`), not from the tag.** |
-| `src/App.jsx` | Unchanged this session per Code's report (no code change was required for #31). |
-| `src/index.css` | Unchanged since `429dfc1`. |
-| `package.json` / `package-lock.json` | **Changed 2026-07-28 — #34 executed** (`firebase-tools` bare `15.24.0` in `devDependencies`; lock adds 590 packages, moves 8 pre-existing ones, drops 1). Still **no `deploy` script** — now unblocked, but adding one was not in scope and remains a separate call. *Earlier history, retained:* a `"deploy": "firebase deploy --only hosting"` script was added by hand, outside Code and outside diff review, then found broken — with no local `firebase-tools` there is no `firebase` binary, so `npm run deploy` fails with `firebase: command not found`. Discarded via `git checkout package.json`. **Do not re-add the script without first running `npm i -D -E firebase-tools@15.24.0`** — the script is useless on its own. Note also that `grep firebase-tools package.json` does *not* detect this state: the script line reads `firebase deploy`, not `firebase-tools`, so the check passes while a broken script exists. |
-| `docs/StudioPlanner_Handoff.md` (repo copy) | **Diverged** — edited by Code at `2e5be73` and `3102bc5`. Overwrite with this rev 8; see tracked issues. *Further edited 2026-07-28 by Code (Stage 1.2): #34 marked executed, Route A tracked issue added. The KB copy needs the same two amendments — the planning layer produces them citing this commit.* |
-| `StudioPlanner_WO_StudioLevel_Values.md` | **NEW** — this session's work order; upload to KB and commit to `docs/` as the execution record. |
-| `StudioPlanner_WO_StudioLevel_Schema.md` | Fully discharged by this session (schema half at `v0.4.0-data`, values half at `v0.6.0-data`). Retained as record. |
-| `StudioPlanner_Handoff.md` | This file (rev 8). |
-| Everything else | As rev 7. |
+| `src/data.js` | **Unchanged since `3102bc5`** (content identity). KB copy refreshed — stale flag discharged. |
+| `src/App.jsx` / `src/index.css` | Unchanged (App.jsx since session 5 report; index.css since `429dfc1`). Two tracked artifacts stand: orphaned `.bar-selector` at `index.css:749`; dead `const bars` at `App.jsx` ~92. |
+| `package.json` / `package-lock.json` | **Changed at `a5c87a7`** — `"firebase-tools": "15.24.0"` exact devDependency. |
+| `.npmrc` | **NEW at `a5c87a7`** — `legacy-peer-deps=true`. **Temporary**; delete at the Route A sitting. |
+| `docs/` | Grew at `944c9dd`: status overview, both NDCC PDFs, the two session records (paths per `944c9dd`'s diff). |
+| `docs/StudioPlanner_Handoff.md` (repo copy) | Partially amended (#34 items); **overwrite wholesale with this rev 9** at next Code sitting, docs-only. |
+| `StudioPlanner_WO_Travel_Prep.md` | **NEW** — session-6 work order; upload to KB; commit to `docs/` as the execution record. |
+| `StudioPlanner_Handoff.md` | This file (rev 9). |
+| Everything else | As rev 8. |
 
 ---
 
 ## Notes for next session
 
-- **Read at session start:** this handoff (rev 8) + `StudioPlanner_Session_Conduct_Review.md`.
-- **Order:** standard pre-flight → Ellever capture (queue item 1, due now), or the `firebase-tools` pin first if Victor prefers a short Code task to open.
-- **NDCC is the syllabus authority.** KB-lag rule and canonical-source rule stand — **this handoff outranks Code's internal memory files and any role-prompt content.** No accent policy exists. No Waltz re-parse until `parse_bg_waltz.js` is updated.
-- **Do not delete the `studioLevel` unrecognised-vocabulary guard** — see the #31 rider.
+- **Read at session start:** this handoff (rev 9) + `StudioPlanner_Session_Conduct_Review.md` (now also tracked in the repo per `944c9dd`).
+- **If on laptop 5500:** Stage 2 verification before any queue work (see Fast re-entry item 2).
+- **Order after pre-flight:** Ellever capture (queue item 1, due now, travel-compatible).
+- **NDCC is the syllabus authority.** KB-lag and canonical-source rules stand — **this handoff outranks Code's internal memory files and any role-prompt content.** No accent policy exists. No Waltz re-parse until `parse_bg_waltz.js` is updated.
+- **Do not delete the `studioLevel` unrecognised-vocabulary guard** (#31 rider). **Do not delete the `.npmrc` except at the Route A sitting** (#34 rider) — and conversely, do not ship Route A without deleting it.
 - **Before writing any new source reader: handle gzip.**
-- **Upload at session close:** this rev 8 + `StudioPlanner_WO_StudioLevel_Values.md` + refreshed `data.js` at `b864e9b`.
+- **Upload at session close:** whatever that session produces, per standing rule. *This* session's upload set: **rev 9 + `StudioPlanner_WO_Travel_Prep.md` + refreshed `data.js`.**
